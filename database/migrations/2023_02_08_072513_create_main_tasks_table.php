@@ -23,13 +23,18 @@ class CreateMainTasksTable extends Migration
             $table->string('notes');
             $table->string('status');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('main_alarm_id');
+            $table->timestamps();
             $table->foreign('station_id')
                 ->references('id')
                 ->on('stations');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
+            $table->foreign('department_id')
+                ->references('id')
+                ->on('departments');
             $table->foreign('main_alarm_id')
                 ->references('id')
                 ->on('main_alarm');

@@ -18,7 +18,8 @@ class CreateMainAlarmTable extends Migration
         Schema::create('main_alarm', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('department_id');
-            $table->string('main-alarm-name');
+            $table->string('name');
+            $table->timestamps();
             $table->foreign('department_id')
                 ->references('id')
                 ->on('departments');

@@ -17,12 +17,15 @@ class CreateStationsTable extends Migration
 
         Schema::create('stations', function (Blueprint $table) {
             $table->id();
-            $table->string('COMPANY_MAKE');
-            $table->string('FULLNAME');
-            $table->string('voltage_level');
-            $table->string('Contract_No');
-            $table->string('COMMISINNG_DATE');
-            $table->string('control');
+            $table->string('SSNAME');
+            $table->string('COMPANY_MAKE')->nullable();
+            $table->string('Voltage_Level_KV')->nullable();
+            $table->string('Contract_No')->nullable();
+            $table->string('COMMISIONING_DATE')->nullable();
+            $table->string('control')->nullable();
+            $table->string('FULLNAME')->nullable();
+            $table->string('pm')->nullable();
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

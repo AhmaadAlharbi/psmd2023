@@ -52,7 +52,7 @@ class MainAlarmSeeder extends Seeder
         foreach ($alarms as $alarm) {
             DB::table('main_alarm')->insert([
                 'department_id' => 2,
-                'main-alarm-name' => $alarm,
+                'name' => $alarm,
 
             ]);
         }

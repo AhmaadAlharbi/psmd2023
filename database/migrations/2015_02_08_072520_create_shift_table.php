@@ -18,6 +18,7 @@ class CreateShiftTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->String('shift');
+            $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
