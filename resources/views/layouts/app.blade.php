@@ -9,8 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="Description" content="Valex - Laravel Bootstrap 5 Admin & Dashboard Template">
     <meta name="Author" content="Spruko Technologies Private Limited">
-    <meta name="Keywords"
-        content="laravel admin template, bootstrap admin template, admin dashboard template, admin dashboard, admin template, admin, bootstrap 5, laravel admin, laravel admin dashboard template, laravel ui template, laravel admin panel, admin panel, laravel admin dashboard, laravel template, admin ui dashboard">
+    <meta name="Keywords" content="laravel admin template, bootstrap admin template, admin dashboard template, admin dashboard, admin template, admin, bootstrap 5, laravel admin, laravel admin dashboard template, laravel ui template, laravel admin panel, admin panel, laravel admin dashboard, laravel template, admin ui dashboard">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <!-- Title -->
     <title> PSMD | Trouble shootig Dashboard </title>
@@ -21,6 +20,7 @@
             font-family: 'Cairo', sans-serif;
         }
     </style>
+    @livewireStyles
 </head>
 
 <body class="rtl main-body app sidebar-mini">
@@ -66,7 +66,7 @@
     <!-- End Page -->
 
     @include('layouts.components.scripts')
-
+    @livewireScripts
 </body>
 
 </html>

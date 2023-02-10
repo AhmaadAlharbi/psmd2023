@@ -26,4 +26,8 @@ class DashBoardController extends Controller
         $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->get();
         return view('dashboard.index', compact('sectionTasksCount', 'pendingTasksCount', 'pendingTasks', 'completedTasksCount', 'completedTasks'));
     }
+    public function add_task()
+    {
+        return view('dashboard.add_task');
+    }
 }

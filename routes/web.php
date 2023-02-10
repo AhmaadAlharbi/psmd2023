@@ -276,5 +276,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/dashboard-Trouble-shooting-system', [DashBoardController::class, 'index'])->name('dashboard.index');
+Route::get('/home', [DashBoardController::class, 'index'])->name('dashboard.index');
+Route::get('/add-task', [DashBoardController::class, 'add_task'])->name('dashboard.add_task');
 require __DIR__ . '/auth.php';
