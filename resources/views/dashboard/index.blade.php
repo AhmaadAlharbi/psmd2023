@@ -104,7 +104,7 @@
             </div>
             <div class="card-body  ">
                 <ul class="list-group   text-center">
-                    <li class="list-group-item bg-info">Task # 1 </li>
+                    <li class="list-group-item bg-danger">Task # 1 </li>
                     <li class="list-group-item ">{{$task->created_at}}</li>
                     <li class="list-group-item "> <strong>Station<br> <span class="badge bg-danger me-1 my-2">Pending</span></strong> {{$task->station->SSNAME}} </li>
                     <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
@@ -124,50 +124,47 @@
 
 
     </div>
+
+
     <div class="col-xl-9 col-md-12 col-lg-6">
         <div class="card border border-dark">
             <div class="card-header pb-1">
-                <h1 class="card-title mb-2 text-center"> تقارير شهر يناير</h1>
+                <h1 class="card-title mb-2 text-left"> تقارير شهر يناير</h1>
 
             </div>
             @foreach($completedTasks as $task)
-            <div class=" card-body pt-2 mt-1 text-center ">
 
-                <ul class="timeline-1 mb-0 ">
-                    <li class="mt-0 mb-0 border border-secondary pb-2">
-                        <p class="p-3 mb-2 bg-dark text-white text-center">Engineer :
+            <div class="card card-primary">
+                <div class="card-header pb-0">
+                    <h3 class="card-title mb-0 pb-0">Tasks</h3>
+                </div>
+                <div class="card-body  ">
+                    <ul class="list-group   text-center">
+                        <li class="list-group-item bg-dark">Task # 1 </li>
+
+                        <li class="list-group-item "><span class=" badge bg-success me-1 my-2 ">Completed</span> <ins>Station :
+                                {{$task->main_task->station->SSNAME}} </ins><br>{{ \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{ \Carbon\Carbon::parse($task->created_at)->format('H:i') }}</li>
+                        <!-- <li class="list-group-item"><strong>Date <br></strong>{{ \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{ \Carbon\Carbon::parse($task->created_at)->format('H:i') }}
+                        </li> -->
+                        <!-- <li class="list-group-item bg-light"><strong>Main Alarm <br></strong>{{$task->main_task->main_alarm->name}}</li> -->
+                        <li class="list-group-item "><strong>Nature of fault<br></strong> {{$task->main_task->problem}}
+                        </li>
+                        <li class="list-group-item bg-light"><strong>Action Take<br></strong> {{$task->action_take}}
+                        </li>
+
+                        <li class="list-group-item ">Engineer :
                             {{$task->engineer->user->name}}
-                        </p>
-                        <p class=" bg-white text-dark text-center "><ins>Station :
-                                {{$task->main_task->station->SSNAME}}</ins></p>
-                        <span class=" badge bg-success me-1 my-2">Completed</span>
-                        <p class="text-right text-muted"> {{$task->created_at}}</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-secondary">More information</button>
+                    <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary">Engineer report</a>
 
-                        <p class=" bg-white text-secondary font-weight-bold text-center">Nature of fault :
-                            {{$task->main_task->problem}}
-                        </p>
-                        <p class="p-3 mb-2 bg-light text-dark text-center">Action Take :
-                            {{$task->action_take}}
-                        </p>
-                        <a class="btn btn-info mt-2 text-center" href="www.google.com">Report</a>
-                        <a class="btn btn-outline-dark mt-2 text-center" href="">Details</a>
-                    </li>
-                </ul>
-
+                </div>
             </div>
             @endforeach
-            <hr class="my-4 bg-info">
-            <nav aria-label="Page navigation pagination-sm   pagination-lg justify-content-center ">
-                <ul class="pagination">
-                    <li class="page-item">
-
-                    </li>
-
-                </ul>
-            </nav>
         </div>
-
-
 
     </div>
 </div>
