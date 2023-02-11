@@ -105,19 +105,21 @@
             <div class="card-body  ">
                 <ul class="list-group   text-center">
                     <li class="list-group-item bg-info">Task # 1 </li>
-                    <li class="list-group-item ">{{$task->main_task->created_at}}</li>
-                    <li class="list-group-item "> <strong>Station<br> <span class="badge bg-danger me-1 my-2">Pending</span></strong> {{$task->main_task->station->SSNAME}} </li>
-                    <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_task->main_alarm->name}}</li>
-                    <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->main_task->problem}}
+                    <li class="list-group-item ">{{$task->created_at}}</li>
+                    <li class="list-group-item "> <strong>Station<br> <span class="badge bg-danger me-1 my-2">Pending</span></strong> {{$task->station->SSNAME}} </li>
+                    <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
+                    <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->problem}}
                     </li>
-                    <li class="list-group-item"><strong>Engineer <br></strong> {{$task->engineer->user->name}}</li>
+                    <li class="list-group-item"><strong>Engineer <br></strong>{{$task->user->name}}</li>
                 </ul>
             </div>
             <div class="card-footer">
                 <button class="btn btn-secondary">More information</button>
+                <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary">Engineer report</a>
 
             </div>
         </div>
+
         @endforeach
 
 
@@ -136,9 +138,9 @@
                         <p class="p-3 mb-2 bg-dark text-white text-center">Engineer :
                             {{$task->engineer->user->name}}
                         </p>
-                        <p class="  bg-white text-dark text-center  "><ins>Station :
+                        <p class=" bg-white text-dark text-center "><ins>Station :
                                 {{$task->main_task->station->SSNAME}}</ins></p>
-                        <span class="badge bg-success me-1 my-2">Completed</span>
+                        <span class=" badge bg-success me-1 my-2">Completed</span>
                         <p class="text-right text-muted"> {{$task->created_at}}</p>
 
                         <p class=" bg-white text-secondary font-weight-bold text-center">Nature of fault :

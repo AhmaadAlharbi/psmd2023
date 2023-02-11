@@ -24,4 +24,8 @@ class MainTask extends Model
     {
         return $this->belongsTo(MainAlarm::class, 'main_alarm_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
