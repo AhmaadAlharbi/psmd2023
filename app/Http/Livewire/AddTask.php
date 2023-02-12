@@ -195,7 +195,8 @@ class AddTask extends Component
             'status' => 'pending',
             'department_id' => 2,
             'main_alarm_id' => $this->main_alarm,
-            'user_id' => 1,
+            'user_id' => Auth::user()->id,
+            'eng_id' => $this->selectedEngineer,
         ]);
         $main_task_id = MainTask::latest()->first()->id;
         $section_task = SectionTask::create([
@@ -211,6 +212,6 @@ class AddTask extends Component
 
 
         ]);
-        return back();
+        return redirect("/home");
     }
 }

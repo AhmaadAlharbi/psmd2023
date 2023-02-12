@@ -16,8 +16,7 @@
     </div>
     <div class="d-flex my-xl-auto right-content">
         <div class="pe-1 mb-xl-0">
-            <button type="button" class="btn btn-info btn-icon me-2 btn-b"><i
-                    class="mdi mdi-filter-variant"></i></button>
+            <button type="button" class="btn btn-info btn-icon me-2 btn-b"><i class="mdi mdi-filter-variant"></i></button>
         </div>
         <div class="pe-1 mb-xl-0">
             <button type="button" class="btn btn-danger btn-icon me-2"><i class="mdi mdi-star"></i></button>
@@ -28,12 +27,10 @@
         <div class="mb-xl-0">
             <div class="btn-group dropdown">
                 <button type="button" class="btn btn-primary">14 Aug 2019</button>
-                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
-                    id="dropdownMenuDate" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuDate" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuDate"
-                    x-placement="bottom-end">
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuDate" x-placement="bottom-end">
                     <a class="dropdown-item" href="javascript:void(0);">2015</a>
                     <a class="dropdown-item" href="javascript:void(0);">2016</a>
                     <a class="dropdown-item" href="javascript:void(0);">2017</a>
@@ -74,33 +71,27 @@
                                 <div class="tab-pane active" id="tab4">
                                     <form action="{{route('dashboard.searchStation')}}" method="GET">
                                         <div class="row d-flex justify-content-start mb-3">
-                                            <input list="ssnames" type="search" class="col-3 mx-sm-3 mb-2 form-control"
-                                                name="station" placeholder="search in stations">
+                                            <input list="ssnames" type="search" class="col-3 mx-sm-3 mb-2 form-control" name="station" placeholder="search in stations">
 
                                             <datalist id="ssnames">
                                                 @foreach ($stations as $station)
                                                 <option value="{{ $station->SSNAME }}">
                                                     @endforeach
                                             </datalist>
-                                            <button type="submit"
-                                                class="col-1 btn btn-secondary bg-secondary mb-2">ابحث</button>
+                                            <button type="submit" class="col-1 btn btn-secondary bg-secondary mb-2">ابحث</button>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="tab-pane" id="tab5">
                                     <form action="{{route('dashboard.engineerTasks')}}" method="GET">
                                         <div class="row d-flex justify-content-start mb-3">
-                                            <input list="engineers" type="search"
-                                                class="col-3 mx-sm-3 mb-2 form-control" name="term"
-                                                placeholder="search in engineers">
-
+                                            <input list="engineers" type="search" class="col-3 mx-sm-3 mb-2 form-control" name="engineer" placeholder="search in engineers">
                                             <datalist id="engineers">
                                                 @foreach ($engineers as $engineer)
                                                 <option value="{{ $engineer->user->name }}">
                                                     @endforeach
                                             </datalist>
-                                            <button type="submit"
-                                                class="col-1 btn btn-secondary bg-secondary mb-2">ابحث</button>
+                                            <button type="submit" class="col-1 btn btn-secondary bg-secondary mb-2">ابحث</button>
                                         </div>
                                     </form>
                                 </div>
@@ -134,8 +125,7 @@
                     <li class="list-group-item {{ ($task->status == 'pending') ? 'bg-danger': 'bg-success' }}">Task # 1
                     </li>
                     <li class="list-group-item ">{{$task->created_at}}</li>
-                    <li class="list-group-item "> <strong>Station<br> <span
-                                class="badge {{ ($task->status == 'pending') ? 'bg-danger': 'bg-success' }} me-1 my-2">{{$task->status}}</span></strong>
+                    <li class="list-group-item "> <strong>Station<br> <span class="badge {{ ($task->status == 'pending') ? 'bg-danger': 'bg-success' }} me-1 my-2">{{$task->status}}</span></strong>
                         {{$task->station->SSNAME}}
                     </li>
                     <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
@@ -147,9 +137,7 @@
             <div class="card-footer">
                 <button class="btn btn-secondary">More information</button>
                 @if($task->status === 'completed')
-                <a href="{{route('dashboard.reportPage',['id'=>$task->id])}}" type="button"
-                    class="btn btn-info  button-icon "><i class="si si-notebook px-2" data-bs-toggle="tooltip" title=""
-                        data-bs-original-title="si-notebook" aria-label="si-notebook"></i>Report</a>
+                <a href="{{route('dashboard.reportPage',['id'=>$task->id])}}" type="button" class="btn btn-info  button-icon "><i class="si si-notebook px-2" data-bs-toggle="tooltip" title="" data-bs-original-title="si-notebook" aria-label="si-notebook"></i>Report</a>
                 @endif
 
             </div>

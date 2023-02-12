@@ -18,11 +18,11 @@ class DashBoardController extends Controller
 {
     public function index()
     {
-        // $eng = SectionTask::find(1);
+        // return $eng = SectionTask::find(1);
         // return $eng->engineer->user->name;
         $sectionTasksCount = MainTask::where('department_id', Auth::user()->department_id)->count();
         $pendingTasksCount = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->count();
-        $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->get();
+        $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->latest()->get();
         $completedTasksCount = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->count();
         $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->get();
         return view('dashboard.index', compact('sectionTasksCount', 'pendingTasksCount', 'pendingTasks', 'completedTasksCount', 'completedTasks'));
@@ -79,18 +79,18 @@ class DashBoardController extends Controller
             case 'pending':
                 $tasks = MainTask::where('department_id', Auth::user()->department_id)
                     ->where('status', 'pending')
-                    ->whereMonth('created_at', $currentMonth)->get();
+                    ->whereMonth('created_at', $currentMonth)->latest()->get();
                 break;
             case 'completed':
 
                 $tasks = MainTask::where('department_id', Auth::user()->department_id)
                     ->where('status', 'completed')
-                    ->whereMonth('created_at', $currentMonth)->get();
+                    ->whereMonth('created_at', $currentMonth)->latest()->get();
                 break;
 
             case 'all':
                 $tasks = MainTask::where('department_id', Auth::user()->department_id)
-                    ->whereMonth('created_at', $currentMonth)->get();
+                    ->whereMonth('created_at', $currentMonth)->latest()->get();
                 break;
         }
         return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
@@ -103,7 +103,7 @@ class DashBoardController extends Controller
         $station = Station::where('SSNAME', $request->station)->first();
         $tasks = MainTask::where('department_id', Auth::user()->department_id)
             ->where('station_id', $station->id)
-            ->whereMonth('created_at', $currentMonth)->get();
+            ->whereMonth('created_at', $currentMonth)->latest()->get();
         return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
     }
     public function engineerTasks(Request $request)
@@ -114,7 +114,7 @@ class DashBoardController extends Controller
         $engineer = User::where('name', $request->engineer)->first();;
         $tasks = MainTask::where('department_id', Auth::user()->department_id)
             ->where('eng_id', $engineer->id)
-            ->whereMonth('created_at', $currentMonth)->latest()->get();
+            ->whereMonth('created_at', $currentMonth)->latest()->latest()->get();
         return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
     }
 }
