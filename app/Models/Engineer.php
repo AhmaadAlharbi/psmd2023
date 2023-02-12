@@ -13,6 +13,15 @@ class Engineer extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
+    public function main_task()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function main_tasks()
+    {
+        return $this->hasMany(MainTask::class);
     }
 }

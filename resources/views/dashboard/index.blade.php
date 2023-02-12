@@ -34,49 +34,55 @@
 </div>
 <div class="row ">
     <div class="col-xl-3 col-lg-6 col-md-6 ">
-        <div class="card  bg-primary-gradient">
-            <div class="card-body">
-                <div class="counter-status d-flex md-mb-0">
-                    <div class="counter-icon">
-                        <i class="icon icon-people"></i>
-                    </div>
-                    <div class="ms-auto">
-                        <h5 class="tx-18 tx-white-8 mb-3 ">عدد أعطال الشهر</h5>
-                        <h2 class="counter mb-0 text-white">{{$sectionTasksCount}}</h2>
+        <a href="{{route('dashboard.showTasks',['status'=>'all'])}}">
+            <div class="card  bg-primary-gradient">
+                <div class="card-body">
+                    <div class="counter-status d-flex md-mb-0">
+                        <div class="counter-icon">
+                            <i class="icon icon-people"></i>
+                        </div>
+                        <div class="ms-auto">
+                            <h5 class="tx-18 tx-white-8 mb-3 ">عدد أعطال الشهر</h5>
+                            <h2 class="counter mb-0 text-white">{{$sectionTasksCount}}</h2>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
     <div class="col-xl-3 col-lg-6 col-md-6">
-        <div class="card  bg-danger-gradient">
-            <div class="card-body">
-                <div class="counter-status d-flex md-mb-0">
-                    <div class="counter-icon text-warning">
-                        <i class="icon icon-rocket"></i>
-                    </div>
-                    <div class="ms-auto">
-                        <h5 class="tx-18 tx-white-8 mb-3">عدد الأعطال الغير منجزة</h5>
-                        <h2 class="counter mb-0 text-white">{{$pendingTasksCount}}</h2>
+        <a href="{{route('dashboard.showTasks',['status'=>'pending'])}}">
+            <div class="card  bg-danger-gradient">
+                <div class="card-body">
+                    <div class="counter-status d-flex md-mb-0">
+                        <div class="counter-icon text-warning">
+                            <i class="icon icon-rocket"></i>
+                        </div>
+                        <div class="ms-auto">
+                            <h5 class="tx-18 tx-white-8 mb-3">عدد الأعطال الغير منجزة</h5>
+                            <h2 class="counter mb-0 text-white">{{$pendingTasksCount}}</h2>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
     <div class="col-xl-3 col-lg-6 col-md-6">
-        <div class="card  bg-success-gradient">
-            <div class="card-body">
-                <div class="counter-status d-flex md-mb-0">
-                    <div class="counter-icon text-primary">
-                        <i class="icon icon-docs"></i>
-                    </div>
-                    <div class="ms-auto">
-                        <h5 class="tx-18 tx-white-8 mb-3">عدد الأعطال المنجزة</h5>
-                        <h2 class="counter mb-0 text-white">{{$completedTasksCount}}</h2>
+        <a href="{{route('dashboard.showTasks',['status'=>'completed'])}}">
+            <div class="card  bg-success-gradient">
+                <div class="card-body">
+                    <div class="counter-status d-flex md-mb-0">
+                        <div class="counter-icon text-primary">
+                            <i class="icon icon-docs"></i>
+                        </div>
+                        <div class="ms-auto">
+                            <h5 class="tx-18 tx-white-8 mb-3">عدد الأعطال المنجزة</h5>
+                            <h2 class="counter mb-0 text-white">{{$completedTasksCount}}</h2>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
     <div class="col-xl-3 col-lg-6 col-md-6">
         <div class="card  bg-warning-gradient">
@@ -114,7 +120,7 @@
                     <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
                     <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->problem}}
                     </li>
-                    <li class="list-group-item"><strong>Engineer <br></strong>{{$task->user->name}}</li>
+                    <li class="list-group-item"><strong>Engineer <br></strong>{{$task->engineer->name}}</li>
                 </ul>
             </div>
             <div class="card-footer">

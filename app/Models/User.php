@@ -41,10 +41,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function engineer()
-    {
-        return $this->hasOne(Engineer::class, 'user_id');
-    }
+    // public function engineer()
+    // {
+    //     return $this->hasOne(Engineer::class, 'user_id');
+    // }
     public function sectionTasks()
     {
         return $this->hasMany(SectionTask::class, 'by_user');
@@ -52,5 +52,9 @@ class User extends Authenticatable
     public function maintasks()
     {
         return $this->hasMany(MainTask::class, 'by_user', 'id');
+    }
+    public function engineer()
+    {
+        return $this->belongsTo(Engineer::class, 'eng_id');
     }
 }

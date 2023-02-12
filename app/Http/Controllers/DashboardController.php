@@ -12,6 +12,7 @@ use App\Models\MainTask;
 use App\Models\SectionTask;
 use App\Models\Department;
 use App\Models\Engineer;
+use Carbon\Carbon;
 
 class DashBoardController extends Controller
 {
@@ -68,5 +69,52 @@ class DashBoardController extends Controller
             abort(404);
         }
         return view('dashboard.reportPage', compact('section_task'));
+    }
+    public function showTasks($status)
+    {
+        $stations = Station::all();
+        $engineers = Engineer::where('department_id', Auth::user()->department_id)->get();
+        $currentMonth = Carbon::now()->month;
+        switch ($status) {
+            case 'pending':
+                $tasks = MainTask::where('department_id', Auth::user()->department_id)
+                    ->where('status', 'pending')
+                    ->whereMonth('created_at', $currentMonth)->get();
+                break;
+            case 'completed':
+
+                $tasks = MainTask::where('department_id', Auth::user()->department_id)
+                    ->where('status', 'completed')
+                    ->whereMonth('created_at', $currentMonth)->get();
+                break;
+
+            case 'all':
+                $tasks = MainTask::where('department_id', Auth::user()->department_id)
+                    ->whereMonth('created_at', $currentMonth)->get();
+                break;
+        }
+        return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
+    }
+    public function searchStation(Request $request)
+    {
+        $currentMonth = Carbon::now()->month;
+        $stations = Station::all();
+        $engineers = Engineer::where('department_id', Auth::user()->department_id)->get();
+        $station = Station::where('SSNAME', $request->station)->first();
+        $tasks = MainTask::where('department_id', Auth::user()->department_id)
+            ->where('station_id', $station->id)
+            ->whereMonth('created_at', $currentMonth)->get();
+        return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
+    }
+    public function engineerTasks(Request $request)
+    {
+        $currentMonth = Carbon::now()->month;
+        $stations = Station::all();
+        $engineers = Engineer::where('department_id', Auth::user()->department_id)->get();
+        $engineer = User::where('name', $request->engineer)->first();;
+        $tasks = MainTask::where('department_id', Auth::user()->department_id)
+            ->where('eng_id', $engineer->id)
+            ->whereMonth('created_at', $currentMonth)->latest()->get();
+        return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
     }
 }

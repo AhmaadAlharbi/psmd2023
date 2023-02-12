@@ -275,10 +275,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 Route::get('/home', [DashBoardController::class, 'index'])->name('dashboard.index')->middleware('auth');
 Route::get('/add-task', [DashBoardController::class, 'add_task'])->name('dashboard.add_task');
 Route::get('/engineer-task-page/{task}', [DashBoardController::class, 'engineerTaskPage'])->name('dashboard.engineerTaskPage');
 Route::post('/submit-engineer-report/{id}', [DashBoardController::class, 'submitEngineerReport'])->name('dashboard.submitEngineerReport');
 Route::get('/report-page/{id}', [DashBoardController::class, 'reportPage'])->name('dashboard.reportPage');
+Route::get('/tasks/{status}', [DashBoardController::class, 'showTasks'])->name('dashboard.showTasks');
+Route::get('/search/station', [DashBoardController::class, 'searchStation'])->name('dashboard.searchStation');
+Route::get('/search/engineer-tasks', [DashBoardController::class, 'engineerTasks'])->name('dashboard.engineerTasks');
 require __DIR__ . '/auth.php';

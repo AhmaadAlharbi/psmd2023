@@ -28,4 +28,8 @@ class MainTask extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function engineer()
+    {
+        return $this->belongsTo(User::class, 'eng_id');
+    }
 }
