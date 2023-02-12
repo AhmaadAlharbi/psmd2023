@@ -280,4 +280,5 @@ Route::get('/home', [DashBoardController::class, 'index'])->name('dashboard.inde
 Route::get('/add-task', [DashBoardController::class, 'add_task'])->name('dashboard.add_task');
 Route::get('/engineer-task-page/{task}', [DashBoardController::class, 'engineerTaskPage'])->name('dashboard.engineerTaskPage');
 Route::post('/submit-engineer-report/{id}', [DashBoardController::class, 'submitEngineerReport'])->name('dashboard.submitEngineerReport');
+Route::get('/report-page/{id}', [DashBoardController::class, 'reportPage'])->name('dashboard.reportPage');
 require __DIR__ . '/auth.php';

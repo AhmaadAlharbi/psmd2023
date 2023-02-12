@@ -15,10 +15,12 @@
                 Empty</span>
             <div class="btn-group dropdown">
                 <button type="button" class="btn btn-primary">لوحة التحكم حسب التحكم</button>
-                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuDate" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                    id="dropdownMenuDate" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuDate" x-placement="bottom-end">
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuDate"
+                    x-placement="bottom-end">
                     <a class="dropdown-item" href="javascript:void(0);">تحكم الجهراء</a>
                     <a class="dropdown-item" href="javascript:void(0);">تحكم الشعيبة</a>
                     <a class="dropdown-item" href="javascript:void(0);">تحكم الجابرية</a>
@@ -106,7 +108,9 @@
                 <ul class="list-group   text-center">
                     <li class="list-group-item bg-danger">Task # 1 </li>
                     <li class="list-group-item ">{{$task->created_at}}</li>
-                    <li class="list-group-item "> <strong>Station<br> <span class="badge bg-danger me-1 my-2">Pending</span></strong> {{$task->station->SSNAME}} </li>
+                    <li class="list-group-item "> <strong>Station<br> <span
+                                class="badge bg-danger me-1 my-2">Pending</span></strong> {{$task->station->SSNAME}}
+                    </li>
                     <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
                     <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->problem}}
                     </li>
@@ -142,8 +146,12 @@
                     <ul class="list-group   text-center">
                         <li class="list-group-item bg-dark">Task # 1 </li>
 
-                        <li class="list-group-item "><span class=" badge bg-success me-1 my-2 ">Completed</span> <ins>Station :
-                                {{$task->main_task->station->SSNAME}} </ins><br>{{ \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{ \Carbon\Carbon::parse($task->created_at)->format('H:i') }}</li>
+                        <li class="list-group-item "><span class=" badge bg-success me-1 my-2 ">Completed</span>
+                            <ins>Station :
+                                {{$task->main_task->station->SSNAME}} </ins><br>{{
+                            \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{
+                            \Carbon\Carbon::parse($task->created_at)->format('H:i') }}
+                        </li>
                         <!-- <li class="list-group-item"><strong>Date <br></strong>{{ \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{ \Carbon\Carbon::parse($task->created_at)->format('H:i') }}
                         </li> -->
                         <!-- <li class="list-group-item bg-light"><strong>Main Alarm <br></strong>{{$task->main_task->main_alarm->name}}</li> -->
@@ -158,8 +166,11 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-secondary">More information</button>
-                    <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary">Engineer report</a>
+                    <a href="{{route('dashboard.reportPage',['id'=>$task->main_task->id])}}" type="button"
+                        class="btn btn-info  button-icon "><i class="si si-notebook px-2" data-bs-toggle="tooltip"
+                            title="" data-bs-original-title="si-notebook" aria-label="si-notebook"></i>Report</a>
+                    {{-- <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary">Engineer
+                        report</a> --}}
 
                 </div>
             </div>

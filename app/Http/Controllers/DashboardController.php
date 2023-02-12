@@ -58,4 +58,15 @@ class DashBoardController extends Controller
         ]);
         return redirect("/home");
     }
+    public function reportPage($id)
+    {
+        $section_task = SectionTask::where('main_tasks_id', $id)
+            ->where('department_id', Auth::user()->department_id)
+            ->where('status', 'completed')
+            ->first();
+        if (!$section_task) {
+            abort(404);
+        }
+        return view('dashboard.reportPage', compact('section_task'));
+    }
 }
