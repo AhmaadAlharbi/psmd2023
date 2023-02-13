@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashBoardController;
+use App\Http\Controllers\EngineersController;
 use App\Http\Livewire\About;
 use App\Http\Livewire\Accordion;
 use App\Http\Livewire\Alerts;
@@ -283,4 +284,8 @@ Route::get('/report-page/{id}', [DashBoardController::class, 'reportPage'])->nam
 Route::get('/tasks/{status}', [DashBoardController::class, 'showTasks'])->name('dashboard.showTasks');
 Route::get('/search/station', [DashBoardController::class, 'searchStation'])->name('dashboard.searchStation');
 Route::get('/search/engineer-tasks', [DashBoardController::class, 'engineerTasks'])->name('dashboard.engineerTasks');
+Route::get('/engineers-list', [EngineersController::class, 'engineersList'])->name('dashboard.engineersList');
+Route::get('engineer-profile/{eng_id}', [EngineersController::class, 'engineerProfile'])->name('dashboard.engineerProfile');
+Route::get('engineer/{id}/tasks/{status}', [EngineersController::class, 'engineerTask'])->name('dashboard.engineerTask');
+
 require __DIR__ . '/auth.php';

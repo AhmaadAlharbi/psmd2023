@@ -10,4 +10,9 @@ class Department extends Model
     use HasFactory;
     protected $table = 'departments';
     protected $guarded = [];
+
+    public function department()
+    {
+        return $this->hasMany(MainTask::class);
+    }
 }

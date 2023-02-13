@@ -20,12 +20,13 @@ class DashBoardController extends Controller
     {
         // return $eng = SectionTask::find(1);
         // return $eng->engineer->user->name;
+        $engineersCount = Engineer::where('department_id', Auth::user()->department_id)->count();
         $sectionTasksCount = MainTask::where('department_id', Auth::user()->department_id)->count();
         $pendingTasksCount = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->count();
         $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->latest()->get();
         $completedTasksCount = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->count();
         $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->get();
-        return view('dashboard.index', compact('sectionTasksCount', 'pendingTasksCount', 'pendingTasks', 'completedTasksCount', 'completedTasks'));
+        return view('dashboard.index', compact('sectionTasksCount', 'pendingTasksCount', 'pendingTasks', 'completedTasksCount', 'completedTasks', 'engineersCount'));
     }
     public function add_task()
     {

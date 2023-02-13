@@ -34,7 +34,7 @@
 </div>
 <div class="row ">
     <div class="col-xl-3 col-lg-6 col-md-6 ">
-        <a href="{{route('dashboard.showTasks',['status'=>'all'])}}">
+        <a href="{{route('dashboard.engineersList')}}">
             <div class="card  bg-primary-gradient">
                 <div class="card-body">
                     <div class="counter-status d-flex md-mb-0">
@@ -42,8 +42,9 @@
                             <i class="icon icon-people"></i>
                         </div>
                         <div class="ms-auto">
-                            <h5 class="tx-18 tx-white-8 mb-3 ">عدد أعطال الشهر</h5>
-                            <h2 class="counter mb-0 text-white">{{$sectionTasksCount}}</h2>
+                            <h5 class="tx-18 tx-white-8 mb-3 ">عدد المهندسين </h5>
+                            <h2 class="counter mb-0 text-white">35</h2>
+                            {{-- <h2 class="counter mb-0 text-white">{{$engineersCount}}</h2> --}}
                         </div>
                     </div>
                 </div>
