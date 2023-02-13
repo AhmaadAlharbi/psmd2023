@@ -18,6 +18,7 @@ class DashBoardController extends Controller
 {
     public function index()
     {
+
         // return $eng = SectionTask::find(1);
         // return $eng->engineer->user->name;
         $engineersCount = Engineer::where('department_id', Auth::user()->department_id)->count();
@@ -25,8 +26,25 @@ class DashBoardController extends Controller
         $pendingTasksCount = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->count();
         $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->latest()->get();
         $completedTasksCount = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->count();
-        $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->get();
-        return view('dashboard.index', compact('sectionTasksCount', 'pendingTasksCount', 'pendingTasks', 'completedTasksCount', 'completedTasks', 'engineersCount'));
+        $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->latest()->get();
+        $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        $taskCounts = [];
+        $pendingTaskCounts = [];
+        $completedTaskCounts = [];
+        foreach ($months as $month) {
+            $taskCounts[] = MainTask::where('department_id', Auth::user()->department_id)
+                ->whereMonth('created_at', date('m', strtotime($month)))
+                ->count();
+            $pendingTaskCounts[] = MainTask::where('department_id', Auth::user()->department_id)
+                ->whereMonth('created_at', date('m', strtotime($month)))
+                ->where('status', 'pending')
+                ->count();
+            $completedTaskCounts[] = MainTask::where('department_id', Auth::user()->department_id)
+                ->whereMonth('created_at', date('m', strtotime($month)))
+                ->where('status', 'completed')
+                ->count();
+        }
+        return view('dashboard.index', compact('sectionTasksCount', 'pendingTasksCount', 'taskCounts', 'pendingTaskCounts', 'pendingTasks', 'completedTaskCounts', 'completedTasks', 'engineersCount', 'completedTasksCount'));
     }
     public function add_task()
     {

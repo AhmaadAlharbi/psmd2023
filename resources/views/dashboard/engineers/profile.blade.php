@@ -627,22 +627,22 @@ var myChart = new Chart(ctx, {
         datasets: [{
             label: 'Total Tasks',
             data: [{{ implode(',', $taskCounts) }}],
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235)',
+            borderColor: 'rgb(54, 162, 235)',
             borderWidth: 1
         },
         {
             label: 'Pending Tasks',
             data: [{{ implode(',', $pendingTaskCounts) }}],
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
             borderWidth: 1
         },
         {
             label: 'Completed Tasks',
             data: [{{ implode(',', $completedTaskCounts) }}],
-            backgroundColor:  'rgba(50, 205, 50, 0.2)',
-            borderColor: 'rgba(34, 139, 34, 1)',
+            backgroundColor:  'rgb(50, 205, 50)',
+            borderColor: 'rgb(34, 139, 34)',
             borderWidth: 1
         }]
     },

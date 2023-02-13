@@ -49,10 +49,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(SectionTask::class, 'by_user');
     }
-    public function maintasks()
+
+    public function mainTasks()
     {
-        return $this->hasMany(MainTask::class, 'by_user', 'id');
+        return $this->hasMany(MainTask::class, 'eng_id', 'id');
     }
+
     public function engineer()
     {
         return $this->belongsTo(Engineer::class, 'eng_id');

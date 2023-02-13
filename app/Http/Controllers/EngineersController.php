@@ -21,7 +21,6 @@ class EngineersController extends Controller
     public function engineerProfile($id)
     {
         $engineer = User::findOrfail($id);
-
         $tasks = MainTask::where('department_id', Auth::user()->department_id)->where('eng_id', $id)->count();
         $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)->where('eng_id', $id)->where('status', 'pending')->count();
         $completedTasks = MainTask::where('department_id', Auth::user()->department_id)->where('eng_id', $id)->where('status', 'pending')->count();
@@ -48,8 +47,7 @@ class EngineersController extends Controller
                 ->where('status', 'completed')
                 ->count();
         }
-
-        return view('dashboard.engineers.profile', compact('tasks', 'pendingTasks', 'completedTasks', 'months', 'taskCounts', 'pendingTaskCounts', 'completedTaskCounts', 'engineer'));
+        return view('dashboard.engineers.profile', compact('tasks', 'pendingTasks', 'completedTasks', 'months', 'taskCounts', 'pendingTaskCounts', 'completedTaskCounts', 'engineer', 'months', 'taskCounts', 'pendingTaskCounts', 'completedTaskCounts'));
     }
     public function engineerTask($id, $status)
     {

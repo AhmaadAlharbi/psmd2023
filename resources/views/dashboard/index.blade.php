@@ -43,8 +43,7 @@
                         </div>
                         <div class="ms-auto">
                             <h5 class="tx-18 tx-white-8 mb-3 ">عدد المهندسين </h5>
-                            <h2 class="counter mb-0 text-white">35</h2>
-                            {{-- <h2 class="counter mb-0 text-white">{{$engineersCount}}</h2> --}}
+                            <h2 class="counter mb-0 text-white">{{$engineersCount}}</h2>
                         </div>
                     </div>
                 </div>
@@ -107,25 +106,28 @@
 <div class="row">
     <div class="col-12 col-sm-12 col-lg-6 col-xl-3">
         @foreach($pendingTasks as $task)
-        <div class="card card-primary">
+        <div class="card card-danger">
             <div class="card-header pb-0">
                 <h3 class="card-title mb-0 pb-0">Tasks</h3>
             </div>
             <div class="card-body  ">
                 <ul class="list-group   text-center">
-                    <li class="list-group-item bg-danger">Task # 1 </li>
+                    <li class="list-group-item bg-danger-gradient text-white"> Task # {{$task->id}} </li>
                     <li class="list-group-item ">{{$task->created_at}}</li>
-                    <li class="list-group-item "> <strong>Station<br> <span
-                                class="badge bg-danger me-1 my-2">Pending</span></strong> {{$task->station->SSNAME}}
+                    <li class="list-group-item "> <strong>Station<br> </strong> {{$task->station->SSNAME}}
                     </li>
                     <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
                     <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->problem}}
                     </li>
-                    <li class="list-group-item"><strong>Engineer <br></strong>{{$task->engineer->name}}</li>
+                    <a class="" href="{{route('dashboard.engineerProfile',['eng_id'=>$task->eng_id])}}">
+                        <li class="list-group-item text-dark bg-light"><strong>Engineer
+                                <br></strong>{{$task->engineer->name}}
+                        </li>
+                    </a>
                 </ul>
             </div>
             <div class="card-footer">
-                <button class="btn btn-secondary">More information</button>
+                <button class="btn btn-danger">More information</button>
                 <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary">Engineer report</a>
 
             </div>
@@ -137,39 +139,40 @@
     </div>
 
 
-    <div class="col-xl-9 col-md-12 col-lg-6">
+    <div class="col-xl-5 col-md-12 col-lg-6">
         <div class="card border border-dark">
-            <div class="card-header pb-1">
-                <h1 class="card-title mb-2 text-left"> تقارير شهر يناير</h1>
 
-            </div>
             @foreach($completedTasks as $task)
 
-            <div class="card card-primary">
-                <div class="card-header pb-0">
-                    <h3 class="card-title mb-0 pb-0">Tasks</h3>
-                </div>
+            <div class="card card-info">
+
                 <div class="card-body  ">
                     <ul class="list-group   text-center">
-                        <li class="list-group-item bg-dark">Task # 1 </li>
+                        <li class="list-group-item bg-info-gradient text-white">Task # {{$task->id}} </li>
 
-                        <li class="list-group-item "><span class=" badge bg-success me-1 my-2 ">Completed</span>
+                        <li class="list-group-item " style="font-size:18px; font-wieght:bold;">
                             <ins>Station :
-                                {{$task->main_task->station->SSNAME}} </ins><br>{{
-                            \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{
-                            \Carbon\Carbon::parse($task->created_at)->format('H:i') }}
+                                {{$task->main_task->station->SSNAME}} </ins><br>
+                            <hr>
+                            <span style="font-size:16px">{{
+                                \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{
+                                \Carbon\Carbon::parse($task->created_at)->format('H:i') }}</span>
                         </li>
                         <!-- <li class="list-group-item"><strong>Date <br></strong>{{ \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{ \Carbon\Carbon::parse($task->created_at)->format('H:i') }}
                         </li> -->
                         <!-- <li class="list-group-item bg-light"><strong>Main Alarm <br></strong>{{$task->main_task->main_alarm->name}}</li> -->
-                        <li class="list-group-item "><strong>Nature of fault<br></strong> {{$task->main_task->problem}}
+                        <li class="list-group-item " style="font-size:16px;"><strong>Nature of fault<br></strong>
+                            {{$task->main_task->problem}}
                         </li>
-                        <li class="list-group-item bg-light"><strong>Action Take<br></strong> {{$task->action_take}}
+                        <li class="list-group-item bg-light" style="font-size:16px;"><strong>Action Take<br></strong>
+                            {{$task->action_take}}
                         </li>
+                        <a class="" href="{{route('dashboard.engineerProfile',['eng_id'=>$task->eng_id])}}">
+                            <li class="list-group-item text-dark bg-light"><strong>Engineer <br></strong>
+                                {{$task->engineer->user->name}}
+                            </li>
+                        </a>
 
-                        <li class="list-group-item ">Engineer :
-                            {{$task->engineer->user->name}}
-                        </li>
                     </ul>
                 </div>
                 <div class="card-footer">
@@ -185,20 +188,76 @@
         </div>
 
     </div>
-</div>
-<!-- row closed -->
+    <div class="col-xl-4">
+        <div class="card card-dark">
 
-@endsection
-
-@section('scripts')
-<script src="{{asset('assets/js/index.js')}}"></script>
-<!--Internal Counters -->
-<script src="{{asset('assets/plugins/counters/waypoints.min.js')}}"></script>
-<script src="{{asset('assets/plugins/counters/counterup.min.js')}}"></script>
-
-<!--Internal Time Counter -->
-<script src="{{asset('assets/plugins/counters/jquery.missofis-countdown.js')}}"></script>
-<script src="{{asset('assets/plugins/counters/counter.js')}}"></script>
+            <div class="card-body  ">
+                <div class="chartjs-wrapper-demo">
+                    <canvas id="chartBar4"></canvas>
+                </div>
+                </ul>
+            </div>
 
 
-@endsection
+        </div>
+    </div>
+    <!-- row closed -->
+
+    @endsection
+
+    @section('scripts')
+    <script src="{{asset('assets/js/index.js')}}"></script>
+    <!--Internal Counters -->
+    <script src="{{asset('assets/plugins/counters/waypoints.min.js')}}"></script>
+    <script src="{{asset('assets/plugins/counters/counterup.min.js')}}"></script>
+
+    <!--Internal Time Counter -->
+    <script src="{{asset('assets/plugins/counters/jquery.missofis-countdown.js')}}"></script>
+    <script src="{{asset('assets/plugins/counters/counter.js')}}"></script>
+
+    <!--Internal  Chart.bundle js -->
+    <script src="{{asset('assets/plugins/chart.js/Chart.bundle.min.js')}}"></script>
+
+    <!-- Internal Chartjs js -->
+    <script src="{{asset('assets/js/chart.chartjs.js')}}"></script>
+
+    <script>
+        var ctx = document.getElementById('chartBar4').getContext('2d');
+    var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        datasets: [{
+            label: 'Total Tasks',
+            data: [{{ implode(',', $taskCounts) }}],
+            backgroundColor: 'rgba(54, 162, 235)',
+            borderColor: 'rgb(54, 162, 235)',
+            borderWidth: 1
+        },
+        {
+            label: 'Pending Tasks',
+            data: [{{ implode(',', $pendingTaskCounts) }}],
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 1
+        },
+        {
+            label: 'Completed Tasks',
+            data: [{{ implode(',', $completedTaskCounts) }}],
+            backgroundColor:  'rgb(50, 205, 50)',
+            borderColor: 'rgb(34, 139, 34)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+    </script>
+    @endsection
