@@ -62,12 +62,17 @@ class EditTask extends Component
         $this->selectedStation = $this->task->station->SSNAME;
         $this->station_id =  $this->task->station->id;
         $this->stationDetails = Station::where('id',  $this->task->station_id)->first();
+        $this->selectedVoltage = $this->task->voltage_level;
+        $this->work_type = $this->task->work_type;
         $this->main_alarm = $this->task->main_alarm->id;
         $this->selectedEngineer = $this->task->engineer->id;
         $this->area = Engineer::where('user_id', $this->task->eng_id)->value('area');
         $this->engineers = Engineer::where('department_id', 2)->where('area', $this->area)->get();
         $this->problem = $this->task->problem;
         $this->notes = $this->task->notes;
+        $this->voltage = Equip::where('station_id', $this->task->station->id)->distinct()->pluck('voltage_level');
+        $this->selectedEquip = $this->task->equip_number;
+        $this->equip = Equip::where('station_id', $this->task->station->id)->where('voltage_level', $this->selectedVoltage)->get();
     }
 
     public function render()
@@ -110,70 +115,67 @@ class EditTask extends Component
     public function getEquip()
     {
         $this->equip = [];
-        if ($this->selectedVoltage !== '-1') {
-            if (!isset($this->route_id)) {
+
+        $this->station_id = Station::where('SSNAME', $this->selectedStation)->pluck('id')->first();
+        switch ($this->main_alarm) {
+            case ('General Alarm 11KV'):
                 $this->voltage = [];
-            }
-            $this->station_id = Station::where('SSNAME', $this->selectedStation)->pluck('id')->first();
-            switch ($this->main_alarm) {
-                case ('General Alarm 11KV'):
-                    $this->voltage = [];
-                    array_push($this->voltage, "11KV");
-                    $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
+                array_push($this->voltage, "11KV");
+                $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
 
-                    break;
-                case ('Auto reclosure'):
-                case ('Pilot Cable Fault Alarm'):
-                case ('General Alarm 33KV'):
-                    $this->voltage = [];
-                    array_push($this->voltage, "33KV");
-                    $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
+                break;
+            case ('Auto reclosure'):
+            case ('Pilot Cable Fault Alarm'):
+            case ('General Alarm 33KV'):
+                $this->voltage = [];
+                array_push($this->voltage, "33KV");
+                $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
 
-                    break;
-                case ('Dist Prot Main Alaram'):
-                case ('Dist.Prot.Main B Alarm'):
-                case ('Pilot cable Superv.Supply Fail Alarm'):
-                case ('General Alarm 132KV'):
-                    $this->voltage = [];
-                    array_push($this->voltage, "132KV");
-                    $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
+                break;
+            case ('Dist Prot Main Alaram'):
+            case ('Dist.Prot.Main B Alarm'):
+            case ('Pilot cable Superv.Supply Fail Alarm'):
+            case ('General Alarm 132KV'):
+                $this->voltage = [];
+                array_push($this->voltage, "132KV");
+                $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
 
-                    break;
-                case ('DC Supply 1 & 2 Fail Alarm'):
-                    $this->voltage = [];
-                    break;
-                case ('General Alarm 300KV'):
-                    $this->voltage = [];
-                    array_push($this->voltage, "300KV");
-                    $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
+                break;
+            case ('DC Supply 1 & 2 Fail Alarm'):
+                $this->voltage = [];
+                break;
+            case ('General Alarm 300KV'):
+                $this->voltage = [];
+                array_push($this->voltage, "300KV");
+                $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
 
-                    break;
-                case ('B/Bar Protection Fail Alarm'):
-                    $this->voltage = [];
-                    array_push($this->voltage, "400KV", "300KV", "132KV", "33KV");
-                    $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
+                break;
+            case ('B/Bar Protection Fail Alarm'):
+                $this->voltage = [];
+                array_push($this->voltage, "400KV", "300KV", "132KV", "33KV");
+                $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
 
-                    break;
-                case ('Transformer Clearance'):
-                case ('Transformer out of step Alarm'):
-                    $this->voltage = [];
-                    $this->equip = [];
-                    // $this->voltage = Equip::where('station_id', $this->station_id)->where('equip_name', 'LIKE', '%TR%')->distinct()->pluck('equip_name');
-                    // $this->voltage = Equip::selectRaw('substr(equip_name,1,2)')->where('equip_name', 'LIKE', '%TR%')->distinct()->get();
-                    $this->transformers = Equip::where('station_id', $this->station_id)->where('equip_name', 'LIKE', '%TR%')->distinct()->pluck('equip_name');
-                    $this->equip = Equip::where('station_id', $this->station_id)->where('equip_name', $this->selectedVoltage)->distinct()->pluck('equip_number');
-                    break;
-                default:
-                    $this->equip = [];
-                    $this->voltage = Equip::where('station_id', $this->station_id)->distinct()->pluck('voltage_level');
-                    $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
-            }
-
-            // $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
-
-            // $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
-
+                break;
+            case ('Transformer Clearance'):
+            case ('Transformer out of step Alarm'):
+                $this->voltage = [];
+                $this->equip = [];
+                // $this->voltage = Equip::where('station_id', $this->station_id)->where('equip_name', 'LIKE', '%TR%')->distinct()->pluck('equip_name');
+                // $this->voltage = Equip::selectRaw('substr(equip_name,1,2)')->where('equip_name', 'LIKE', '%TR%')->distinct()->get();
+                $this->transformers = Equip::where('station_id', $this->station_id)->where('equip_name', 'LIKE', '%TR%')->distinct()->pluck('equip_name');
+                $this->equip = Equip::where('station_id', $this->station_id)->where('equip_name', $this->selectedVoltage)->distinct()->pluck('equip_number');
+                break;
+            default:
+                $this->equip = [];
+                $this->voltage = Equip::where('station_id', $this->station_id)->distinct()->pluck('voltage_level');
+                $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
         }
+
+        // $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
+
+        // $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
+
+
     }
     public function getEngineer()
     {
@@ -200,8 +202,12 @@ class EditTask extends Component
 
         $this->task->update([
             'station_id' =>  $this->station_id,
+            'voltage_level' => $this->selectedVoltage,
+            'equip_number' => $this->selectedEquip,
             'date' => $this->date,
             'problem' => $this->problem,
+            'work_type' => $this->work_type,
+
             'notes' => $this->notes,
             'status' => 'pending',
             'department_id' => Auth::user()->department_id,

@@ -125,21 +125,26 @@
 
                     <select wire:model="selectedVoltage" wire:change="getEquip" class="form-control mb-3"
                         name="voltage_level" id="">
-                        <option value="-1">Please select Voltage</option>
-                        {{-- <option value="{{$selectedVoltage}}">{{$selectedVoltage}}</option> --}}
+                        <option value="{{$task->selectedVoltage}}" selected>
+                            {{ $selectedVoltage ? $selectedVoltage : '-'}}
+                        </option>
                         @foreach($voltage as $v)
+                        @if($v !== $selectedVoltage)
                         <option value="{{$v}}">{{$v}}</option>
+                        @endif
                         @endforeach
                     </select>
 
                     <div class="col-12">
                         <label for="">Equip </label>
                         <select wire:model="selectedEquip" class="form-control mb-3" name="equip_number">
-                            <option value="-1">Please select Equip</option>
-                            @foreach($equip as $equip)
-                            <option value="{{$equip->equip_number}} - {{$equip->equip_name}}">{{$equip->equip_number}} -
-                                {{$equip->equip_name}}
+
+                            @foreach($equip as $x)
+                            @if($x !== $selectedEquip)
+                            <option value="{{$x->equip_number}} - {{$x->equip_name}}">{{$x->equip_number}} -
+                                {{$x->equip_name}}
                             </option>
+                            @endif
                             @endforeach
 
                         </select>

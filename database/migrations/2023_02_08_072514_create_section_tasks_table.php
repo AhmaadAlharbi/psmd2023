@@ -16,19 +16,20 @@ class CreateSectionTasksTable extends Migration
 
         Schema::create('section_tasks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('main_tasks_id');
-            $table->unsignedBigInteger('department_id');
-            $table->unsignedBigInteger('eng_id');
-            $table->string('action_take');
-            $table->string('status');
-            $table->string('engineer-notes');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('previous_task_id');
-            $table->date('transfer_date_time');
+            $table->unsignedBigInteger('main_tasks_id')->nullable();
+            $table->unsignedBigInteger('department_id')->nullable();
+            $table->unsignedBigInteger('eng_id')->nullable();
+            $table->string('action_take')->nullable();
+            $table->string('status')->nullable();
+            $table->string('engineer-notes')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('previous_task_id')->nullable();
+            $table->date('transfer_date_time')->nullable();
             $table->timestamps();
             $table->foreign('main_tasks_id')
                 ->references('id')
-                ->on('main_tasks');
+                ->on('main_tasks')
+                ->onDelete('cascade');
             $table->foreign('department_id')
                 ->references('id')
                 ->on('departments');

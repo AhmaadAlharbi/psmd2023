@@ -189,8 +189,11 @@ class AddTask extends Component
         $main_task = MainTask::create([
             'refNum' => $refNum,
             'station_id' =>  $this->station_id,
+            'voltage_level' => $this->selectedVoltage,
+            'equip_number' => $this->selectedEquip,
             'date' => $this->date,
             'problem' => $this->problem,
+            'work_type' => $this->work_type,
             'notes' => $this->notes,
             'status' => 'pending',
             'department_id' => 2,

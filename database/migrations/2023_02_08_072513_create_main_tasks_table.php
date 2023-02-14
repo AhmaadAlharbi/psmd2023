@@ -16,19 +16,26 @@ class CreateMainTasksTable extends Migration
 
         Schema::create('main_tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('refNum');
-            $table->unsignedBigInteger('station_id');
-            $table->date('date');
-            $table->string('problem');
-            $table->string('notes');
-            $table->string('status');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('department_id');
-            $table->unsignedBigInteger('main_alarm_id');
+            $table->string('refNum')->nullable();
+            $table->unsignedBigInteger('station_id')->nullable();
+            $table->String('voltage_level')->nullable();
+            $table->String('equip_number')->nullable();
+            $table->unsignedBigInteger('eng_id')->nullable();
+            $table->date('date')->nullable();
+            $table->text('problem')->nullable();
+            $table->String('work_type')->nullable();
+            $table->text('notes')->nullable();
+            $table->string('status')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('department_id')->nullable();
+            $table->unsignedBigInteger('main_alarm_id')->nullable();
             $table->timestamps();
             $table->foreign('station_id')
                 ->references('id')
                 ->on('stations');
+            $table->foreign('eng_id')
+                ->references('id')
+                ->on('users');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
