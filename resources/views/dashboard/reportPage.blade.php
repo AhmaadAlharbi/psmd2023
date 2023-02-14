@@ -309,8 +309,7 @@
                             <div
                                 class="d-block p-3 mb-2 bg-white text-dark d-flex flex-column align-items-end justify-content-end">
                                 <h2><ins>:Equip/Unit Affected</ins></h2>
-                                <h4>{{ $section_task->main_task->equip_number }} -
-                                    {{ $section_task->main_task->equip_name }}
+                                <h4>{{ $section_task->main_task->equip_number }}
                                 </h4>
                                 <h2><ins>Main Alarm</ins></h2>
                                 <h4>{{$section_task->main_task->main_alarm->name}}

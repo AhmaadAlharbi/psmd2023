@@ -144,4 +144,47 @@ class DashBoardController extends Controller
         $section_task = SectionTask::where('main_tasks_id', $id)->first();
         return view('dashboard.edit_task', compact('main_task', 'section_task'));
     }
+    public function archive()
+    {
+        $currentMonth = Carbon::now()->month;
+        $stations = Station::all();
+        $engineers = Engineer::where('department_id', Auth::user()->department_id)->get();
+        $tasks = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->get();
+        return view('dashboard.archive', compact('tasks', 'stations', 'engineers'));
+    }
+    public function searchArchive(Request $request)
+    {
+        return SectionTask::find(1)->main_task->station_id;
+        $stations = Station::all();
+        $engineers = Engineer::where('department_id', Auth::user()->department_id)->get();
+        $query = SectionTask::query();
+        $station = Station::where('SSNAME', $request->station_code)->pluck('id')->first();
+        $engineer = User::where('name', $request->engineer_name)->pluck('id')->first();
+        $stations = Station::all();
+        $engineers =  Engineer::where('department_id', Auth::user()->department_id)->get();
+        if ($request->has('station_code')) {
+            $query->where('station_id', 'like', "%{$station}%")->where('department_id', Auth::user()->department_id)->where('status', 'completed');
+        }
+        if ($request->has('equip')) {
+            $taskQuery = MainTask::where('equip_number', 'like', "%{$request->equip}%")
+                ->select('id');
+
+            $taskDetails = MainTask::whereIn('task_id', $taskQuery)
+                ->where('status', 'completed')
+                ->where('department_id', 2)
+                ->get();
+        }
+        if ($request->has('engineer')) {
+            $query->where('eng_id', 'like', "%{$engineer}%")->where('department_id', Auth::user()->department_id)->where('status', 'completed');;
+        }
+
+        if ($request->has('task_Date')) {
+            $query->whereBetween('date', [$request->task_Date, $request->task_Date2])->where('department_id', Auth::user()->department_id)->where('status', 'completed');
+        }
+
+        return  $tasks = $query->get();
+
+
+        return view('dashboard.archive', compact('tasks', 'stations', 'engineers'));
+    }
 }

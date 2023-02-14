@@ -288,5 +288,6 @@ Route::get('/engineers-list', [EngineersController::class, 'engineersList'])->na
 Route::get('engineer-profile/{eng_id}', [EngineersController::class, 'engineerProfile'])->name('dashboard.engineerProfile');
 Route::get('engineer/{id}/tasks/{status}', [EngineersController::class, 'engineerTask'])->name('dashboard.engineerTask');
 Route::get('/task/edit/{id}', [DashBoardController::class, 'editTask'])->name('dashboard.editTask');
-
+Route::get('/archive', [DashBoardController::class, 'archive'])->name('dashboard.archive');
+Route::get('/archive/search', [DashBoardController::class, 'searchArchive'])->name('dashboard.searchArchive');
 require __DIR__ . '/auth.php';

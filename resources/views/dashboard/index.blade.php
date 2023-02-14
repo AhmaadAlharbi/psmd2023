@@ -158,7 +158,7 @@
 
 
     <div class="col-xl-5 col-md-12 col-lg-6">
-        <div class="card border border-dark">
+        <div class="card border ">
 
             @foreach($completedTasks as $task)
 
@@ -169,8 +169,8 @@
                         <li class="list-group-item bg-info-gradient text-white">Task # {{$task->id}} </li>
 
                         <li class="list-group-item " style="font-size:18px; font-wieght:bold;">
-                            <ins>Station :
-                                {{$task->main_task->station->SSNAME}} </ins><br>
+                            Station :
+                            {{$task->main_task->station->SSNAME}}<br>
                             <hr>
                             <span style="font-size:16px">{{
                                 \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{
@@ -194,9 +194,13 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="{{route('dashboard.reportPage',['id'=>$task->main_task->id])}}" type="button"
+                    {{-- <a href="{{route('dashboard.reportPage',['id'=>$task->main_task->id])}}" type="button"
                         class="btn btn-info  button-icon "><i class="si si-notebook px-2" data-bs-toggle="tooltip"
-                            title="" data-bs-original-title="si-notebook" aria-label="si-notebook"></i>Report</a>
+                            title="" data-bs-original-title="si-notebook" aria-label="si-notebook"></i>Report</a> --}}
+                    <a href="{{route('dashboard.reportPage',['id'=>$task->main_task->id])}}"
+                        class="btn btn-dark btn-lg btn-block"><i class="si si-notebook px-2" data-bs-toggle="tooltip"
+                            title="" data-bs-original-title="si-notebook"
+                            aria-label="si-notebook"></i>Report</a></button>
                     {{-- <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary">Engineer
                         report</a> --}}
 

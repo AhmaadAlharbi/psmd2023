@@ -10,12 +10,14 @@
 <div class="breadcrumb-header justify-content-between">
     <div class="my-auto">
         <div class="d-flex">
-            <h4 class="content-title mb-0 my-auto">Pages</h4><span class="text-muted mt-1 tx-13 ms-2 mb-0">/ Empty</span>
+            <h4 class="content-title mb-0 my-auto">Pages</h4><span class="text-muted mt-1 tx-13 ms-2 mb-0">/
+                Empty</span>
         </div>
     </div>
     <div class="d-flex my-xl-auto right-content">
         <div class="pe-1 mb-xl-0">
-            <button type="button" class="btn btn-info btn-icon me-2 btn-b"><i class="mdi mdi-filter-variant"></i></button>
+            <button type="button" class="btn btn-info btn-icon me-2 btn-b"><i
+                    class="mdi mdi-filter-variant"></i></button>
         </div>
         <div class="pe-1 mb-xl-0">
             <button type="button" class="btn btn-danger btn-icon me-2"><i class="mdi mdi-star"></i></button>
@@ -26,10 +28,12 @@
         <div class="mb-xl-0">
             <div class="btn-group dropdown">
                 <button type="button" class="btn btn-primary">14 Aug 2019</button>
-                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" id="dropdownMenuDate" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                    id="dropdownMenuDate" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuDate" x-placement="bottom-end">
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuDate"
+                    x-placement="bottom-end">
                     <a class="dropdown-item" href="javascript:void(0);">2015</a>
                     <a class="dropdown-item" href="javascript:void(0);">2016</a>
                     <a class="dropdown-item" href="javascript:void(0);">2017</a>
@@ -54,7 +58,8 @@
                         </div><!-- billed-from -->
 
                         <div class="billed-from  ">
-                            <img class="mew-logo rounded " src="https://www.mew.gov.kw/images/logo@2x.png" alt="mew logo">
+                            <img class="mew-logo rounded " src="https://www.mew.gov.kw/images/logo@2x.png"
+                                alt="mew logo">
                         </div><!-- billed-from -->
 
                     </div><!-- invoice-header -->
@@ -72,7 +77,8 @@
                         {{-- --}}
                         <div class="mt-3">
                             <h3 class=" text-center  py-4 px-3 bg-secondary text-light">
-                                {{ $tasks->main_task->station->fullName }}<br>{{ $tasks->main_task->station->control }} -
+                                {{ $tasks->main_task->station->fullName }}<br>{{ $tasks->main_task->station->control }}
+                                -
                                 {{ $tasks->main_task->voltage_level }}
                             </h3>
 
@@ -81,17 +87,21 @@
                             <div class=" row ssname-table  ">
                                 <div class=" d-print-none col-sm-12 col-print-12  col-lg-4  ">
 
-                                    <h1 class="d-none d-sm-flex justify-content-center align-items-center text-center mt-2 display-4 p-5 h-100 bg-dark text-white">
+                                    <h1
+                                        class="d-none d-sm-flex justify-content-center align-items-center text-center mt-2 display-4 p-5 h-100 bg-dark text-white">
                                         {{ $tasks->main_task->station->SSNAME }}
                                     </h1>
-                                    <h1 style="font-size:44px;" class="d-block 
+                                    <h1 style="font-size:44px;"
+                                        class="d-block 
                              justify-content-center align-items-center text-center mt-2  p-5 h-100 bg-dark text-white d-sm-none">
                                         {{ $tasks->main_task->station->SSNAME }}
                                     </h1>
                                 </div>
 
-                                <div class="d-none d-sm-block d-print-none col-sm-12  col-lg-8  col-print-12  table-responsive-sm">
-                                    <table class=" table mt-2 p-5 border border-dark h-100 text-center" id="table1" class="ltr-table ">
+                                <div
+                                    class="d-none d-sm-block d-print-none col-sm-12  col-lg-8  col-print-12  table-responsive-sm">
+                                    <table class=" table mt-2 p-5 border border-dark h-100 text-center" id="table1"
+                                        class="ltr-table ">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col">Company Make</th>
@@ -138,7 +148,8 @@
                                 </div>
                                 {{-- mobile screen table --}}
                                 <div class="d-block d-sm-none col-sm-12">
-                                    <table class=" table mt-2 p-5 border border-dark h-100 text-center" id="table1" class="ltr-table ">
+                                    <table class=" table mt-2 p-5 border border-dark h-100 text-center" id="table1"
+                                        class="ltr-table ">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th scope="col">Company Make</th>
@@ -197,50 +208,63 @@
                                 </div>
 
                             </div>
-
-                            <div class="d-block p-3 mb-2 mt-3 bg-white text-dark   d-flex flex-column align-items-start justify-content-start ">
+                            <div
+                                class="d-block p-3 mb-2 mt-3 bg-white text-dark   d-flex flex-column align-items-start justify-content-start ">
                                 <h2>Main alarm</h2>
                                 <h4>{{ $tasks->main_task->main_alarm->name }}</h4>
                                 <h2>:Unit</h2>
-                                <!-- <h4>{{ $tasks->equip_number }}</h4>
-                                <h5>{{ $tasks->equip_name }}</h5> -->
+                                <h4>{{ $tasks->main_task->equip_number }}
+                                </h4>
                             </div>
 
 
 
                             <div class="d-block border border-dark  mb-2  text-dark ">
-                                <h3 class=" bg-warning-gradient py-2 text-white pl-4 d-flex flex-column align-items-start justify-content-start px-2">Alarm Date <br>
+                                <h3
+                                    class=" bg-warning-gradient py-2 text-white pl-4 d-flex flex-column align-items-start justify-content-start px-2">
+                                    Alarm Date <br>
                                     {{-- $tasks->created_at() --}}
                                 </h3>
-                                <h2 class="px-2 d-flex flex-column align-items-start justify-content-start">Nature of Fault</h2>
-                                <h4 class="px-2 d-flex flex-column align-items-start justify-content-start ">{{ $tasks->main_task->problem }}</h4>
+                                <h2 class="px-2 d-flex flex-column align-items-start justify-content-start">Nature of
+                                    Fault</h2>
+                                <h4 class="px-2 d-flex flex-column align-items-start justify-content-start ">{{
+                                    $tasks->main_task->problem }}</h4>
                             </div>
-                            <button type="button" class="btn d-flex align-items-end justify-content-end btn-lg btn-dark" data-toggle="modal" data-target="#exampleModal">
+                            <button type="button" class="btn d-flex align-items-end justify-content-end btn-lg btn-dark"
+                                data-toggle="modal" data-target="#exampleModal">
                                 Can not complete the task
                             </button>
-                            <form action="{{route('dashboard.submitEngineerReport',['id'=>$tasks->main_task->id])}}" enctype="multipart/form-data" method="post" autocomplete="off">
+                            <form action="{{route('dashboard.submitEngineerReport',['id'=>$tasks->main_task->id])}}"
+                                enctype="multipart/form-data" method="post" autocomplete="off">
                                 @csrf
                                 <div class="d-flex flex-column align-items-start justify-content-start my-2  text-dark">
                                     <h2>Action Take</h2>
 
-                                    <textarea name="action_take" placeholder="Write Your Report here" style=" font-size:20px;" rows="5" cols="100" class="form-control d-flex flex-column align-items-start justify-content-start"></textarea>
+                                    <textarea name="action_take" placeholder="Write Your Report here"
+                                        style=" font-size:20px;" rows="5" cols="100"
+                                        class="form-control d-flex flex-column align-items-start justify-content-start"></textarea>
 
                                 </div>
-                                <div id="attachmentFile" class="e d-flex flex-column align-items-start justify-content-start">
+                                <div id="attachmentFile"
+                                    class="e d-flex flex-column align-items-start justify-content-start">
                                     <div class="col-sm-12 col-md-12">
-                                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
+                                        <input type="file" name="pic[]" class="dropify"
+                                            accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
                                     </div><br>
                                     <div class="col-sm-12 col-md-12">
-                                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
+                                        <input type="file" name="pic[]" class="dropify"
+                                            accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
                                     </div><br>
                                     <div class="col-sm-12 col-md-12">
-                                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
+                                        <input type="file" name="pic[]" class="dropify"
+                                            accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
                                     </div><br>
                                 </div>
                                 {{-- attachments table --}}
                                 <div class="tabcontent table-responsive my-5 " id="attachments">
                                     <h6 class="text-right">المرفقات</h6>
-                                    <table class="table center-aligned-table mb-0  table-hover" style="text-align:center">
+                                    <table class="table center-aligned-table mb-0  table-hover"
+                                        style="text-align:center">
                                         <thead>
                                             <tr class="text-dark">
                                                 <th scope="col">م</th>
