@@ -620,7 +620,7 @@
 
 <script>
     var ctx = document.getElementById('taskMonthlyChart').getContext('2d');
-var myChart = new Chart(ctx, {
+    var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
         labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],

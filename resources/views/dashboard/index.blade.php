@@ -33,7 +33,21 @@
 
 </div>
 <div class="row ">
+    {{-- @if(session('success'))
+    <div class="alert alert-success">
+        <div class="card bd-0 mg-b-20 bg-success">
+            <div class="card-body text-white">
+                <div class="main-error-wrapper">
+                    <i class="si si-check mg-b-20 tx-50"></i>
+                    <h4 class="mg-b-0"> {{ session('success') }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif --}}
+
     <div class="col-xl-3 col-lg-6 col-md-6 ">
+
         <a href="{{route('dashboard.engineersList')}}">
             <div class="card  bg-primary-gradient">
                 <div class="card-body">
@@ -107,9 +121,7 @@
     <div class="col-12 col-sm-12 col-lg-6 col-xl-3">
         @foreach($pendingTasks as $task)
         <div class="card card-danger">
-            <div class="card-header pb-0">
-                <h3 class="card-title mb-0 pb-0">Tasks</h3>
-            </div>
+
             <div class="card-body  ">
                 <ul class="list-group   text-center">
                     <li class="list-group-item bg-danger-gradient text-white"> Task # {{$task->id}} </li>
@@ -127,8 +139,14 @@
                 </ul>
             </div>
             <div class="card-footer">
-                <button class="btn btn-danger">More information</button>
-                <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary">Engineer report</a>
+
+                <button data-bs-toggle="dropdown" class="btn btn-danger btn-block"></i>العمليات <i
+                        class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
+                <div class="dropdown-menu">
+                    <a href="{{route('dashboard.editTask',['id'=>$task->id])}}" class="dropdown-item">تعديل</a>
+                    <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary dropdown-item">Engineer
+                        report</a>
+                </div><!-- dropdown-menu -->
 
             </div>
         </div>
@@ -220,6 +238,10 @@
 
     <!-- Internal Chartjs js -->
     <script src="{{asset('assets/js/chart.chartjs.js')}}"></script>
+    <script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         var ctx = document.getElementById('chartBar4').getContext('2d');
@@ -259,5 +281,16 @@
         }
     }
 });
+    </script>
+    <script>
+        $(document).ready(function() {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: '{{ session('success') }}'
+                });
+            @endif
+        });
     </script>
     @endsection

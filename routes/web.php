@@ -287,5 +287,6 @@ Route::get('/search/engineer-tasks', [DashBoardController::class, 'engineerTasks
 Route::get('/engineers-list', [EngineersController::class, 'engineersList'])->name('dashboard.engineersList');
 Route::get('engineer-profile/{eng_id}', [EngineersController::class, 'engineerProfile'])->name('dashboard.engineerProfile');
 Route::get('engineer/{id}/tasks/{status}', [EngineersController::class, 'engineerTask'])->name('dashboard.engineerTask');
+Route::get('/task/edit/{id}', [DashBoardController::class, 'editTask'])->name('dashboard.editTask');
 
 require __DIR__ . '/auth.php';

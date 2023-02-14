@@ -18,7 +18,9 @@ class DashBoardController extends Controller
 {
     public function index()
     {
-
+        // return $engineers = User::withCount(['mainTasks' => function ($query) {
+        //     $query->where('status', 'completed');
+        // }])->orderBy('main_tasks_count', 'desc')->take(5)->get();
         // return $eng = SectionTask::find(1);
         // return $eng->engineer->user->name;
         $engineersCount = Engineer::where('department_id', Auth::user()->department_id)->count();
@@ -135,5 +137,11 @@ class DashBoardController extends Controller
             ->where('eng_id', $engineer->id)
             ->whereMonth('created_at', $currentMonth)->latest()->latest()->get();
         return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
+    }
+    public function editTask($id)
+    {
+        $main_task = MainTask::findOrFail($id);
+        $section_task = SectionTask::where('main_tasks_id', $id)->first();
+        return view('dashboard.edit_task', compact('main_task', 'section_task'));
     }
 }

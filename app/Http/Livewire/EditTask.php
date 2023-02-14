@@ -16,11 +16,11 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 
-
-class AddTask extends Component
+class EditTask extends Component
 {
-    use WithFileUploads;
     public $task;
+    public $task_id;
+    use WithFileUploads;
     public $stations = [];
     public $selectedStation;
     public $stationDetails;
@@ -37,7 +37,7 @@ class AddTask extends Component
     public $area;
     public $engineerEmail;
     public $duty = false;
-    public $main_alarm;
+    public $main_alarm = 1;
     public $work_type;
     public $date;
     public $problem;
@@ -48,15 +48,31 @@ class AddTask extends Component
     public $selectedEquipTr;
     public $route_id = 2;
     protected $listeners = ['callEngineer' => 'getEngineer'];
+
+    public function __construct($task_id)
+    {
+        $this->task_id = $task_id;
+    }
+
     public function mount()
     {
         $this->stations = Station::all();
         $this->main_alarms = MainAlarm::where('department_id', 2)->get();
-        return view('livewire.add-task');
+        $this->task = MainTask::find($this->task_id);
+        $this->selectedStation = $this->task->station->SSNAME;
+        $this->station_id =  $this->task->station->id;
+        $this->stationDetails = Station::where('id',  $this->task->station_id)->first();
+        $this->main_alarm = $this->task->main_alarm->id;
+        $this->selectedEngineer = $this->task->engineer->id;
+        $this->area = Engineer::where('user_id', $this->task->eng_id)->value('area');
+        $this->engineers = Engineer::where('department_id', 2)->where('area', $this->area)->get();
+        $this->problem = $this->task->problem;
+        $this->notes = $this->task->notes;
     }
-    public function render(Request $request)
+
+    public function render()
     {
-        return view('livewire.add-task');
+        return view('livewire.edit-task');
     }
     public function getStationInfo()
     {
@@ -64,7 +80,7 @@ class AddTask extends Component
         $this->voltage = [];
         $this->transformers = [];
         $this->equip = [];
-        $this->area = 0;
+        $this->area = 1;
         $this->main_alarm = '';
         $this->engineerEmail = '';
         $this->selectedVoltage = '';
@@ -179,40 +195,34 @@ class AddTask extends Component
     {
         $this->engineerEmail = User::where('id', $this->selectedEngineer)->pluck('email')->first();
     }
-    public function submit()
+    public function update()
     {
-        $this->date =  Carbon::now();
-        $year = (new DateTime)->format("Y");
-        $month = (new DateTime)->format("m");
-        $day = (new DateTime)->format("d");
-        $refNum = $year . "/" . $month . "/" . $day . '-' . rand(1, 10000);
-        $main_task = MainTask::create([
-            'refNum' => $refNum,
+
+        $this->task->update([
             'station_id' =>  $this->station_id,
             'date' => $this->date,
             'problem' => $this->problem,
             'notes' => $this->notes,
             'status' => 'pending',
-            'department_id' => 2,
+            'department_id' => Auth::user()->department_id,
             'main_alarm_id' => $this->main_alarm,
             'user_id' => Auth::user()->id,
             'eng_id' => $this->selectedEngineer,
         ]);
-        $main_task_id = MainTask::latest()->first()->id;
+        $main_task_id = $this->task->id;
         $section_task = SectionTask::create([
             'main_tasks_id' => $main_task_id,
-            'department_id' => 2,
+            'department_id' => Auth::user()->department_id,
             'eng_id' => $this->selectedEngineer,
             'action_take' => null,
-            'status' => 'pending',
+            'status' => 'update',
             'engineer-notes' => null,
-            'user_id' => 1,
+            'user_id' => Auth::user()->id,
             'previous_task_id' => null,
             'transfer_date_time' => null,
-
-
         ]);
-        session()->flash('success', 'تم الاضافة بنجاح');
+
+        session()->flash('success', 'تم التعديل بنجاح');
 
         return redirect("/home");
     }
