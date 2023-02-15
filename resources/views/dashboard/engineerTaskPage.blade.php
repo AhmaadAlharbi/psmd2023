@@ -212,7 +212,7 @@
                                 class="d-block p-3 mb-2 mt-3 bg-white text-dark   d-flex flex-column align-items-start justify-content-start ">
                                 <h2>Main alarm</h2>
                                 <h4>{{ $tasks->main_task->main_alarm->name }}</h4>
-                                <h2>:Unit</h2>
+                                <h2>Unit</h2>
                                 <h4>{{ $tasks->main_task->equip_number }}
                                 </h4>
                             </div>

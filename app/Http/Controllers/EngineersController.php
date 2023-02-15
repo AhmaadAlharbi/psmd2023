@@ -59,25 +59,42 @@ class EngineersController extends Controller
                     ->where('status', 'pending')
                     ->where('eng_id', $id)
                     ->latest()
-                    ->get();
+                    ->paginate(6);
                 break;
             case 'completed':
                 $tasks = MainTask::where('department_id', Auth::user()->department_id)
                     ->where('status', 'completed')
                     ->where('eng_id', $id)
                     ->latest()
-                    ->get();
+                    ->paginate(6);
                 break;
 
             case 'all':
                 $tasks = MainTask::where('department_id', Auth::user()->department_id)
                     ->where('eng_id', $id)
                     ->latest()
-                    ->get();
+                    ->paginate(6);
                 break;
             default:
                 abort(404);
         }
         return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
+    }
+    public function edit($id)
+    {
+        $engineer = Engineer::findOrFail($id);
+        return view('dashboard.engineers.edit', compact('engineer'));
+    }
+    public function update(Request $request, $id)
+    {
+        $engineer = Engineer::findOrFail($id);
+        $area = $request->area;
+        $shift = $request->shift;
+        $engineer->update([
+            'area' => $area,
+            'shift' => $shift
+        ]);
+        session()->flash('success', 'تم التعديل بنجاح');
+        return redirect()->route('dashboard.engineersList');
     }
 }

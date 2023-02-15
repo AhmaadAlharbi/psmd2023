@@ -10,7 +10,7 @@ class Station extends Model
     use HasFactory;
     protected $table = 'stations';
     protected $guarded = [];
-    public function main_tasks()
+    public function main_task()
     {
         return $this->hasMany(MainTask::class);
     }

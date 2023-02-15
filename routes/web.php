@@ -290,4 +290,6 @@ Route::get('engineer/{id}/tasks/{status}', [EngineersController::class, 'enginee
 Route::get('/task/edit/{id}', [DashBoardController::class, 'editTask'])->name('dashboard.editTask');
 Route::get('/archive', [DashBoardController::class, 'archive'])->name('dashboard.archive');
 Route::get('/archive/search', [DashBoardController::class, 'searchArchive'])->name('dashboard.searchArchive');
+Route::get('/engineer/{id}/edit', [EngineersController::class, 'edit'])->name('engineer.edit');
+Route::post('/engineer/update/{id}', [EngineersController::class, 'update'])->name('engineer.update');
 require __DIR__ . '/auth.php';

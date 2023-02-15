@@ -125,7 +125,7 @@
         </div>
     </div>
     @foreach($tasks as $task)
-    <div class="col-12 col-sm-12 col-lg-6 col-xl-3">
+    <div class="col-12 col-sm-12 col-lg-6 col-xl-4">
         <div class="card {{$task->status =='pending'  ? 'card-danger' : 'card-success'}}">
 
             <div class="card-body  ">
@@ -166,6 +166,7 @@
     </div>
 
     @endforeach
+    {{ $tasks->links() }}
 
 
 </div>

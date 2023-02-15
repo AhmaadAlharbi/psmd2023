@@ -18,11 +18,11 @@ class DashBoardController extends Controller
 {
     public function index()
     {
-        // return $engineers = User::withCount(['mainTasks' => function ($query) {
-        //     $query->where('status', 'completed');
-        // }])->orderBy('main_tasks_count', 'desc')->take(5)->get();
-        // return $eng = SectionTask::find(1);
-        // return $eng->engineer->user->name;
+
+        // return  $control = MainTask::find(1)->station->control;
+        // return  $station = Station::find(1)->main_task;
+
+
         $engineersCount = Engineer::where('department_id', Auth::user()->department_id)->count();
         $sectionTasksCount = MainTask::where('department_id', Auth::user()->department_id)->count();
         $pendingTasksCount = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->count();
@@ -103,19 +103,21 @@ class DashBoardController extends Controller
             case 'pending':
                 $tasks = MainTask::where('department_id', Auth::user()->department_id)
                     ->where('status', 'pending')
-                    ->whereMonth('created_at', $currentMonth)->latest()->get();
+                    ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
                 break;
             case 'completed':
 
                 $tasks = MainTask::where('department_id', Auth::user()->department_id)
                     ->where('status', 'completed')
-                    ->whereMonth('created_at', $currentMonth)->latest()->get();
+                    ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
                 break;
 
             case 'all':
                 $tasks = MainTask::where('department_id', Auth::user()->department_id)
-                    ->whereMonth('created_at', $currentMonth)->latest()->get();
+                    ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
                 break;
+            default:
+                abort(403);
         }
         return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
     }
@@ -127,7 +129,7 @@ class DashBoardController extends Controller
         $station = Station::where('SSNAME', $request->station)->first();
         $tasks = MainTask::where('department_id', Auth::user()->department_id)
             ->where('station_id', $station->id)
-            ->whereMonth('created_at', $currentMonth)->latest()->get();
+            ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
         return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
     }
     public function engineerTasks(Request $request)
@@ -138,7 +140,7 @@ class DashBoardController extends Controller
         $engineer = User::where('name', $request->engineer)->first();;
         $tasks = MainTask::where('department_id', Auth::user()->department_id)
             ->where('eng_id', $engineer->id)
-            ->whereMonth('created_at', $currentMonth)->latest()->latest()->get();
+            ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
         return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
     }
     public function editTask($id)
@@ -152,7 +154,7 @@ class DashBoardController extends Controller
         $currentMonth = Carbon::now()->month;
         $stations = Station::all();
         $engineers = Engineer::where('department_id', Auth::user()->department_id)->get();
-        $tasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->get();
+        $tasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->paginate(6);
         return view('dashboard.archive', compact('tasks', 'stations', 'engineers'));
     }
     public function searchArchive(Request $request)
@@ -185,7 +187,7 @@ class DashBoardController extends Controller
 
             $query->whereBetween('date', [$startDate, $endDate]);
         }
-        $tasks = $query->get();
+        $tasks = $query->paginate(6);
         return view('dashboard.archive', compact('tasks', 'stations', 'engineers'));
     }
 }

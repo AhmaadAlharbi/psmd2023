@@ -48,56 +48,56 @@
 <!--Row-->
 <div class="row row-sm">
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 grid-margin">
+
+
         <div class="card">
-            <div class="card-header pb-0">
-                <div class="d-flex justify-content-between">
-                    <h4 class="card-title mg-b-0">USERS TABLE</h4>
-                    <i class="mdi mdi-dots-horizontal text-gray"></i>
-                </div>
-                <p class="tx-12 tx-gray-500 mb-2">Example of Valex Simple Table. <a href="">Learn
-                        more</a></p>
+            <div class="card-header">
+                <h3 class="card-title">جدول المهندسين</h3>
             </div>
             <div class="card-body">
-                <div class="table-responsive border-top userlist-table">
-                    <table class="table card-table table-striped table-vcenter text-nowrap mb-0">
+                <div class="table-responsive">
+                    <table class="table border-top-0 table-bordered text-nowrap border-bottom"
+                        id="responsive-datatable">
                         <thead>
                             <tr>
-                                <th class="wd-lg-8p"><span>User</span></th>
-                                <th class="wd-lg-20p"><span></span></th>
-                                <th class="wd-lg-20p"><span>Created</span></th>
+                                <th class="wd-lg-8p"><span>#</span></th>
+                                <th class="wd-lg-20p"><span>الاسم</span></th>
+                                <th class="wd-lg-20p"><span>المنطقة</span></th>
+                                <th class="wd-lg-20p"><span>الفترة</span></th>
                                 <th class="wd-lg-20p"><span>Status</span></th>
-                                <th class="wd-lg-20p"><span>Email</span></th>
                                 <th class="wd-lg-20p">Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                            $i=0
+                            @endphp
                             @foreach($engineers as $engineer)
                             <tr>
                                 <td>
-                                    <img alt="avatar" class="rounded-circle avatar-md me-2"
-                                        src="{{asset('assets/img/faces/1.jpg')}}">
+                                    {{++$i}}
                                 </td>
                                 <td> <a
                                         href="{{route('dashboard.engineerProfile',['eng_id'=>$engineer->user_id])}}">{{$engineer->user->name}}</a>
                                 </td>
                                 <td>
-                                    08/06/2021
+                                    {{$engineer->area == 1 ? ' المنطقة الشمالية' : 'المنطقة الجنوبية'}}
+                                </td>
+                                <td>
+                                    {{$engineer->shift == 0 ? ' صباحاً ' : 'مساءً'}}
+
                                 </td>
                                 <td class="text-center">
-                                    <span class="label text-muted d-flex">
-                                        <div class="dot-label bg-gray-300 me-1"></div>inactive
+                                    <span class="label text-success d-flex ">
+                                        <div class="dot-label bg-success mx-3"></div><span class="mt-1">active</span>
                                     </span>
                                 </td>
+
                                 <td>
-                                    <a href="javascript:void(0);">mila@kunis.com</a>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0);" class="btn btn-sm btn-primary"
-                                        data-bs-toggle="tooltip" title="" data-bs-original-title="search">
-                                        <i class="las la-search"></i>
-                                    </a>
-                                    <a href="javascript:void(0);" class="btn btn-sm btn-info btn-b"
-                                        data-bs-toggle="tooltip" title="" data-bs-original-title="edit">
+
+                                    <a href="{{route('engineer.edit',['id'=>$engineer->id])}} "
+                                        class="btn btn-sm btn-info btn-b" data-bs-toggle="tooltip" title=""
+                                        data-bs-original-title="edit">
                                         <i class="las la-pen"></i>
                                     </a>
                                     <a href="javascript:void(0);" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
@@ -107,23 +107,9 @@
                                 </td>
                             </tr>
                             @endforeach
-
                         </tbody>
                     </table>
                 </div>
-                <ul class="pagination mt-4 mb-0 float-end flex-wrap">
-                    <li class="page-item page-prev disabled">
-                        <a class="page-link" href="javascript:void(0);" tabindex="-1">Prev</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
-                    <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                    <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-                    <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
-                    <li class="page-item"><a class="page-link" href="javascript:void(0);">5</a></li>
-                    <li class="page-item page-next">
-                        <a class="page-link" href="javascript:void(0);">Next</a>
-                    </li>
-                </ul>
             </div>
         </div>
     </div><!-- COL END -->
@@ -133,7 +119,35 @@
 @endsection
 
 @section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 
+<!-- DATA TABLE JS-->
+<script src="{{asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/js/dataTables.bootstrap5.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/js/buttons.bootstrap5.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/js/jszip.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/pdfmake/pdfmake.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/pdfmake/vfs_fonts.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/js/buttons.colVis.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datatable/responsive.bootstrap5.min.js')}}"></script>
 
+<!--Internal  Datatable js -->
+<script src="{{asset('assets/js/table-data.js')}}"></script>
+<script>
+    $(document).ready(function() {
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ session('success') }}'
+            });
+        @endif
+    });
+</script>
 @endsection
