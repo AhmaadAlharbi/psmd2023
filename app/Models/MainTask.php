@@ -15,6 +15,10 @@ class MainTask extends Model
     {
         return $this->hasMany(SectionTask::class, 'main_tasks_id');
     }
+    public function task_file()
+    {
+        return $this->hasMany(TaskAttachment::class, 'main_tasks_id');
+    }
 
     public function station()
     {

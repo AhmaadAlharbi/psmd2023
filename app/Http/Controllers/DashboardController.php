@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 use App\Models\User;
 use App\Models\Station;
 use App\Models\MainAlarm;
 use App\Models\MainTask;
+use App\Models\TaskAttachment;
 use App\Models\SectionTask;
 use App\Models\Department;
 use App\Models\Engineer;
@@ -55,10 +55,11 @@ class DashBoardController extends Controller
     public function engineerTaskPage($id)
     {
         $tasks = SectionTask::where('main_tasks_id', $id)->first();
+        $files = TaskAttachment::where('main_tasks_id', $id)->get();
         if (!$tasks) {
             abort(404);
         }
-        return view('dashboard.engineerTaskPage', compact('tasks'));
+        return view('dashboard.engineerTaskPage', compact('tasks', 'files'));
     }
     public function submitEngineerReport(Request $request, $id)
     {
@@ -86,10 +87,12 @@ class DashBoardController extends Controller
             ->where('department_id', Auth::user()->department_id)
             ->where('status', 'completed')
             ->first();
+        $files = TaskAttachment::where('main_tasks_id', $id)->get();
+
         if (!$section_task) {
             abort(404);
         }
-        return view('dashboard.reportPage', compact('section_task'));
+        return view('dashboard.reportPage', compact('files', 'section_task'));
     }
     public function showTasks($status)
     {

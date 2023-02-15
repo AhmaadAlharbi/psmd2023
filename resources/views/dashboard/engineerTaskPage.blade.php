@@ -261,27 +261,48 @@
                                     </div><br>
                                 </div>
                                 {{-- attachments table --}}
-                                <div class="tabcontent table-responsive my-5 " id="attachments">
-                                    <h6 class="text-right">المرفقات</h6>
-                                    <table class="table center-aligned-table mb-0  table-hover"
-                                        style="text-align:center">
+                                <div class=" d-flex flex-column align-items-start justify-content-start">
+                                    <table class="table table-striped mg-b-0 text-md-nowrap">
                                         <thead>
-                                            <tr class="text-dark">
+                                            <tr>
                                                 <th scope="col">م</th>
-                                                <th scope="col">اسم الملف</th>
-                                                <th scope="col">تاريخ الاضافة</th>
-                                                <th scope="col"> بواسطة</th>
-                                                <th scope="col">العمليات</th>
+                                                <th scope="col">Department</th>
+                                                <th scope="col">File</th>
+                                                <th scope="col"> Sent by</th>
+                                                <th scope="col">View</th>
+                                                <th scope="col">Download</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php $i = 0; ?>
+                                            @foreach($files as $file )
+                                            <tr>
+                                                <td>{{ ++$i }}</td>
+                                                <td>{{ $file->department->name }}</td>
+                                                <td>{{ $file->file }}</td>
+                                                <td>
+
+                                                    {{ $file->user->name }}
+
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-primary"
+                                                        href="{{ asset('storage/attachments/' . $file->main_tasks_id . '/' . $file->file) }}"
+                                                        target="_blank">view</a>
+
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-outline-primary"
+                                                        href="{{ asset('storage/attachments/' . $file->main_tasks_id . '/' . $file->file) }}"
+                                                        download="{{ $file->file }}">Download</a>
+                                                </td>
+                                                @endforeach
 
                                         </tbody>
-
                                     </table>
-
                                 </div>
+
+
                                 <button class="btn btn-lg btn-success-gradient btn-block">Submit</button>
                             </form>
 

@@ -360,7 +360,47 @@
 
                     <hr class=" mg-b-40">
 
-                    {{-- common Reports --}}
+                    {{-- attachments table --}}
+                    <div class=" d-flex flex-column align-items-start justify-content-start">
+                        <table class="table table-striped mg-b-0 text-md-nowrap">
+                            <thead>
+                                <tr>
+                                    <th scope="col">م</th>
+                                    <th scope="col">Department</th>
+                                    <th scope="col">File</th>
+                                    <th scope="col"> Sent by</th>
+                                    <th scope="col">View</th>
+                                    <th scope="col">Download</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $i = 0; ?>
+                                @foreach($files as $file )
+                                <tr>
+                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $file->department->name }}</td>
+                                    <td>{{ $file->file }}</td>
+                                    <td>
+
+                                        {{ $file->user->name }}
+
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary"
+                                            href="{{ asset('storage/attachments/' . $file->main_tasks_id . '/' . $file->file) }}"
+                                            target="_blank">view</a>
+
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline-primary"
+                                            href="{{ asset('storage/attachments/' . $file->main_tasks_id . '/' . $file->file) }}"
+                                            download="{{ $file->file }}">Download</a>
+                                    </td>
+                                    @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
 
 
                     <button class="btn btn-danger  float-left mt-3 mr-2" id="print_Button" onclick="printDiv()"> <i

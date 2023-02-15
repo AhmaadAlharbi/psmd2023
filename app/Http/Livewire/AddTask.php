@@ -8,12 +8,15 @@ use App\Models\Station;
 use App\Models\Equip;
 use App\Models\MainAlarm;
 use App\Models\MainTask;
+use App\Models\TaskAttachment;
 use App\Models\SectionTask;
 use App\Models\Engineer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Support\Facades\Auth;
 
 
@@ -213,9 +216,19 @@ class AddTask extends Component
             'user_id' => 1,
             'previous_task_id' => null,
             'transfer_date_time' => null,
-
-
         ]);
+        foreach ($this->photos as $photo) {
+            // $photo->store('photos');
+            $name = $photo->getClientOriginalName();
+            // $photo->storeAs('public', $name);
+            $photo->storeAs('attachments/' . $main_task_id, $name, 'public');
+            $attachments = new TaskAttachment();
+            $attachments->main_tasks_id = $main_task_id;
+            $attachments->department_id = Auth::user()->department_id;
+            $attachments->file = $name;
+            $attachments->user_id = Auth::user()->id;
+            $attachments->save();
+        }
         session()->flash('success', 'تم الاضافة بنجاح');
 
         return redirect("/home");
