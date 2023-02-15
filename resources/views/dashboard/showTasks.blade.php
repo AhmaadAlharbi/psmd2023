@@ -140,6 +140,8 @@
                         <span style="font-size:22px; font-wieght:bold;">{{$task->station->SSNAME}}</span>
                     </li>
                     <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
+                    <li class="list-group-item"><strong>Equip <br></strong>{{$task->equip_number}}</li>
+
                     <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->problem}}
                     </li>
                     <a class="" href="{{route('dashboard.engineerProfile',['eng_id'=>$task->eng_id])}}">

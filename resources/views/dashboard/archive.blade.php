@@ -77,6 +77,7 @@
                                         <input list="engineers" type="search" class="col-8 mx-sm-3 mb-2 form-control"
                                             name="engineer">
                                         <datalist id="engineers">
+
                                             @foreach ($engineers as $engineer)
                                             <option value="{{ $engineer->user->name }}">
                                                 @endforeach
@@ -115,65 +116,63 @@
             </div>
         </div>
     </div>
-</div>
-</div>
-<div class="example">
-    <div class="p-3 bg-light text-dark border">
-        <nav class="nav main-nav flex-column flex-md-row">
-            <a class="nav-link {{ Route::is('dashboard.showTasks') && request()->status == 'all' ? 'active' : '' }}"
-                href="{{route('dashboard.showTasks',['status'=>'all'])}}">كل المهمات</a>
-            <a class="nav-link {{ Route::is('dashboard.showTasks') && request()->status == 'pending' ? 'active' : '' }}"
-                href="{{route('dashboard.showTasks',['status'=>'pending'])}}">المهمات الغير
-                المنجزة</a>
-            <a class="nav-link {{ Route::is('dashboard.showTasks') && request()->status == 'completed' ? 'active' : '' }}"
-                href="{{route('dashboard.showTasks',['status'=>'completed'])}}">المهمات المنجزة</a>
-        </nav>
+    <div class="example">
+        <div class="p-3 bg-light text-dark border">
+            <nav class="nav main-nav flex-column flex-md-row">
+                <a class="nav-link {{ Route::is('dashboard.showTasks') && request()->status == 'all' ? 'active' : '' }}"
+                    href="{{route('dashboard.showTasks',['status'=>'all'])}}">كل المهمات</a>
+                <a class="nav-link {{ Route::is('dashboard.showTasks') && request()->status == 'pending' ? 'active' : '' }}"
+                    href="{{route('dashboard.showTasks',['status'=>'pending'])}}">المهمات الغير
+                    المنجزة</a>
+                <a class="nav-link {{ Route::is('dashboard.showTasks') && request()->status == 'completed' ? 'active' : '' }}"
+                    href="{{route('dashboard.showTasks',['status'=>'completed'])}}">المهمات المنجزة</a>
+            </nav>
+        </div>
     </div>
-</div>
-@foreach($tasks as $task)
-<div class="col-12 col-sm-12 col-lg-6 col-xl-3">
-    <div class="card {{$task->status =='pending'  ? 'card-danger' : 'card-success'}}">
+    @foreach($tasks as $task)
+    <div class="col-12 col-sm-12 col-lg-6 col-xl-3">
+        <div class="card {{$task->status =='pending'  ? 'card-danger' : 'card-success'}}">
 
-        <div class="card-body  ">
-            <ul class="list-group   text-center">
+            <div class="card-body  ">
+                <ul class="list-group   text-center">
 
-                <li class="list-group-item {{ ($task->status == 'pending') ? 'bg-danger': 'bg-success' }}">Task #
-                    {{$task->id}}
-                </li>
-                <li class="list-group-item ">{{$task->created_at}}</li>
-                <li class="list-group-item "> <strong>Station<br>
-                    </strong>
-                    <span style="font-size:22px; font-wieght:bold;">{{$task->station->SSNAME}}</span>
-                </li>
-                <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
-                <li class="list-group-item"><strong>Equip <br></strong>{{$task->equip_number}}</li>
-                <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->problem}}
-                </li>
-                <a class="" href="{{route('dashboard.engineerProfile',['eng_id'=>$task->eng_id])}}">
-                    <li class="list-group-item bg-light text-dark"><strong>Engineer <br></strong>
-                        {{$task->engineer->name}}
+                    <li class="list-group-item {{ ($task->status == 'pending') ? 'bg-danger': 'bg-success' }}">Task #
+                        {{$task->id}}
                     </li>
-                </a>
-            </ul>
-        </div>
-        <div class="card-footer">
-            <button class="btn {{$task->status =='pending'  ? 'btn-danger' : 'btn-success'}}">More
-                information</button>
-            @if($task->status === 'completed')
-            <a href="{{route('dashboard.reportPage',['id'=>$task->id])}}" type="button"
-                class="btn btn-outline-success  button-icon "><i class="si si-notebook px-2" data-bs-toggle="tooltip"
-                    title="" data-bs-original-title="si-notebook" aria-label="si-notebook"></i>Report</a>
-            @endif
+                    <li class="list-group-item ">{{$task->created_at}}</li>
+                    <li class="list-group-item "> <strong>Station<br>
+                        </strong>
+                        <span style="font-size:22px; font-wieght:bold;">{{$task->main_task->station->SSNAME}}</span>
+                    </li>
+                    <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_task->main_alarm->name}}
+                    </li>
+                    <li class="list-group-item"><strong>Equip <br></strong>{{$task->main_task->equip_number}}</li>
+                    <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->main_task->problem}}
+                    </li>
+                    <a class="" href="{{route('dashboard.engineerProfile',['eng_id'=>$task->eng_id])}}">
+                        <li class="list-group-item bg-light text-dark"><strong>Engineer <br></strong>
+                            {{$task->engineer->name}}
+                        </li>
+                    </a>
+                </ul>
+            </div>
+            <div class="card-footer">
+                <button class="btn {{$task->status =='pending'  ? 'btn-danger' : 'btn-success'}}">More
+                    information</button>
+                @if($task->status === 'completed')
+                <a href="{{route('dashboard.reportPage',['id'=>$task->main_task->id])}}" type="button"
+                    class="btn btn-outline-success  button-icon "><i class="si si-notebook px-2"
+                        data-bs-toggle="tooltip" title="" data-bs-original-title="si-notebook"
+                        aria-label="si-notebook"></i>Report</a>
+                @endif
 
+            </div>
         </div>
     </div>
+
+    @endforeach
 </div>
 
-@endforeach
-
-
-</div>
-<!-- row closed -->
 
 @endsection
 

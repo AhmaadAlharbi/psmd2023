@@ -14,7 +14,7 @@
         <label for="">Voltage</label>
         <select name="voltage" wire:model="selectedVoltage" wire:change="getEquip"
             class="col-8 mx-sm-3 mb-2 form-control" name="equip_name" id="">
-            <option value="-1">Please select Voltage</option>
+            <option>Please select Voltage</option>
             @foreach($voltage as $v)
             <option value="{{$v}}">{{$v}}</option>
             @endforeach
@@ -25,7 +25,7 @@
         <label for="">Equip </label>
 
         <select name="equip" wire:model="selectedEquip" class="col-8 mx-sm-3 mb-2 form-control" name="" id="">
-            <option value="-1">Please select Equip</option>
+            <option>Please select Equip</option>
 
             @foreach($equip as $equip)
             <option value="{{$equip->equip_number}} - {{$equip->equip_name}}">{{$equip->equip_number}} -

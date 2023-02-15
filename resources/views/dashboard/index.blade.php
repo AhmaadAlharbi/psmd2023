@@ -99,19 +99,22 @@
         </a>
     </div>
     <div class="col-xl-3 col-lg-6 col-md-6">
-        <div class="card  bg-warning-gradient">
-            <div class="card-body">
-                <div class="counter-status d-flex md-mb-0">
-                    <div class="counter-icon text-success">
-                        <i class="icon icon-emotsmile"></i>
-                    </div>
-                    <div class="ms-auto">
-                        <h5 class="tx-18 tx-white-8 mb-3">ارشيف التقارير</h5>
-                        <h2 class="counter mb-0 text-white">{{$completedTasksCount}}</h2>
+        <a href="{{route('dashboard.archive')}}">
+
+            <div class="card  bg-warning-gradient">
+                <div class="card-body">
+                    <div class="counter-status d-flex md-mb-0">
+                        <div class="counter-icon text-success">
+                            <i class="icon icon-emotsmile"></i>
+                        </div>
+                        <div class="ms-auto">
+                            <h5 class="tx-18 tx-white-8 mb-3">ارشيف التقارير</h5>
+                            <h2 class="counter mb-0 text-white">{{$completedTasksCount}}</h2>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 </div>
 <!-- breadcrumb -->
@@ -129,6 +132,8 @@
                     <li class="list-group-item "> <strong>Station<br> </strong> {{$task->station->SSNAME}}
                     </li>
                     <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
+                    <li class="list-group-item"><strong>Equip <br></strong>{{$task->equip_number}}</li>
+
                     <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->problem}}
                     </li>
                     <a class="" href="{{route('dashboard.engineerProfile',['eng_id'=>$task->eng_id])}}">
@@ -187,7 +192,7 @@
                         </li>
                         <a class="" href="{{route('dashboard.engineerProfile',['eng_id'=>$task->eng_id])}}">
                             <li class="list-group-item text-dark bg-light"><strong>Engineer <br></strong>
-                                {{$task->engineer->user->name}}
+                                {{$task->engineer->name}}
                             </li>
                         </a>
 

@@ -22,7 +22,7 @@ class SectionTask extends Model
 
     public function engineer()
     {
-        return $this->belongsTo(Engineer::class, 'eng_id');
+        return $this->belongsTo(User::class, 'eng_id');
         //goes to section task table and see the value of eng_id
     }
 }

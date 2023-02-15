@@ -349,11 +349,11 @@
                                 <h2>Engineer</h2>
                             </div>
                             <h4 class="  px-4 d-flex flex-column align-items-end justify-content-end">{{
-                                $section_task->engineer->user->name }}<br>
+                                $section_task->engineer->name }}<br>
 
                             </h4>
                             <p class="px-4 lead d-flex flex-column align-items-end justify-content-end">{{
-                                $section_task->engineer->user->email }}</p>
+                                $section_task->engineer->email }}</p>
                         </div>
                     </div>
 
