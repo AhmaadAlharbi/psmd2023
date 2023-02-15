@@ -199,6 +199,7 @@ class EditTask extends Component
     }
     public function update()
     {
+        $date = Carbon::now();
 
         $this->task->update([
             'station_id' =>  $this->station_id,
@@ -220,6 +221,7 @@ class EditTask extends Component
             'main_tasks_id' => $main_task_id,
             'department_id' => Auth::user()->department_id,
             'eng_id' => $this->selectedEngineer,
+            'date' => $date,
             'action_take' => null,
             'status' => 'update',
             'engineer-notes' => null,

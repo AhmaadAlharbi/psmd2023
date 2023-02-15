@@ -206,6 +206,7 @@ class AddTask extends Component
             'main_tasks_id' => $main_task_id,
             'department_id' => 2,
             'eng_id' => $this->selectedEngineer,
+            'date' => $this->date,
             'action_take' => null,
             'status' => 'pending',
             'engineer-notes' => null,

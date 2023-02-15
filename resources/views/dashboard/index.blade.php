@@ -157,7 +157,26 @@
         </div>
 
         @endforeach
+        @empty($pendingTasksCount)
+        <div class="card card-danger">
 
+            <div class="card-body  ">
+                <ul class="list-group   text-center">
+                    <li class="list-group-item bg-danger-gradient text-white"> Task </li>
+
+                    <li class="list-group-item"><strong>Nothing to view<br></strong>
+                        <a href="add-task" class="btn btn-outline-danger mt-3">Add a new task</a>
+
+                    </li>
+
+
+                </ul>
+            </div>
+
+        </div>
+        @endempty
+
+        {{ $pendingTasks->links() }}
 
     </div>
 
@@ -187,6 +206,8 @@
                         <li class="list-group-item " style="font-size:16px;"><strong>Nature of fault<br></strong>
                             {{$task->main_task->problem}}
                         </li>
+                        <li class="list-group-item"><strong>Equip <br></strong>{{$task->main_task->equip_number}}</li>
+
                         <li class="list-group-item bg-light" style="font-size:16px;"><strong>Action Take<br></strong>
                             {{$task->action_take}}
                         </li>
@@ -213,6 +234,8 @@
             </div>
             @endforeach
         </div>
+        {{ $completedTasks->links() }}
+
 
     </div>
     <div class="col-xl-4">
@@ -302,4 +325,5 @@
             @endif
         });
     </script>
+
     @endsection
