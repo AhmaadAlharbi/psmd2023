@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Station;
 use App\Models\MainAlarm;
+use App\Models\Role;
 use App\Models\MainTask;
 use App\Models\TaskAttachment;
 use App\Models\SectionTask;
@@ -16,13 +17,16 @@ use Carbon\Carbon;
 
 class DashBoardController extends Controller
 {
+
     public function index()
     {
+
 
         // return  $control = MainTask::find(1)->station->control;
         // return  $station = Station::find(1)->main_task;
 
-
+        // return Role::find(2)->user;
+        // return Auth::user()->role->title;
         $engineersCount = Engineer::where('department_id', Auth::user()->department_id)->count();
         $sectionTasksCount = MainTask::where('department_id', Auth::user()->department_id)->count();
         $pendingTasksCount = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->count();

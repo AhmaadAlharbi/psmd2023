@@ -97,4 +97,9 @@ class EngineersController extends Controller
         session()->flash('success', 'تم التعديل بنجاح');
         return redirect()->route('dashboard.engineersList');
     }
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/');
+    }
 }

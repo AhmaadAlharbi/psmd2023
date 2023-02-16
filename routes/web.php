@@ -292,4 +292,5 @@ Route::get('/archive', [DashBoardController::class, 'archive'])->name('dashboard
 Route::get('/archive/search', [DashBoardController::class, 'searchArchive'])->name('dashboard.searchArchive');
 Route::get('/engineer/{id}/edit', [EngineersController::class, 'edit'])->name('engineer.edit');
 Route::post('/engineer/update/{id}', [EngineersController::class, 'update'])->name('engineer.update');
+Route::get('/logout2', [EngineersController::class, 'logout'])->name('engineer.logout');
 require __DIR__ . '/auth.php';
