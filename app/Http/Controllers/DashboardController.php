@@ -171,21 +171,25 @@ class DashBoardController extends Controller
                 $query->where('station_id', $station);
             });
         }
-        if ($request->has('equip') && $request->equip !== -1) {
+        if ($request->has('equip') && $request->equip !== -1  && !empty($request->equip) && $request->equip !== 'Please select Equip') {
             $equip = $request->equip;
             $query->whereHas('main_task', function ($query) use ($equip) {
                 $query->where('equip_number', $equip);
             });
         }
-        if ($request->has('engineer') && $request->engineer != '') {
+        if ($request->has('engineer') && $request->engineer != ''  && !empty($request->engineer)) {
             $engineer = User::where('name', $request->engineer)->pluck('id')->first();
+            dd($engineer);
             $query->where('eng_id', $engineer);
         }
         if ($request->has('task_Date') && $request->has('task_Date2')) {
-            $startDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->input('task_Date'))->format('Y-m-d');
-            $endDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->input('task_Date2'))->format('Y-m-d');
-
-            $query->whereBetween('date', [$startDate, $endDate]);
+            try {
+                $startDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->input('task_Date'))->format('Y-m-d');
+                $endDate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->input('task_Date2'))->format('Y-m-d');
+                $query->whereBetween('date', [$startDate, $endDate]);
+            } catch (\Exception $e) {
+                // handle the error here
+            }
         }
         $tasks = $query->paginate(6);
         return view('dashboard.archive', compact('tasks', 'stations', 'engineers'));

@@ -27,10 +27,9 @@
         <select name="equip" wire:model="selectedEquip" class="col-8 mx-sm-3 mb-2 form-control" name="" id="">
             <option>Please select Equip</option>
 
-            @foreach($equip as $equip)
-            <option value="{{$equip->equip_number}} - {{$equip->equip_name}}">{{$equip->equip_number}} -
-                {{$equip->equip_name}}
-            </option>
+            @foreach($equip as $item)
+            <option value="{{$item->equip_number}} - {{$item->equip_name}}">{{$item->equip_number}} -
+                {{$item->equip_name}}</option>
             @endforeach
 
         </select>
