@@ -54,7 +54,7 @@ class AddTask extends Component
     public function mount()
     {
         $this->stations = Station::all();
-        $this->main_alarms = MainAlarm::where('department_id', 2)->get();
+        $this->main_alarms = MainAlarm::where('department_id', Auth::user()->department_id)->get();
         return view('livewire.add-task');
     }
     public function render(Request $request)
@@ -62,6 +62,30 @@ class AddTask extends Component
         return view('livewire.add-task');
     }
     public function getStationInfo()
+    {
+        // Reset all the properties to their default values.
+        $this->resetProperties();
+
+        // Find the Station with the selected name.
+        $station = Station::where('SSNAME', $this->selectedStation)->first();
+
+        // If the Station is not found, return.
+        if ($station === null) {
+            return;
+        }
+
+        // Set the details of the found Station.
+        $this->setStationDetails($station);
+
+        // Set the Area based on the Department of the authenticated User.
+        $this->setArea();
+
+        // Emit an event to call the Engineer selection function.
+        $this->emit('callEngineer', $this->area);
+    }
+
+    // Reset all the properties to their default values.
+    private function resetProperties()
     {
         $this->engineers = [];
         $this->voltage = [];
@@ -73,36 +97,66 @@ class AddTask extends Component
         $this->selectedVoltage = '';
         $this->selectedEquip = '';
         $this->selectedEngineer = '';
-        $this->stationDetails = Station::where('SSNAME', $this->selectedStation)->first();
-        if ($this->stationDetails !== null) {
-            $this->station_id = Station::where('SSNAME', $this->selectedStation)->pluck('id')->first();
-            // $this->voltage = Equip::where('station_id', $this->station_id)->distinct()->pluck('voltage_level');
+    }
 
-            if (
-                $this->stationDetails->control === 'JAHRA CONTROL CENTER'
-                || $this->stationDetails->control === 'TOWN CONTROL CENTER'
-            ) {
+    // Set the details of the given Station.
+    private function setStationDetails($station)
+    {
+        $this->stationDetails = $station;
+        $this->station_id = $station->id;
+    }
+
+    // Set the Area based on the Department of the authenticated User.
+    private function setArea()
+    {
+        switch (Auth::user()->department_id) {
+            case 2:
+                // Set the Area for Department 2.
+                $this->setAreaForDeptTwo();
+                break;
+            case 5:
+                // Set the Area for Department 5.
+                $this->setAreaForDeptFive();
+                break;
+            default:
                 $this->area = 1;
-            } elseif (
-                $this->stationDetails->control === 'SHUAIBA CONTROL CENTER'
-                || $this->stationDetails->control === 'JABRIYA CONTROL CENTER'
-            ) {
-                $this->area = 2;
-            } else {
-                $this->area = 3;
-            }
-            $this->emit('callEngineer', $this->area);
+        }
+    }
+
+    // Set the Area for Department 2.
+    private function setAreaForDeptTwo()
+    {
+        $controlCenter = $this->stationDetails->control;
+        if ($controlCenter === 'JAHRA CONTROL CENTER' || $controlCenter === 'TOWN CONTROL CENTER') {
+            $this->area = 1;
+        } elseif ($controlCenter === 'SHUAIBA CONTROL CENTER' || $controlCenter === 'JABRIYA CONTROL CENTER') {
+            $this->area = 2;
+        } else {
+            $this->area = 3;
+        }
+    }
+    // Set the Area for Department 5.
+    private function setAreaForDeptFive()
+    {
+        $controlCenter = $this->stationDetails->control;
+
+        if ($controlCenter === 'JAHRA CONTROL CENTER' || $controlCenter === 'TOWN CONTROL CENTER') {
+            $this->area = 1;
+        } elseif ($controlCenter === 'SHUAIBA CONTROL CENTER') {
+            $this->area = 2;
+        } elseif ($controlCenter === 'JABRIYA CONTROL CENTER') {
+            $this->area = 3;
         }
     }
     public function getEquip()
     {
         $this->equip = [];
+        $this->transformers = [];
         if ($this->selectedVoltage !== '-1') {
-            if (!isset($this->route_id)) {
-                $this->voltage = [];
-            }
+
             $this->station_id = Station::where('SSNAME', $this->selectedStation)->pluck('id')->first();
-            switch ($this->main_alarm) {
+            // dd($this->main_alarm);
+            switch (MainAlarm::where('id', $this->main_alarm)->value('name')) {
                 case ('General Alarm 11KV'):
                     $this->voltage = [];
                     array_push($this->voltage, "11KV");
@@ -151,6 +205,7 @@ class AddTask extends Component
                     $this->equip = Equip::where('station_id', $this->station_id)->where('equip_name', $this->selectedVoltage)->distinct()->pluck('equip_number');
                     break;
                 default:
+                    // dd(MainAlarm::where('id', $this->main_alarm)->value('name'));
                     $this->equip = [];
                     $this->voltage = Equip::where('station_id', $this->station_id)->distinct()->pluck('voltage_level');
                     $this->equip = Equip::where('station_id', $this->station_id)->where('voltage_level', $this->selectedVoltage)->get();
@@ -166,15 +221,15 @@ class AddTask extends Component
     {
         if ($this->area == 3) {
             if ($this->duty === false) {
-                $this->engineers = Engineer::where('department_id', 2)->where('shift', 0)->get();
+                $this->engineers = Engineer::where('department_id', Auth::user()->department_id)->where('shift', 0)->get();
             } else {
-                $this->engineers = Engineer::where('department_id', 2)->where('shift', 1)->get();
+                $this->engineers = Engineer::where('department_id', Auth::user()->department_id)->where('shift', 1)->get();
             }
         } else {
             if ($this->duty === false) {
-                $this->engineers = Engineer::where('department_id', 2)->where('area', $this->area)->where('shift', 0)->get();
+                $this->engineers = Engineer::where('department_id', Auth::user()->department_id)->where('area', $this->area)->where('shift', 0)->get();
             } else {
-                $this->engineers = Engineer::where('department_id', 2)->where('area', $this->area)->where('shift', 1)->get();
+                $this->engineers = Engineer::where('department_id', Auth::user()->department_id)->where('area', $this->area)->where('shift', 1)->get();
             }
         }
     }
@@ -182,24 +237,32 @@ class AddTask extends Component
     {
         $this->engineerEmail = User::where('id', $this->selectedEngineer)->pluck('email')->first();
     }
-    public function submit()
+
+    public function submit(Request $request)
     {
+
         $this->date =  Carbon::now();
-        $year = (new DateTime)->format("Y");
-        $month = (new DateTime)->format("m");
-        $day = (new DateTime)->format("d");
-        $refNum = $year . "/" . $month . "/" . $day . '-' . rand(1, 10000);
+        $refNum = $this->date->format("Y/m") . '-' . rand(1, 10000);
+        dd($refNum);
+        if (!empty($this->selectedEquip)) {
+            // If selectedEquip is not empty, set $equip_number to the selected value
+            $selectedEquipArr = explode(" - ", $this->selectedEquip);
+            $equip_number = $selectedEquipArr[0];
+        } elseif (!empty($this->selectedTransformer)) {
+            // If selectedTransformer is not empty, set $equip_number to the selected value
+            $equip_number = $this->selectedTransformer;
+        }
         $main_task = MainTask::create([
             'refNum' => $refNum,
             'station_id' =>  $this->station_id,
             'voltage_level' => $this->selectedVoltage,
-            'equip_number' => $this->selectedEquip,
+            'equip_number' => $equip_number,
             'date' => $this->date,
             'problem' => $this->problem,
             'work_type' => $this->work_type,
             'notes' => $this->notes,
             'status' => 'pending',
-            'department_id' => 2,
+            'department_id' => Auth::user()->department_id,
             'main_alarm_id' => $this->main_alarm,
             'user_id' => Auth::user()->id,
             'eng_id' => $this->selectedEngineer,
@@ -207,7 +270,7 @@ class AddTask extends Component
         $main_task_id = MainTask::latest()->first()->id;
         $section_task = SectionTask::create([
             'main_tasks_id' => $main_task_id,
-            'department_id' => 2,
+            'department_id' => Auth::user()->department_id,
             'eng_id' => $this->selectedEngineer,
             'date' => $this->date,
             'action_take' => null,

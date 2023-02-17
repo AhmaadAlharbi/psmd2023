@@ -67,8 +67,6 @@
                     </ul>
 
                     <ul class=" list-group ">
-
-
                         <li class=" list-group-item disabled font-italic list-group-item-secondary">Make :
                             {{$stationDetails->COMPANY_MAKE}}
                         </li>
@@ -83,8 +81,9 @@
 
                 </div>
                 <div class="col-12">
-                    <label for="main_alarm" class="control-label m-3">Main Alarm</label>
+                    {{$selectedVoltage}}
 
+                    <label for="main_alarm" class="control-label m-3">Main Alarm</label>
                     <select wire:model="main_alarm" wire:change="getEquip" name="mainAlarm" id="main_alarm"
                         class="form-control">
                         <!--placeholder-->

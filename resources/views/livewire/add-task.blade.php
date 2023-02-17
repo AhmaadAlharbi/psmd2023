@@ -95,56 +95,37 @@
                         @endforeach
                         <option value="other">other</option>
                     </select>
-                    @switch($main_alarm)
-                    @case('Transformer Clearance')
-                    @case('Transformer out of step Alarm')
-                    <label class="my-2">Transformer</label>
-                    <select wire:model="selectedTransformer" wire:change="getEquip" class="form-control mb-3"
-                        name="equip_name" id="">
-                        <option value="-1">Please select Voltage</option>
-                        {{-- <option value="{{$selectedVoltage}}">{{$selectedVoltage}}</option> --}}
-                        @foreach($transformers as $transformer)
-                        <option value="{{$transformer}}">{{$transformer}}</option>
-                        @endforeach
-                    </select>
-                    <div class="col-12">
-                        <label for="">Equip tr</label>
-
-                        {{-- <select wire:model="equip" class="form-control mb-3" name="equip_name">
-                            <option value="{{$equip}}">{{$equip}}
-                            </option>
-                        </select> --}}
-                        <input type="text" class="form-control" wire:model="equip" />
-
-                    </div>
-                    @break
-                    @default
+    
+                    @if (!empty($voltage))
                     <label class="my-2">Voltage</label>
-
-                    <select wire:model="selectedVoltage" wire:change="getEquip" class="form-control mb-3"
-                        name="voltage_level" id="">
+                    <select wire:model="selectedVoltage" wire:change="getEquip" class="form-control mb-3" name="voltage_level" id="">
                         <option value="-1">Please select Voltage</option>
-                        {{-- <option value="{{$selectedVoltage}}">{{$selectedVoltage}}</option> --}}
                         @foreach($voltage as $v)
-                        <option value="{{$v}}">{{$v}}</option>
+                            <option value="{{$v}}">{{$v}}</option>
                         @endforeach
                     </select>
-
                     <div class="col-12">
                         <label for="">Equip </label>
                         <select wire:model="selectedEquip" class="form-control mb-3" name="equip_number">
                             <option value="-1">Please select Equip</option>
-                            @foreach($equip as $equip)
-                            <option value="{{$equip->equip_number}} - {{$equip->equip_name}}">{{$equip->equip_number}} -
-                                {{$equip->equip_name}}
-                            </option>
+                            @foreach($equip as $equipN)
+                                <option value="{{$equipN->equip_number}} - {{$equipN->equip_name}}" wire:change="$set('selectedEquip', '{{ $equipN->equip_name }}')">{{ $equipN->equip_number }} - {{ $equipN->equip_name }}</option>
                             @endforeach
-
                         </select>
                     </div>
-                    @endswitch
-                </div>
+                @elseif (!empty($transformers))
+                    <label class="my-2">Transformer</label>
+                    <select wire:model="selectedTransformer"  class="form-control mb-3"  id="">
+                        <option value="-1">Please select Transformer</option>
+                        @foreach($transformers as $transformer)
+                            <option value="{{$transformer}}" wire:change="$set('selectedEquip', '{{ $transformer }}')">{{ $transformer }}</option>
+                        @endforeach
+                    </select>
+                @endif
+          
 
+              
+                </div>
                 @endisset
 
 

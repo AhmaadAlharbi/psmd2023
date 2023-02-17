@@ -233,6 +233,9 @@
                 </div>
             </div>
             @endforeach
+            @empty($completedTasks)
+d
+            @endempty
         </div>
         {{ $completedTasks->links() }}
 
@@ -276,7 +279,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        var ctx = document.getElementById('chartBar4').getContext('2d');
+    var ctx = document.getElementById('chartBar4').getContext('2d');
     var myChart = new Chart(ctx, {
     type: 'bar',
     data: {

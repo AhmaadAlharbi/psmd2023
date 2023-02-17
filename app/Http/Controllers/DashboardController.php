@@ -74,7 +74,7 @@ class DashBoardController extends Controller
         ]);
         SectionTask::create([
             'main_tasks_id' => $id,
-            'department_id' => 2,
+            'department_id' => Auth::user()->department_id,
             'eng_id' => $section_task->eng_id,
             'action_take' => $request->action_take,
             'status' => 'completed',

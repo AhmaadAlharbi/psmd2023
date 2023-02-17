@@ -48,10 +48,46 @@ class MainAlarmSeeder extends Seeder
             'B/Bar Isolator open / close D.S',
             'Line Isolator Open / close D.S'
         ];
+        $switchAlarams = [
+            "Transformer Tubing SF6 Gas Pressure Low Alarm",
+            "Bus Bar SF6 Gas Pressure Low Alarm",
+            "Alternating Current Supply Failure Alarm",
+            "Main Air tank Pressure Low (Compressed Air Supply Failure) Alarm",
+            "Door intrusion Detection Alarm",
+            "General Alarm 33KV",
+            "General Alarm 11KV",
+            "Room Temperature Alarm (SS Control)",
+            "Bus Bar SF6 Gas Pressure Low Trip",
+            "Bay SF6 Gas Pressure Low Trip",
+            "Transformer Tubing SF6 Gas Pressure Low Alarm",
+            "Bus Bar SF6 Gas Pressure Low Alarm",
+            "Alternating Current Supply Failure Alarm"
+        ];
+
+        $batteryAlarms = [
+            "DC Supply Failure",
+            "Main Failure",
+            "Low Voltage",
+            "High Voltage"
+        ];
 
         foreach ($alarms as $alarm) {
             DB::table('main_alarm')->insert([
                 'department_id' => 2,
+                'name' => $alarm,
+
+            ]);
+        }
+        foreach ($switchAlarams as $alarm) {
+            DB::table('main_alarm')->insert([
+                'department_id' => 5,
+                'name' => $alarm,
+
+            ]);
+        }
+        foreach ($batteryAlarms as $alarm) {
+            DB::table('main_alarm')->insert([
+                'department_id' => 3,
                 'name' => $alarm,
 
             ]);
