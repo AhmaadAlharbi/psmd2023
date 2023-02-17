@@ -243,7 +243,6 @@ class AddTask extends Component
 
         $this->date =  Carbon::now();
         $refNum = $this->date->format("Y/m") . '-' . rand(1, 10000);
-        dd($refNum);
         if (!empty($this->selectedEquip)) {
             // If selectedEquip is not empty, set $equip_number to the selected value
             $selectedEquipArr = explode(" - ", $this->selectedEquip);

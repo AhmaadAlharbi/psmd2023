@@ -24,7 +24,6 @@ class DashBoardController extends Controller
 
         // return  $control = MainTask::find(1)->station->control;
         // return  $station = Station::find(1)->main_task;
-
         // return Role::find(2)->user;
         // return Auth::user()->role->title;
         $engineersCount = Engineer::where('department_id', Auth::user()->department_id)->count();
@@ -51,6 +50,15 @@ class DashBoardController extends Controller
                 ->count();
         }
         return view('dashboard.index', compact('sectionTasksCount', 'pendingTasksCount', 'taskCounts', 'pendingTaskCounts', 'pendingTasks', 'completedTaskCounts', 'completedTasks', 'engineersCount', 'completedTasksCount'));
+    }
+    public function userIndex()
+    {
+        $pendingTasksCount = MainTask::where('eng_id', Auth::user()->id)->where('status', 'pending')->count();
+        $pendingTasks = MainTask::where('eng_id', Auth::user()->id)->where('status', 'pending')->latest()->paginate(7, ['*'], 'page2');
+        $completedTasksCount = SectionTask::where('eng_id', Auth::user()->id)->where('status', 'completed')->count();
+        $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->latest()->paginate(7, ['*'], 'page2');
+
+        return view('dashboard.engineers.index', compact('pendingTasksCount', 'pendingTasks', 'completedTasksCount', 'completedTasks'));
     }
     public function add_task()
     {

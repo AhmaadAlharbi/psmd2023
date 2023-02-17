@@ -276,7 +276,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::get('/home', [DashBoardController::class, 'index'])->name('dashboard.index')->middleware('auth');
+Route::get('/dashboard/admin', [DashBoardController::class, 'index'])->name('dashboard.index')->middleware('auth');
+Route::get('/dashboard/user', [DashBoardController::class, 'userIndex'])->name('dashboard.userIndex')->middleware('auth');
 Route::get('/add-task', [DashBoardController::class, 'add_task'])->name('dashboard.add_task');
 Route::get('/engineer-task-page/{task}', [DashBoardController::class, 'engineerTaskPage'])->name('dashboard.engineerTaskPage');
 Route::post('/submit-engineer-report/{id}', [DashBoardController::class, 'submitEngineerReport'])->name('dashboard.submitEngineerReport');
