@@ -81,7 +81,7 @@
                         </div>
                         <div class="ms-auto">
                             <h5 class="tx-18 tx-white-8 mb-3">ارشيف التقارير</h5>
-                            <h2 class="counter mb-0 text-white">{{$completedTasksCount}}</h2>
+                            <h2 class="counter mb-0 text-white">{{$archiveCount}}</h2>
                         </div>
                     </div>
                 </div>

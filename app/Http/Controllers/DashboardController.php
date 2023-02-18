@@ -57,8 +57,8 @@ class DashBoardController extends Controller
         $pendingTasks = MainTask::where('eng_id', Auth::user()->id)->where('status', 'pending')->latest()->paginate(7, ['*'], 'page2');
         $completedTasksCount = SectionTask::where('eng_id', Auth::user()->id)->where('status', 'completed')->count();
         $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->latest()->paginate(7, ['*'], 'page2');
-
-        return view('dashboard.engineers.index', compact('pendingTasksCount', 'pendingTasks', 'completedTasksCount', 'completedTasks'));
+        $archiveCount = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->count();
+        return view('dashboard.engineers.index', compact('pendingTasksCount', 'pendingTasks', 'completedTasksCount', 'completedTasks', 'archiveCount'));
     }
     public function add_task()
     {
@@ -111,28 +111,51 @@ class DashBoardController extends Controller
         $stations = Station::all();
         $engineers = Engineer::where('department_id', Auth::user()->department_id)->get();
         $currentMonth = Carbon::now()->month;
+        $isAdmin = Auth()->user()->role->title == 'Admin';
+
+        $tasks = $isAdmin ? $this->getAdminTasks($status, $currentMonth) : $this->getEngineerTasks($status);
+
+        return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
+    }
+
+    private function getAdminTasks($status, $currentMonth)
+    {
         switch ($status) {
             case 'pending':
-                $tasks = MainTask::where('department_id', Auth::user()->department_id)
+                return MainTask::where('department_id', Auth::user()->department_id)
                     ->where('status', 'pending')
                     ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
-                break;
             case 'completed':
-
-                $tasks = MainTask::where('department_id', Auth::user()->department_id)
+                return MainTask::where('department_id', Auth::user()->department_id)
                     ->where('status', 'completed')
                     ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
-                break;
-
             case 'all':
-                $tasks = MainTask::where('department_id', Auth::user()->department_id)
+                return MainTask::where('department_id', Auth::user()->department_id)
                     ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
-                break;
             default:
                 abort(403);
         }
-        return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
     }
+
+    private function getEngineerTasks($status)
+    {
+        switch ($status) {
+            case 'pending':
+                return MainTask::where('eng_id', Auth::user()->id)
+                    ->where('status', 'pending')
+                    ->paginate(6);
+            case 'completed':
+                return MainTask::where('eng_id', Auth::user()->id)
+                    ->where('status', 'completed')
+                    ->latest()->paginate(6);
+            case 'all':
+                return MainTask::where('eng_id', Auth::user()->id)
+                    ->latest()->paginate(6);
+            default:
+                abort(403);
+        }
+    }
+
     public function searchStation(Request $request)
     {
         $currentMonth = Carbon::now()->month;

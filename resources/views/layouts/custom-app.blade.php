@@ -8,12 +8,17 @@
 		<meta name="Description" content="Valex - Laravel Bootstrap 5 Admin & Dashboard Template">
 		<meta name="Author" content="Spruko Technologies Private Limited">
 		<meta name="Keywords" content="laravel admin template, bootstrap admin template, admin dashboard template, admin dashboard, admin template, admin, bootstrap 5, laravel admin, laravel admin dashboard template, laravel ui template, laravel admin panel, admin panel, laravel admin dashboard, laravel template, admin ui dashboard">
+		<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 
 		<!-- Title -->
-		<title> Valex -  Premium dashboard ui bootstrap rwd admin html5 template </title>
+		<title> PSMD </title>
        
 		@include('layouts.components.custom-styles')
-
+<style>
+	   body {
+            font-family: 'Cairo', sans-serif;
+        }
+</style>
     </head>
 
     @yield('body')

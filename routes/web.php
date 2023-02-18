@@ -136,7 +136,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 */
 
 Route::get('/', function () {
-    return view('livewire.index');
+    return view('livewire.signin');
 });
 Route::get('about', About::class);
 Route::get('accordion', Accordion::class);

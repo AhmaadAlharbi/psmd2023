@@ -47,6 +47,7 @@
 
 <!-- row -->
 <div class="row">
+    @if(Auth::user()->role->title === 'Admin')
     <div class="card mg-b-20" id="tabs-style2">
         <div class="card-body">
             <div class="main-content-label mg-b-5">
@@ -124,6 +125,7 @@
             </nav>
         </div>
     </div>
+    @endif
     @foreach($tasks as $task)
     <div class="col-12 col-sm-12 col-lg-6 col-xl-4">
         <div class="card {{$task->status =='pending'  ? 'card-danger' : 'card-success'}}">
