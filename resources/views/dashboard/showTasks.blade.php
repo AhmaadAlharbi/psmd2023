@@ -136,7 +136,7 @@
                     <li class="list-group-item {{ ($task->status == 'pending') ? 'bg-danger': 'bg-success' }}">Task #
                         {{$task->id}}
                     </li>
-                    <li class="list-group-item ">{{$task->created_at}}</li>
+                    <li class="list-group-item ">{{$task->created_at}} - {{$task->department->name}}</li>
                     <li class="list-group-item "> <strong>Station<br>
                         </strong>
                         <span style="font-size:22px; font-wieght:bold;">{{$task->station->SSNAME}}</span>

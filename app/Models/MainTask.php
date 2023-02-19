@@ -36,4 +36,8 @@ class MainTask extends Model
     {
         return $this->belongsTo(User::class, 'eng_id');
     }
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
 }

@@ -10,6 +10,14 @@
     <form wire:submit.prevent="update">
 
         <div class="text-center ">
+            <label for=" ssname">المهمة تتبع قسم</label>
+           
+            <select name="department" wire:model="selectedDepartment" class="form-control">
+                <option selected value="{{Auth::user()->department_id}}">{{Auth::user()->department->name}}</option>
+                @foreach($departments  as $department)
+                <option value="{{$department->id}}">{{$department->name}}</option>
+                @endforeach
+            </select>
             <label for=" ssname">يرجى اختيار اسم المحطة</label>
             @if($selectedStation == null)
 
@@ -19,7 +27,9 @@
             <input list="ssnames" wire:change="getStationInfo" class="form-control  {{$stationDetails  ? " is-valid"
                 : " is-invalid" }}" value="{{ old('station_code') }}" wire:model="selectedStation" name="station_code"
                 id="ssname" type="search">
+
             @endif
+
             <datalist id="ssnames">
                 @foreach ($stations as $station)
                 <option value="{{ $station->SSNAME }}">
@@ -67,6 +77,8 @@
                     </ul>
 
                     <ul class=" list-group ">
+
+
                         <li class=" list-group-item disabled font-italic list-group-item-secondary">Make :
                             {{$stationDetails->COMPANY_MAKE}}
                         </li>
@@ -81,8 +93,6 @@
 
                 </div>
                 <div class="col-12">
-                    {{$selectedVoltage}}
-
                     <label for="main_alarm" class="control-label m-3">Main Alarm</label>
                     <select wire:model="main_alarm" wire:change="getEquip" name="mainAlarm" id="main_alarm"
                         class="form-control">
@@ -96,74 +106,48 @@
                         @endforeach
                         <option value="other">other</option>
                     </select>
-                    @switch($main_alarm)
-                    @case('Transformer Clearance')
-                    @case('Transformer out of step Alarm')
-                    <label class="my-2">Transformer</label>
-                    <select wire:model="selectedTransformer" wire:change="getEquip" class="form-control mb-3"
-                        name="equip_name" id="">
-                        <option value="-1">Please select Voltage</option>
-                        {{-- <option value="{{$selectedVoltage}}">{{$selectedVoltage}}</option> --}}
-                        @foreach($transformers as $transformer)
-                        <option value="{{$transformer}}">{{$transformer}}</option>
-                        @endforeach
-                    </select>
-                    <div class="col-12">
-                        <label for="">Equip tr</label>
-
-                        {{-- <select wire:model="equip" class="form-control mb-3" name="equip_name">
-                            <option value="{{$equip}}">{{$equip}}
-                            </option>
-                        </select> --}}
-                        <input type="text" class="form-control" wire:model="equip" />
-
-                    </div>
-                    @break
-                    @default
+    
+                    @if (!empty($voltage))
                     <label class="my-2">Voltage</label>
-
-                    <select wire:model="selectedVoltage" wire:change="getEquip" class="form-control mb-3"
-                        name="voltage_level" id="">
-                        <option value="{{$task->selectedVoltage}}" selected>
-                            {{ $selectedVoltage ? $selectedVoltage : '-'}}
-                        </option>
+                    <select wire:model="selectedVoltage" wire:change="getEquip" class="form-control mb-3" name="voltage_level" id="">
+                        <option value="-1">Please select Voltage</option>
                         @foreach($voltage as $v)
-                        @if($v !== $selectedVoltage)
-                        <option value="{{$v}}">{{$v}}</option>
-                        @endif
+                            <option value="{{$v}}">{{$v}}</option>
                         @endforeach
                     </select>
-
                     <div class="col-12">
                         <label for="">Equip </label>
                         <select wire:model="selectedEquip" class="form-control mb-3" name="equip_number">
-
-                            @foreach($equip as $x)
-                            @if($x !== $selectedEquip)
-                            <option value="{{$x->equip_number}} - {{$x->equip_name}}">{{$x->equip_number}} -
-                                {{$x->equip_name}}
-                            </option>
-                            @endif
+                            <option value="-1">Please select Equip</option>
+                            @foreach($equip as $equipN)
+                                <option value="{{$equipN->equip_number}} - {{$equipN->equip_name}}" wire:change="$set('selectedEquip', '{{ $equipN->equip_name }}')">{{ $equipN->equip_number }} - {{ $equipN->equip_name }}</option>
                             @endforeach
-
                         </select>
                     </div>
-                    @endswitch
-                </div>
+                @elseif (!empty($transformers))
+                    <label class="my-2">Transformer</label>
+                        <select wire:model="selectedTransformer"  class="form-control mb-3" id="">
 
+                        <option value="-1">Please select Transformer</option>
+                        @foreach($transformers as $transformer)
+                            <option value="{{$transformer}}" wire:change="$set('selectedTransformer', '{{ $transformer }}')">{{ $transformer }}</option>
+                        @endforeach
+                    </select>
+                @endif
+          
+
+              
+                </div>
                 @endisset
 
 
                 <div class="">
-                    <label for="eng_name" class="control-label">اسم المهندس</label>
+                    <label for="inputName" class="control-label">اسم المهندس</label>
                     <select wire:model="selectedEngineer" id="eng_name" wire:change="getEmail" name="eng_name"
                         class="form-control engineerSelect my-4">
-                        <option value="" selected>{{ $selectedEngineer ? $selectedEngineer : '-' }}
-                        </option>
+                        <option value="">-</option>
                         @foreach($engineers as $engineer)
-                        @if($engineer->user->name !== $selectedEngineer)
                         <option value="{{$engineer->user->id}}">{{$engineer->user->name}}</option>
-                        @endif
                         @endforeach
                     </select>
                     <div class="form-check mb-4">
@@ -181,7 +165,7 @@
                         id="eng_name_email" readonly>
                 </div>
                 <label for="" class="mt-2">نوع المهمة</label>
-                <select name="" wire:model="work_type" name="work_type" class="form-control">
+                <select name="work_type" wire:model="work_type" name="work_type" class="form-control">
                     <option value="">-</option>
                     <option value="Clearance">Clearance</option>
                     <option value="Maintenance">Maintenance</option>
@@ -213,32 +197,13 @@
                     <input class="form-control form-control-lg" id="formFileLg" type="file" wire:model="photos"
                         multiple>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" data-bs-effect="effect-flip-horizontal" data-bs-toggle="modal"
-                            href="#modaldemo8" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-                            id='saveTasks'>ارسال
+                        <button type="submit" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModal">ارسال
                             البيانات</button>
                     </div>
                 </div>
 
-                <!-- Modal effects -->
-                <div class="modal fade" id="modaldemo8">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content modal-content-demo">
-                            <div class="modal-header">
-                                <h6 class="modal-title">جاري ارسال البيانات</h6><button aria-label="Close" class="close"
-                                    data-bs-dismiss="modal" type="button"><span
-                                        aria-hidden="true">&times;</span></button>
-                            </div>
-                            <div class="modal-body">
-                                <h6>يرجى الانتظار</h6>
-                                <div class="spinner-border text-info" role="status">
-                                    <span class="sr-only">Loading...</span>
-                                </div>
-                            </div>
 
-                        </div>
-                    </div>
-                </div>
 
                 <!-- <div class="col-sm-12 col-md-12">
                     <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />

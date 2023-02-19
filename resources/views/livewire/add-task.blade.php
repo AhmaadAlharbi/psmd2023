@@ -10,6 +10,14 @@
     <form wire:submit.prevent="submit">
 
         <div class="text-center ">
+            <label for=" ssname">المهمة تتبع قسم</label>
+           
+            <select name="department" wire:model="selectedDepartment" class="form-control">
+                <option selected value="{{Auth::user()->department_id}}">{{Auth::user()->department->name}}</option>
+                @foreach($departments  as $department)
+                <option value="{{$department->id}}">{{$department->name}}</option>
+                @endforeach
+            </select>
             <label for=" ssname">يرجى اختيار اسم المحطة</label>
             @if($selectedStation == null)
 
@@ -115,10 +123,10 @@
                     </div>
                 @elseif (!empty($transformers))
                     <label class="my-2">Transformer</label>
-                    <select wire:model="selectedTransformer"  class="form-control mb-3"  id="">
+                    <select wire:model="selectedTransformer" class="form-control mb-3" id="">
                         <option value="-1">Please select Transformer</option>
                         @foreach($transformers as $transformer)
-                            <option value="{{$transformer}}" wire:change="$set('selectedEquip', '{{ $transformer }}')">{{ $transformer }}</option>
+                            <option value="{{$transformer}}" wire:click="$set('selectedTransformer', '{{ $transformer }}')">{{ $transformer }}</option>
                         @endforeach
                     </select>
                 @endif

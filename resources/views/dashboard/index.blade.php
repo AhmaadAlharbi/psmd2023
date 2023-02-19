@@ -116,6 +116,24 @@
             </div>
         </a>
     </div>
+    <div class="col-xl-3 col-lg-6 col-md-6">
+        <a href="{{route('dashboard.showTasks',['status'=>'mutual-tasks'])}}">
+
+            <div class="card  bg-purple-gradient">
+                <div class="card-body">
+                    <div class="counter-status d-flex md-mb-0">
+                        <div class="counter-icon text-success">
+                            <i class="icon icon-emotsmile"></i>
+                        </div>
+                        <div class="ms-auto">
+                            <h5 class="tx-18 tx-white-8 mb-3">مهمات مشتركة مع الاقسام</h5>
+                            <h2 class="counter mb-0 text-white">{{$mutualTasks}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
 </div>
 <!-- breadcrumb -->
 
@@ -176,7 +194,7 @@
         </div>
         @endempty
 
-        {{ $pendingTasks->links() }}
+        {{ $pendingTasks->onEachSide(5)->links() }}
 
     </div>
 

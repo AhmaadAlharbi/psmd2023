@@ -11,6 +11,7 @@ use App\Models\MainTask;
 use App\Models\TaskAttachment;
 use App\Models\SectionTask;
 use App\Models\Engineer;
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -50,11 +51,16 @@ class AddTask extends Component
     public $pic2;
     public $selectedEquipTr;
     public $route_id = 2;
+    public $departments = [];
+    public $selectedDepartment;
     protected $listeners = ['callEngineer' => 'getEngineer'];
     public function mount()
     {
         $this->stations = Station::all();
         $this->main_alarms = MainAlarm::where('department_id', Auth::user()->department_id)->get();
+        $this->departments = Department::where('name', '!=', Auth::user()->department->name)->get();
+        $this->selectedDepartment = Auth::user()->department_id;
+
         return view('livewire.add-task');
     }
     public function render(Request $request)
@@ -152,6 +158,8 @@ class AddTask extends Component
     {
         $this->equip = [];
         $this->transformers = [];
+        $this->selectedEquip = ''; // Set equip_name to empty string
+        $this->selectedTransformer = ''; // Set equip_name to empty string
         if ($this->selectedVoltage !== '-1') {
 
             $this->station_id = Station::where('SSNAME', $this->selectedStation)->pluck('id')->first();
@@ -240,7 +248,6 @@ class AddTask extends Component
 
     public function submit(Request $request)
     {
-
         $this->date =  Carbon::now();
         $refNum = $this->date->format("Y/m") . '-' . rand(1, 10000);
         if (!empty($this->selectedEquip)) {
@@ -250,6 +257,11 @@ class AddTask extends Component
         } elseif (!empty($this->selectedTransformer)) {
             // If selectedTransformer is not empty, set $equip_number to the selected value
             $equip_number = $this->selectedTransformer;
+        }
+        if ($this->selectedDepartment !== Auth::user()->department_id) {
+            $previous_department_id = Auth::user()->department_id;
+        } else {
+            $previous_department_id = null;
         }
         $main_task = MainTask::create([
             'refNum' => $refNum,
@@ -261,22 +273,23 @@ class AddTask extends Component
             'work_type' => $this->work_type,
             'notes' => $this->notes,
             'status' => 'pending',
-            'department_id' => Auth::user()->department_id,
+            'department_id' => $this->selectedDepartment,
             'main_alarm_id' => $this->main_alarm,
             'user_id' => Auth::user()->id,
             'eng_id' => $this->selectedEngineer,
+            'previous_department_id' => $previous_department_id,
         ]);
         $main_task_id = MainTask::latest()->first()->id;
         $section_task = SectionTask::create([
             'main_tasks_id' => $main_task_id,
-            'department_id' => Auth::user()->department_id,
+            'department_id' => $this->selectedDepartment,
             'eng_id' => $this->selectedEngineer,
             'date' => $this->date,
             'action_take' => null,
             'status' => 'pending',
             'engineer-notes' => null,
             'user_id' => 1,
-            'previous_task_id' => null,
+            'previous_department_id' => null,
             'transfer_date_time' => null,
         ]);
         foreach ($this->photos as $photo) {
@@ -293,6 +306,6 @@ class AddTask extends Component
         }
         session()->flash('success', 'تم الاضافة بنجاح');
 
-        return redirect("/home");
+        return redirect("/dashboard/admin");
     }
 }

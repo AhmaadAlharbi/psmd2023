@@ -24,7 +24,7 @@ class CreateSectionTasksTable extends Migration
             $table->string('status')->nullable();
             $table->string('engineer-notes')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('previous_task_id')->nullable();
+            $table->unsignedBigInteger('previous_department_id')->nullable();
             $table->date('transfer_date_time')->nullable();
             $table->timestamps();
             $table->foreign('main_tasks_id')
@@ -40,9 +40,9 @@ class CreateSectionTasksTable extends Migration
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
-            $table->foreign('previous_task_id')
+            $table->foreign('previous_department_id')
                 ->references('id')
-                ->on('section_tasks');
+                ->on('departments');
         });
     }
 

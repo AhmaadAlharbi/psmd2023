@@ -29,9 +29,10 @@ class DashBoardController extends Controller
         $engineersCount = Engineer::where('department_id', Auth::user()->department_id)->count();
         $sectionTasksCount = MainTask::where('department_id', Auth::user()->department_id)->count();
         $pendingTasksCount = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->count();
-        $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->latest()->paginate(2, ['*'], 'page2');
+        $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->latest()->paginate(1, ['*'], 'page2');
         $completedTasksCount = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->count();
         $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->latest()->paginate(2, ['*'], 'page2');
+        $mutualTasks = MainTask::where('previous_department_id', Auth::user()->department_id)->count();
         $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         $taskCounts = [];
         $pendingTaskCounts = [];
@@ -49,7 +50,7 @@ class DashBoardController extends Controller
                 ->where('status', 'completed')
                 ->count();
         }
-        return view('dashboard.index', compact('sectionTasksCount', 'pendingTasksCount', 'taskCounts', 'pendingTaskCounts', 'pendingTasks', 'completedTaskCounts', 'completedTasks', 'engineersCount', 'completedTasksCount'));
+        return view('dashboard.index', compact('sectionTasksCount', 'mutualTasks', 'pendingTasksCount', 'taskCounts', 'pendingTaskCounts', 'pendingTasks', 'completedTaskCounts', 'completedTasks', 'engineersCount', 'completedTasksCount'));
     }
     public function userIndex()
     {
@@ -125,13 +126,18 @@ class DashBoardController extends Controller
                 return MainTask::where('department_id', Auth::user()->department_id)
                     ->where('status', 'pending')
                     ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
+
             case 'completed':
                 return MainTask::where('department_id', Auth::user()->department_id)
                     ->where('status', 'completed')
                     ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
+
             case 'all':
                 return MainTask::where('department_id', Auth::user()->department_id)
                     ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
+            case 'mutual-tasks':
+                return MainTask::where('previous_department_id', Auth::user()->department_id)
+                    ->latest()->paginate(6);
             default:
                 abort(403);
         }
