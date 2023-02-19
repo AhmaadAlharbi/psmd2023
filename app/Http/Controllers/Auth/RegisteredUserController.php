@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Rules\FullName;
+use App\Rules\MewEmail;
 
 class RegisteredUserController extends Controller
 {
@@ -20,7 +22,20 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        // $departmentId = null;
+        // switch ($department) {
+        //     case 'protection':
+        //         $departmentId = 2;
+        //         break;
+        //     case 'sales':
+        //         $departmentId = 3;
+        //         break;
+        //         // Add cases for any other departments here
+        //     default:
+        //         // Handle an invalid department name
+        //         break;
+        // }
+        return view('livewire.signup');
     }
 
     /**
@@ -30,22 +45,27 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'name' => ['required', 'string', 'max:255', new FullName],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', new MewEmail],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
+
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'department_id' => $request->department,
+            'role_id' => 4,
+
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect(RouteServiceProvider::USERHOME);
     }
 }

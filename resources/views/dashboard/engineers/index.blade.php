@@ -138,7 +138,6 @@
                     <li class="list-group-item bg-danger-gradient text-white"> Task </li>
 
                     <li class="list-group-item"><strong>Nothing to view<br></strong>
-                        <a href="add-task" class="btn btn-outline-danger mt-3">Add a new task</a>
 
                     </li>
 

@@ -29,9 +29,9 @@ class DashBoardController extends Controller
         $engineersCount = Engineer::where('department_id', Auth::user()->department_id)->count();
         $sectionTasksCount = MainTask::where('department_id', Auth::user()->department_id)->count();
         $pendingTasksCount = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->count();
-        $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->latest()->paginate(7, ['*'], 'page2');
+        $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->latest()->paginate(2, ['*'], 'page2');
         $completedTasksCount = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->count();
-        $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->latest()->paginate(7, ['*'], 'page2');
+        $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->latest()->paginate(2, ['*'], 'page2');
         $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         $taskCounts = [];
         $pendingTaskCounts = [];

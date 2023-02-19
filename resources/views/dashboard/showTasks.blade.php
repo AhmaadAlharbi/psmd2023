@@ -127,8 +127,8 @@
     </div>
     @endif
     @foreach($tasks as $task)
-    <div class="col-12 col-sm-12 col-lg-6 col-xl-4">
-        <div class="card {{$task->status =='pending'  ? 'card-danger' : 'card-success'}}">
+    <div class="col-12 col-sm-12 col-lg-6 col-xl-4 my-2">
+        <div class="card {{$task->status =='pending'  ? 'card-danger' : 'card-success'}} h-100 ">
 
             <div class="card-body  ">
                 <ul class="list-group   text-center">
