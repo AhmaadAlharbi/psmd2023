@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 15, 2023 at 11:02 AM
+-- Generation Time: Feb 19, 2023 at 01:49 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `area` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
-  `area` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `area` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -43,8 +43,8 @@ CREATE TABLE `area` (
 
 CREATE TABLE `departments` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `section` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `section` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -70,8 +70,8 @@ CREATE TABLE `engineers` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED DEFAULT NULL,
   `department_id` bigint UNSIGNED DEFAULT NULL,
-  `area` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shift` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `area` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shift` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -82,7 +82,9 @@ CREATE TABLE `engineers` (
 
 INSERT INTO `engineers` (`id`, `user_id`, `department_id`, `area`, `shift`, `created_at`, `updated_at`) VALUES
 (1, 1, 2, '1', '0', '2023-02-15 03:53:31', NULL),
-(2, 2, 2, '1', '1', NULL, NULL);
+(2, 2, 2, '1', '1', NULL, NULL),
+(3, 3, 5, '2', '0', NULL, NULL),
+(4, 4, 3, '1', '0', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -19443,11 +19445,11 @@ INSERT INTO `equip` (`id`, `station_id`, `voltage_level`, `equip_number`, `equip
 
 CREATE TABLE `failed_jobs` (
   `id` bigint UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -19460,47 +19462,65 @@ CREATE TABLE `failed_jobs` (
 CREATE TABLE `main_alarm` (
   `id` bigint UNSIGNED NOT NULL,
   `department_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `previous_department_id` bigint UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `main_alarm`
 --
 
-INSERT INTO `main_alarm` (`id`, `department_id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Auto reclosure', NULL, NULL),
-(2, 2, 'Flag Relay Replacement', NULL, NULL),
-(3, 2, 'Protection Clearance feeder', NULL, NULL),
-(4, 2, 'Transformer Clearance', NULL, NULL),
-(5, 2, 'mw reading wrong transformer', NULL, NULL),
-(6, 2, 'mv reading wrong transformer', NULL, NULL),
-(7, 2, 'kv reading wrong transformer', NULL, NULL),
-(8, 2, 'Dist Prot Main Alaram', NULL, NULL),
-(9, 2, 'Dist.Prot.Main B Alarm', NULL, NULL),
-(10, 2, 'Pilot Cable Fault Alarm', NULL, NULL),
-(11, 2, 'Pilot cable Superv.Supply Fail Alarm', NULL, NULL),
-(12, 2, 'mw reading showing wrong', NULL, NULL),
-(13, 2, 'mv reading showing wrong', NULL, NULL),
-(14, 2, 'kv reading showing wrong', NULL, NULL),
-(15, 2, 'ampere reading showing wrong', NULL, NULL),
-(16, 2, 'BB reading showing wrong', NULL, NULL),
-(17, 2, 'BB KV reading showing wrong', NULL, NULL),
-(18, 2, 'Transformer out of step Alarm', NULL, NULL),
-(19, 2, 'DC Supply 1 & 2 Fail Alarm', NULL, NULL),
-(20, 2, 'General Alarm 300KV', NULL, NULL),
-(21, 2, 'General Alarm 132KV', NULL, NULL),
-(22, 2, 'General Alarm 33KV', NULL, NULL),
-(23, 2, 'General Alarm 11KV', NULL, NULL),
-(24, 2, 'B/Bar Protection Fail Alarm', NULL, NULL),
-(25, 2, 'Shunt Reactor Restricted Earth Earth Fault Realy', NULL, NULL),
-(26, 2, 'Shunt Reactor Over Current', NULL, NULL),
-(27, 2, 'Shunt Reactor Clearance', NULL, NULL),
-(28, 2, 'Shunt Reactor Earth Fault', NULL, NULL),
-(29, 2, 'Breaker Open / close undefined', NULL, NULL),
-(30, 2, 'B/Bar Isolator open / close D.S', NULL, NULL),
-(31, 2, 'Line Isolator Open / close D.S', NULL, NULL);
+INSERT INTO `main_alarm` (`id`, `department_id`, `name`, `created_at`, `updated_at`, `previous_department_id`) VALUES
+(1, 2, 'Auto reclosure', NULL, NULL, NULL),
+(2, 2, 'Flag Relay Replacement', NULL, NULL, NULL),
+(3, 2, 'Protection Clearance feeder', NULL, NULL, NULL),
+(4, 2, 'Transformer Clearance', NULL, NULL, NULL),
+(5, 2, 'mw reading wrong transformer', NULL, NULL, NULL),
+(6, 2, 'mv reading wrong transformer', NULL, NULL, NULL),
+(7, 2, 'kv reading wrong transformer', NULL, NULL, NULL),
+(8, 2, 'Dist Prot Main Alaram', NULL, NULL, NULL),
+(9, 2, 'Dist.Prot.Main B Alarm', NULL, NULL, NULL),
+(10, 2, 'Pilot Cable Fault Alarm', NULL, NULL, NULL),
+(11, 2, 'Pilot cable Superv.Supply Fail Alarm', NULL, NULL, NULL),
+(12, 2, 'mw reading showing wrong', NULL, NULL, NULL),
+(13, 2, 'mv reading showing wrong', NULL, NULL, NULL),
+(14, 2, 'kv reading showing wrong', NULL, NULL, NULL),
+(15, 2, 'ampere reading showing wrong', NULL, NULL, NULL),
+(16, 2, 'BB reading showing wrong', NULL, NULL, NULL),
+(17, 2, 'BB KV reading showing wrong', NULL, NULL, NULL),
+(18, 2, 'Transformer out of step Alarm', NULL, NULL, NULL),
+(19, 2, 'DC Supply 1 & 2 Fail Alarm', NULL, NULL, NULL),
+(20, 2, 'General Alarm 300KV', NULL, NULL, NULL),
+(21, 2, 'General Alarm 132KV', NULL, NULL, NULL),
+(22, 2, 'General Alarm 33KV', NULL, NULL, NULL),
+(23, 2, 'General Alarm 11KV', NULL, NULL, NULL),
+(24, 2, 'B/Bar Protection Fail Alarm', NULL, NULL, NULL),
+(25, 2, 'Shunt Reactor Restricted Earth Earth Fault Realy', NULL, NULL, NULL),
+(26, 2, 'Shunt Reactor Over Current', NULL, NULL, NULL),
+(27, 2, 'Shunt Reactor Clearance', NULL, NULL, NULL),
+(28, 2, 'Shunt Reactor Earth Fault', NULL, NULL, NULL),
+(29, 2, 'Breaker Open / close undefined', NULL, NULL, NULL),
+(30, 2, 'B/Bar Isolator open / close D.S', NULL, NULL, NULL),
+(31, 2, 'Line Isolator Open / close D.S', NULL, NULL, NULL),
+(32, 5, 'Transformer Tubing SF6 Gas Pressure Low Alarm', NULL, NULL, NULL),
+(33, 5, 'Bus Bar SF6 Gas Pressure Low Alarm', NULL, NULL, NULL),
+(34, 5, 'Alternating Current Supply Failure Alarm', NULL, NULL, NULL),
+(35, 5, 'Main Air tank Pressure Low (Compressed Air Supply Failure) Alarm', NULL, NULL, NULL),
+(36, 5, 'Door intrusion Detection Alarm', NULL, NULL, NULL),
+(37, 5, 'General Alarm 33KV', NULL, NULL, NULL),
+(38, 5, 'General Alarm 11KV', NULL, NULL, NULL),
+(39, 5, 'Room Temperature Alarm (SS Control)', NULL, NULL, NULL),
+(40, 5, 'Bus Bar SF6 Gas Pressure Low Trip', NULL, NULL, NULL),
+(41, 5, 'Bay SF6 Gas Pressure Low Trip', NULL, NULL, NULL),
+(42, 5, 'Transformer Tubing SF6 Gas Pressure Low Alarm', NULL, NULL, NULL),
+(43, 5, 'Bus Bar SF6 Gas Pressure Low Alarm', NULL, NULL, NULL),
+(44, 5, 'Alternating Current Supply Failure Alarm', NULL, NULL, NULL),
+(45, 3, 'DC Supply Failure', NULL, NULL, NULL),
+(46, 3, 'Main Failure', NULL, NULL, NULL),
+(47, 3, 'Low Voltage', NULL, NULL, NULL),
+(48, 3, 'High Voltage', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -19510,39 +19530,59 @@ INSERT INTO `main_alarm` (`id`, `department_id`, `name`, `created_at`, `updated_
 
 CREATE TABLE `main_tasks` (
   `id` bigint UNSIGNED NOT NULL,
-  `refNum` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `refNum` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `station_id` bigint UNSIGNED DEFAULT NULL,
-  `voltage_level` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `equip_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `voltage_level` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `equip_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `eng_id` bigint UNSIGNED DEFAULT NULL,
   `date` date DEFAULT NULL,
-  `problem` text COLLATE utf8mb4_unicode_ci,
-  `work_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `notes` text COLLATE utf8mb4_unicode_ci,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `problem` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `work_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_id` bigint UNSIGNED DEFAULT NULL,
   `department_id` bigint UNSIGNED DEFAULT NULL,
   `main_alarm_id` bigint UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `previous_department_id` bigint UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `main_tasks`
 --
 
-INSERT INTO `main_tasks` (`id`, `refNum`, `station_id`, `voltage_level`, `equip_number`, `eng_id`, `date`, `problem`, `work_type`, `notes`, `status`, `user_id`, `department_id`, `main_alarm_id`, `created_at`, `updated_at`) VALUES
-(1, '2023/02/15-8135', 1, '132KV', 'E(5) - 45TR2', 1, '2023-02-01', 'ddqadaqswd', 'Maintenance', 'dswdd', 'completed', 1, 2, 13, '2023-02-15 00:53:44', '2023-02-15 00:54:00'),
-(2, '2023/02/15-9430', 1, '11KV', 'K (18) - FEED18', 2, '2023-02-15', 'daddd', 'Maintenance', 'adadad', 'completed', 1, 2, 2, '2023-02-15 00:56:28', '2023-02-15 00:56:39'),
-(3, '2023/02/15-4818', 84, '33KV', 'H(2) - 20TR3', 1, '2023-02-15', 'wad', 'Maintenance', 'wad', 'completed', 1, 2, 15, '2023-02-15 01:55:05', '2023-02-15 01:55:40'),
-(4, '2023/02/15-3341', 1, '132KV', 'E(5) - 45TR2', 2, '2023-02-15', 'daw', 'Clearance', 'wad', 'completed', 1, 2, 19, '2023-02-15 03:51:52', '2023-02-15 03:52:01'),
-(5, '2023/02/15-5174', 84, '11KV', 'K(18) - ALI-ALG', 1, NULL, 'ad', 'outage', 'ad', 'completed', 1, 2, 4, '2023-02-15 07:21:57', '2023-02-15 07:22:57'),
-(6, '2023/02/15-998', 192, '132KV', 'E(4) - 75TR1', 1, NULL, 'dd', 'outage', 'sda', 'completed', 1, 2, 3, '2023-02-15 07:29:42', '2023-02-15 08:33:44'),
-(10, '2023/02/15-6423', 1, '', '', 1, '2023-02-15', NULL, NULL, NULL, 'pending', 1, 2, 4, '2023-02-15 09:59:30', '2023-02-15 09:59:30'),
-(11, '2023/02/15-9792', 2, '', '', 1, '2023-02-15', 'efef', NULL, NULL, 'pending', 1, 2, 17, '2023-02-15 10:00:15', '2023-02-15 10:00:15'),
-(12, '2023/02/15-7434', 1, '132KV', 'E(3) - BS1', 1, '2023-02-15', NULL, NULL, NULL, 'pending', 1, 2, 3, '2023-02-15 10:14:53', '2023-02-15 10:14:53'),
-(14, '2023/02/15-8384', 3, '', '', 1, '2023-02-15', NULL, 'Inspection', NULL, 'pending', 1, 2, 16, '2023-02-15 10:25:13', '2023-02-15 10:25:13'),
-(15, '2023/02/15-9568', 2, '33KV', 'H(3) - GC26M', 1, '2023-02-15', 'dd', 'Inspection', NULL, 'completed', 1, 2, 18, '2023-02-15 10:26:13', '2023-02-15 11:01:23');
+INSERT INTO `main_tasks` (`id`, `refNum`, `station_id`, `voltage_level`, `equip_number`, `eng_id`, `date`, `problem`, `work_type`, `notes`, `status`, `user_id`, `department_id`, `main_alarm_id`, `created_at`, `updated_at`, `previous_department_id`) VALUES
+(1, '2023/02/15-8135', 1, '132KV', 'E(5) - 45TR2', 1, '2023-02-01', 'ddqadaqswd', 'Maintenance', 'dswdd', 'completed', 1, 2, 13, '2023-02-15 00:53:44', '2023-02-15 00:54:00', NULL),
+(2, '2023/02/15-9430', 1, '11KV', 'K (18) - FEED18', 2, '2023-02-15', 'daddd', 'Maintenance', 'adadad', 'completed', 1, 2, 2, '2023-02-15 00:56:28', '2023-02-15 00:56:39', NULL),
+(3, '2023/02/15-4818', 84, '33KV', 'H(2) - 20TR3', 1, '2023-02-15', 'wad', 'Maintenance', 'wad', 'completed', 1, 2, 15, '2023-02-15 01:55:05', '2023-02-15 01:55:40', NULL),
+(4, '2023/02/15-3341', 1, '132KV', 'E(5) - 45TR2', 2, '2023-02-15', 'daw', 'Clearance', 'wad', 'completed', 1, 2, 19, '2023-02-15 03:51:52', '2023-02-15 03:52:01', NULL),
+(5, '2023/02/15-5174', 84, '11KV', 'K(18) - ALI-ALG', 1, NULL, 'ad', 'outage', 'ad', 'completed', 1, 2, 4, '2023-02-15 07:21:57', '2023-02-15 07:22:57', NULL),
+(6, '2023/02/15-998', 192, '132KV', 'E(4) - 75TR1', 1, NULL, 'dd', 'outage', 'sda', 'completed', 1, 2, 3, '2023-02-15 07:29:42', '2023-02-15 08:33:44', NULL),
+(10, '2023/02/15-6423', 1, '', '', 1, '2023-02-15', NULL, NULL, NULL, 'pending', 1, 2, 4, '2023-02-15 09:59:30', '2023-02-15 09:59:30', NULL),
+(11, '2023/02/15-9792', 2, '', '', 1, '2023-02-15', 'efef', NULL, NULL, 'pending', 1, 2, 17, '2023-02-15 10:00:15', '2023-02-15 10:00:15', NULL),
+(12, '2023/02/15-7434', 1, '132KV', 'E(3) - BS1', 1, '2023-02-15', NULL, NULL, NULL, 'pending', 1, 2, 3, '2023-02-15 10:14:53', '2023-02-15 10:14:53', NULL),
+(14, '2023/02/15-8384', 3, '', '', 1, '2023-02-15', NULL, 'Inspection', NULL, 'pending', 1, 2, 16, '2023-02-15 10:25:13', '2023-02-15 10:25:13', NULL),
+(15, '2023/02/15-9568', 2, '33KV', 'H(3) - GC26M', 1, '2023-02-15', 'dd', 'Inspection', NULL, 'completed', 1, 2, 18, '2023-02-15 10:26:13', '2023-02-15 11:01:23', NULL),
+(20, '2023/02/17-9897', 1, '132KV', 'E(2) - 45TR1', 3, '2023-02-17', 'dadadd', 'Maintenance', NULL, 'completed', 3, 5, 34, '2023-02-17 12:38:46', '2023-02-17 12:38:54', NULL),
+(21, '2023/02/17-7958', 84, '33KV', 'H(2) - 20TR3', 3, NULL, 'wad111', 'Maintenance', 'd', 'completed', 3, 5, 43, '2023-02-17 12:39:24', '2023-02-17 12:41:35', NULL),
+(22, '2023/02/17-8351', 684, '11KV', 'K(11) - SPARE11', 3, '2023-02-17', 'ad', NULL, 'adw', 'pending', 3, 5, 34, '2023-02-17 12:54:22', '2023-02-17 12:54:22', NULL),
+(23, '2023/02/17-3306', 3, '', '', 1, '2023-02-17', 'adwad', 'Maintenance', 'dawd', 'pending', 1, 2, 3, '2023-02-17 12:55:54', '2023-02-17 12:55:54', NULL),
+(24, '2023/02/17-1680', 8, '132KV', 'E(11) - 30TR4', 3, '2023-02-17', 'sefsef', 'Maintenance', NULL, 'pending', 3, 5, 34, '2023-02-17 13:00:48', '2023-02-17 13:00:48', NULL),
+(25, '2023/02/17-7392', 1, '132KV', 'E(2) - 45TR1', 1, NULL, 'adadad', NULL, NULL, 'pending', 1, 2, 11, '2023-02-17 13:02:38', '2023-02-17 13:02:49', NULL),
+(26, '2023/02/17-2588', 1, '132KV', 'E(3) - BS1', 4, '2023-02-17', 'asfsf', 'Clearance', 'efs', 'completed', 4, 3, 46, '2023-02-17 14:00:07', '2023-02-17 14:00:19', NULL),
+(32, '2023/02/17-1192', 1, '', '', 1, '2023-02-17', NULL, NULL, NULL, 'pending', 1, 2, 18, '2023-02-17 16:33:05', '2023-02-17 16:33:05', NULL),
+(33, '2023/02/17-8130', 1, '', '20TR4', 1, '2023-02-17', NULL, NULL, NULL, 'pending', 1, 2, 18, '2023-02-17 16:34:02', '2023-02-17 16:34:02', NULL),
+(34, '2023/02/17-6990', 1, '132KV', 'E(8)', 1, '2023-02-17', NULL, NULL, NULL, 'pending', 1, 2, 17, '2023-02-17 16:34:18', '2023-02-17 16:34:18', NULL),
+(35, '2023/02-4998', 2, '33KV', 'H(2)', 2, '2023-02-17', 'adw', 'Maintenance', 'daw', 'pending', 1, 2, 16, '2023-02-17 20:29:09', '2023-02-17 20:29:09', NULL),
+(39, '2023/02-8048', 3, '11KV', 'K (18)', 1, '2023-02-19', 'awd', 'Maintenance', NULL, 'pending', 1, 2, 17, '2023-02-18 21:48:53', '2023-02-18 21:48:53', NULL),
+(40, '2023/02-5981', 2, '11KV', 'LTR2', 1, NULL, NULL, 'Installation', NULL, 'pending', 1, 2, 18, '2023-02-18 22:01:35', '2023-02-19 00:01:09', NULL),
+(42, '2023/02-420', 3, '11KV', 'K (18)', 1, '2023-02-19', 'awd', 'Installation', NULL, 'pending', 1, 1, 17, '2023-02-18 22:28:20', '2023-02-18 22:28:20', 2),
+(43, '2023/02-9071', 2, '33KV', 'H(2)', 1, '2023-02-19', NULL, NULL, NULL, 'pending', 1, 2, 18, '2023-02-19 00:02:42', '2023-02-19 00:02:42', NULL),
+(44, '2023/02-6227', 2, '11KV', 'K (7)', 1, '2023-02-19', NULL, NULL, NULL, 'pending', 1, 2, 18, '2023-02-19 00:03:26', '2023-02-19 00:03:26', NULL),
+(45, '2023/02-4918', 84, '33KV', 'H(7)', 1, '2023-02-19', NULL, NULL, NULL, 'pending', 1, 2, 18, '2023-02-19 00:04:20', '2023-02-19 00:04:20', NULL),
+(46, '2023/02-4843', 1, '11KV', 'K (18)', 1, '2023-02-19', NULL, NULL, NULL, 'pending', 1, 2, 16, '2023-02-19 00:07:30', '2023-02-19 00:07:30', NULL),
+(47, '2023/02-5126', 1, '132KV', '20TR3', 1, '2023-02-19', NULL, NULL, NULL, 'pending', 1, 2, 18, '2023-02-19 00:08:11', '2023-02-19 00:08:11', NULL);
 
 -- --------------------------------------------------------
 
@@ -19552,7 +19592,7 @@ INSERT INTO `main_tasks` (`id`, `refNum`, `station_id`, `voltage_level`, `equip_
 
 CREATE TABLE `migrations` (
   `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -19583,8 +19623,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -19596,11 +19636,11 @@ CREATE TABLE `password_resets` (
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -19615,7 +19655,7 @@ CREATE TABLE `personal_access_tokens` (
 
 CREATE TABLE `roles` (
   `id` bigint UNSIGNED NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -19642,11 +19682,11 @@ CREATE TABLE `section_tasks` (
   `main_tasks_id` bigint UNSIGNED DEFAULT NULL,
   `department_id` bigint UNSIGNED DEFAULT NULL,
   `eng_id` bigint UNSIGNED DEFAULT NULL,
-  `action_take` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `engineer-notes` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `action_take` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `engineer-notes` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `user_id` bigint UNSIGNED DEFAULT NULL,
-  `previous_task_id` bigint UNSIGNED DEFAULT NULL,
+  `previous_department_id` bigint UNSIGNED DEFAULT NULL,
   `transfer_date_time` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -19657,7 +19697,7 @@ CREATE TABLE `section_tasks` (
 -- Dumping data for table `section_tasks`
 --
 
-INSERT INTO `section_tasks` (`id`, `main_tasks_id`, `department_id`, `eng_id`, `action_take`, `status`, `engineer-notes`, `user_id`, `previous_task_id`, `transfer_date_time`, `created_at`, `updated_at`, `date`) VALUES
+INSERT INTO `section_tasks` (`id`, `main_tasks_id`, `department_id`, `eng_id`, `action_take`, `status`, `engineer-notes`, `user_id`, `previous_department_id`, `transfer_date_time`, `created_at`, `updated_at`, `date`) VALUES
 (1, 1, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-15 00:53:44', '2023-02-15 00:53:44', NULL),
 (2, 1, 2, 1, 'dadwadd', 'completed', NULL, 1, NULL, NULL, '2023-02-01 00:54:00', '2023-02-15 00:54:00', '2023-02-01'),
 (3, 2, 2, 2, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-15 00:56:28', '2023-02-15 00:56:28', NULL),
@@ -19672,7 +19712,37 @@ INSERT INTO `section_tasks` (`id`, `main_tasks_id`, `department_id`, `eng_id`, `
 (21, 12, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-15 10:14:53', '2023-02-15 10:14:53', '2023-02-15'),
 (23, 14, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-15 10:25:13', '2023-02-15 10:25:13', '2023-02-15'),
 (24, 15, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-15 10:26:13', '2023-02-15 10:26:13', '2023-02-15'),
-(25, 15, 2, 1, 'adcxdadadd', 'completed', NULL, 1, NULL, NULL, '2023-02-15 11:01:23', '2023-02-15 11:01:23', NULL);
+(25, 15, 2, 1, 'adcxdadadd', 'completed', NULL, 1, NULL, NULL, '2023-02-15 11:01:23', '2023-02-15 11:01:23', NULL),
+(34, 20, 5, 3, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 12:38:46', '2023-02-17 12:38:46', '2023-02-17'),
+(35, 20, 5, 3, 'addawdadad', 'completed', NULL, 3, NULL, NULL, '2023-02-17 12:38:54', '2023-02-17 12:38:54', NULL),
+(36, 21, 5, 3, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 12:39:24', '2023-02-17 12:39:24', '2023-02-17'),
+(37, 21, 5, 3, NULL, 'update', NULL, 3, NULL, NULL, '2023-02-17 12:39:33', '2023-02-17 12:39:33', '2023-02-17'),
+(38, 21, 5, 3, 'es', 'completed', NULL, 3, NULL, NULL, '2023-02-17 12:41:35', '2023-02-17 12:41:35', NULL),
+(39, 22, 5, 3, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 12:54:22', '2023-02-17 12:54:22', '2023-02-17'),
+(40, 23, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 12:55:54', '2023-02-17 12:55:54', '2023-02-17'),
+(41, 24, 5, 3, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 13:00:48', '2023-02-17 13:00:48', '2023-02-17'),
+(42, 25, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 13:02:38', '2023-02-17 13:02:38', '2023-02-17'),
+(43, 25, 2, 1, NULL, 'update', NULL, 1, NULL, NULL, '2023-02-17 13:02:49', '2023-02-17 13:02:49', '2023-02-17'),
+(44, 26, 3, 4, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 14:00:07', '2023-02-17 14:00:07', '2023-02-17'),
+(45, 26, 3, 4, 'fefef', 'completed', NULL, 4, NULL, NULL, '2023-02-17 14:00:20', '2023-02-17 14:00:20', NULL),
+(51, 32, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 16:33:05', '2023-02-17 16:33:05', '2023-02-17'),
+(52, 33, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 16:34:02', '2023-02-17 16:34:02', '2023-02-17'),
+(53, 34, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 16:34:18', '2023-02-17 16:34:18', '2023-02-17'),
+(54, 35, 2, 2, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-17 20:29:09', '2023-02-17 20:29:09', '2023-02-17'),
+(58, 39, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-18 21:48:53', '2023-02-18 21:48:53', '2023-02-19'),
+(59, 40, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-18 22:01:35', '2023-02-18 22:01:35', '2023-02-19'),
+(61, 42, 1, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-18 22:28:20', '2023-02-18 22:28:20', '2023-02-19'),
+(62, 40, 2, 1, NULL, 'update', NULL, 1, NULL, NULL, '2023-02-18 22:58:25', '2023-02-18 22:58:25', '2023-02-19'),
+(63, 40, 2, 1, NULL, 'update', NULL, 1, NULL, NULL, '2023-02-18 22:59:40', '2023-02-18 22:59:40', '2023-02-19'),
+(64, 40, 2, 1, NULL, 'update', NULL, 1, NULL, NULL, '2023-02-18 23:01:29', '2023-02-18 23:01:29', '2023-02-19'),
+(65, 40, 2, 1, NULL, 'update', NULL, 1, NULL, NULL, '2023-02-18 23:44:45', '2023-02-18 23:44:45', '2023-02-19'),
+(66, 40, 2, 1, NULL, 'update', NULL, 1, NULL, NULL, '2023-02-18 23:46:03', '2023-02-18 23:46:03', '2023-02-19'),
+(67, 40, 2, 1, NULL, 'update', NULL, 1, NULL, NULL, '2023-02-19 00:01:09', '2023-02-19 00:01:09', '2023-02-19'),
+(68, 43, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-19 00:02:42', '2023-02-19 00:02:42', '2023-02-19'),
+(69, 44, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-19 00:03:26', '2023-02-19 00:03:26', '2023-02-19'),
+(70, 45, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-19 00:04:20', '2023-02-19 00:04:20', '2023-02-19'),
+(71, 46, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-19 00:07:30', '2023-02-19 00:07:30', '2023-02-19'),
+(72, 47, 2, 1, NULL, 'pending', NULL, 1, NULL, NULL, '2023-02-19 00:08:11', '2023-02-19 00:08:11', '2023-02-19');
 
 -- --------------------------------------------------------
 
@@ -19683,7 +19753,7 @@ INSERT INTO `section_tasks` (`id`, `main_tasks_id`, `department_id`, `eng_id`, `
 CREATE TABLE `shift` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
-  `shift` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `shift` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -19696,14 +19766,14 @@ CREATE TABLE `shift` (
 
 CREATE TABLE `stations` (
   `id` bigint UNSIGNED NOT NULL,
-  `SSNAME` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `COMPANY_MAKE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Voltage_Level_KV` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Contract_No` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `COMMISIONING_DATE` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `control` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `FULLNAME` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pm` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `SSNAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `COMPANY_MAKE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Voltage_Level_KV` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Contract_No` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `COMMISIONING_DATE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `control` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `FULLNAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pm` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -20455,19 +20525,11 @@ CREATE TABLE `task_attachments` (
   `id` bigint UNSIGNED NOT NULL,
   `main_tasks_id` bigint UNSIGNED NOT NULL,
   `department_id` bigint UNSIGNED NOT NULL,
-  `file` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `task_attachments`
---
-
-INSERT INTO `task_attachments` (`id`, `main_tasks_id`, `department_id`, `file`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 15, 2, 'Screenshot_20221107_104034.png', 1, '2023-02-15 10:26:13', '2023-02-15 10:26:13'),
-(2, 15, 2, 'Screenshot_20221115_124430.png', 1, '2023-02-15 10:26:14', '2023-02-15 10:26:14');
 
 -- --------------------------------------------------------
 
@@ -20477,13 +20539,13 @@ INSERT INTO `task_attachments` (`id`, `main_tasks_id`, `department_id`, `file`, 
 
 CREATE TABLE `users` (
   `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `department_id` bigint UNSIGNED DEFAULT NULL,
   `role_id` bigint UNSIGNED DEFAULT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -20494,7 +20556,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `department_id`, `role_id`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'ahmad', 'ahmaadzaid7@gmail.com', NULL, '$2y$10$l.g6A.dSlTN9dYzgFj3fj.0cLYLqGdymPMWSopdYaz28Jk4PS8DrW', 2, 2, NULL, '2023-02-15 00:46:22', '2023-02-15 00:46:22'),
-(2, 'ali', 'ali@ali.com', NULL, '$2y$10$17IEqoe./4gepFTTOyaple3O9UN3nb.Q3w1qaJQOydHf3vxASiDI2', 2, 3, NULL, '2023-02-15 00:55:11', '2023-02-15 00:55:11');
+(2, 'ali', 'ali@ali.com', NULL, '$2y$10$17IEqoe./4gepFTTOyaple3O9UN3nb.Q3w1qaJQOydHf3vxASiDI2', 2, 3, NULL, '2023-02-15 00:55:11', '2023-02-15 00:55:11'),
+(3, 'switch admin', 'switch@admin.com', NULL, '$2y$10$HPNsLlRsnar5AxIDqPF0guFwEqQ/gol44slGwx2UI5YzsP3qj5Ba6', 5, 2, NULL, '2023-02-17 12:26:26', '2023-02-17 12:26:26'),
+(4, 'admin battery', 'admin@battery', NULL, '$2y$10$.Zjjjyjg4CO1bFJeh0.OJ.O7qjTHnO/TuVI.roVUtDKi2q.qAiu1y', 3, 2, NULL, '2023-02-17 13:57:18', '2023-02-17 13:57:18'),
+(11, 'ahmad da ad da', 'awddddawdwadd@mew.gov.kw', NULL, '$2y$10$hQZMdGUBGbp28ecu1yi1JONXyemXU5I9jSBc5kWrOr8T5j76dYtKS', 2, 4, NULL, '2023-02-18 12:08:26', '2023-02-18 12:08:26'),
+(12, 'test tesr ted tsf', 'test@mew.gov.kw', NULL, '$2y$10$.BcrO2WzFLYvZ6mesCXCIuAVccCoAsqlgG8YzpFAHMBjjA2XR9IFi', 2, 4, NULL, '2023-02-18 12:12:59', '2023-02-18 12:12:59');
 
 --
 -- Indexes for dumped tables
@@ -20540,7 +20606,8 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `main_alarm`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `main_alarm_department_id_foreign` (`department_id`);
+  ADD KEY `main_alarm_department_id_foreign` (`department_id`),
+  ADD KEY `table_name_previous_department_id_foreign` (`previous_department_id`);
 
 --
 -- Indexes for table `main_tasks`
@@ -20588,7 +20655,7 @@ ALTER TABLE `section_tasks`
   ADD KEY `section_tasks_department_id_foreign` (`department_id`),
   ADD KEY `section_tasks_eng_id_foreign` (`eng_id`),
   ADD KEY `section_tasks_user_id_foreign` (`user_id`),
-  ADD KEY `section_tasks_previous_task_id_foreign` (`previous_task_id`);
+  ADD KEY `section_tasks_previous_task_id_foreign` (`previous_department_id`) USING BTREE;
 
 --
 -- Indexes for table `shift`
@@ -20641,7 +20708,7 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `engineers`
 --
 ALTER TABLE `engineers`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `equip`
@@ -20659,13 +20726,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `main_alarm`
 --
 ALTER TABLE `main_alarm`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `main_tasks`
 --
 ALTER TABLE `main_tasks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -20689,7 +20756,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `section_tasks`
 --
 ALTER TABLE `section_tasks`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `shift`
@@ -20707,13 +20774,13 @@ ALTER TABLE `stations`
 -- AUTO_INCREMENT for table `task_attachments`
 --
 ALTER TABLE `task_attachments`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
@@ -20742,7 +20809,8 @@ ALTER TABLE `equip`
 -- Constraints for table `main_alarm`
 --
 ALTER TABLE `main_alarm`
-  ADD CONSTRAINT `main_alarm_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`);
+  ADD CONSTRAINT `main_alarm_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`),
+  ADD CONSTRAINT `table_name_previous_department_id_foreign` FOREIGN KEY (`previous_department_id`) REFERENCES `departments` (`id`);
 
 --
 -- Constraints for table `main_tasks`
@@ -20761,7 +20829,7 @@ ALTER TABLE `section_tasks`
   ADD CONSTRAINT `section_tasks_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`),
   ADD CONSTRAINT `section_tasks_eng_id_foreign` FOREIGN KEY (`eng_id`) REFERENCES `engineers` (`id`),
   ADD CONSTRAINT `section_tasks_main_tasks_id_foreign` FOREIGN KEY (`main_tasks_id`) REFERENCES `main_tasks` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `section_tasks_previous_task_id_foreign` FOREIGN KEY (`previous_task_id`) REFERENCES `section_tasks` (`id`),
+  ADD CONSTRAINT `section_tasks_previous_department_id_foreign` FOREIGN KEY (`previous_department_id`) REFERENCES `departments` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `section_tasks_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
