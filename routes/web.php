@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\EngineersController;
+use App\Http\Controllers\UserController;
 use App\Http\Livewire\About;
 use App\Http\Livewire\Accordion;
 use App\Http\Livewire\Alerts;
@@ -296,4 +297,5 @@ Route::get('/archive/search', [DashBoardController::class, 'searchArchive'])->na
 Route::get('/engineer/{id}/edit', [EngineersController::class, 'edit'])->name('engineer.edit');
 Route::post('/engineer/update/{id}', [EngineersController::class, 'update'])->name('engineer.update');
 Route::get('/logout2', [EngineersController::class, 'logout'])->name('engineer.logout');
+Route::get('/update/user/{id}', [UserController::class, 'update'])->name('user.update');
 require __DIR__ . '/auth.php';

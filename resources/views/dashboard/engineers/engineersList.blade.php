@@ -100,10 +100,30 @@
                                         data-bs-original-title="edit">
                                         <i class="las la-pen"></i>
                                     </a>
+                                    @if($engineer->user->role->title == 'Admin')
+
+                                    <a href="{{route('user.update',['id'=>$engineer->user->id])}} "
+                                        class="btn btn-sm btn-warning " data-bs-toggle="tooltip" title=""
+                                        data-bs-original-title="delete admin">
+                                        <i class="fa fa-user-times"></i>
+
+                                    </a>
+                                    @else
+                                    <a href="{{route('user.update',['id'=>$engineer->user->id])}} "
+                                        class="btn btn-sm btn-outline-warning " data-bs-toggle="tooltip" title=""
+                                        data-bs-original-title="set admin">
+                                        <i class="fa fa-user-plus"></i>
+
+                                    </a>
+
+                                    @endif
+
                                     <a href="javascript:void(0);" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
                                         title="" data-bs-original-title="delete">
                                         <i class="las la-trash"></i>
+
                                     </a>
+
                                 </td>
                             </tr>
                             @endforeach
