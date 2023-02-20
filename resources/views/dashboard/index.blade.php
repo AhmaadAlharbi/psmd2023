@@ -139,67 +139,52 @@
 
 <!-- row -->
 <div class="row">
-    <div class="col-12 col-sm-12 col-lg-6 col-xl-3">
-        @foreach($pendingTasks as $task)
+    @foreach($pendingTasks as $task)
+
+    <div class="col-12 col-sm-12 col-lg-6 col-xl-3  overflow-x-auto">
         <div class="card card-danger">
-
-            <div class="card-body  ">
-                <ul class="list-group   text-center">
-                    <li class="list-group-item bg-danger-gradient text-white"> Task # {{$task->id}} </li>
-                    <li class="list-group-item ">{{$task->created_at}}</li>
-                    <li class="list-group-item "> <strong>Station<br> </strong> {{$task->station->SSNAME}}
-                    </li>
-                    <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
-                    <li class="list-group-item"><strong>Equip <br></strong>{{$task->equip_number}}</li>
-
-                    <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->problem}}
-                    </li>
-                    <a class="" href="{{route('dashboard.engineerProfile',['eng_id'=>$task->eng_id])}}">
-                        <li class="list-group-item text-dark bg-light"><strong>Engineer
-                                <br></strong>{{$task->engineer->name}}
+            <div class="card-body">
+                <ul class="list-group text-center">
+                    <li class="list-group-item bg-danger-gradient text-white">Task #{{$task->id}}</li>
+                    <li class="list-group-item">{{$task->created_at}}</li>
+                    <li class="list-group-item"><strong>Station</strong><br>{{$task->station->SSNAME}}</li>
+                    <li class="list-group-item"><strong>Main Alarm</strong><br>{{$task->main_alarm->name}}</li>
+                    <li class="list-group-item"><strong>Equip</strong><br>{{$task->equip_number}}</li>
+                    <li class="list-group-item"><strong>Nature of fault</strong><br>{{$task->problem}}</li>
+                    <a href="{{route('dashboard.engineerProfile', ['eng_id' => $task->eng_id])}}">
+                        <li class="list-group-item text-dark bg-light">
+                            <strong>Engineer</strong><br>{{$task->engineer->name}}
                         </li>
                     </a>
                 </ul>
             </div>
             <div class="card-footer">
-
-                <button data-bs-toggle="dropdown" class="btn btn-danger btn-block"></i>العمليات <i
-                        class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
-                <div class="dropdown-menu">
-                    <a href="{{route('dashboard.editTask',['id'=>$task->id])}}" class="dropdown-item">تعديل</a>
-                    <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary dropdown-item">Engineer
-                        report</a>
-                </div><!-- dropdown-menu -->
-
+                <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">العمليات <i
+                            class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{route('dashboard.editTask', ['id' => $task->id])}}">تعديل</a>
+                        <a class="dropdown-item btn btn-outline-secondary"
+                            href="/engineer-task-page/{{$task->id}}">Engineer report</a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        @endforeach
-        @empty($pendingTasksCount)
-        <div class="card card-danger">
-
-            <div class="card-body  ">
-                <ul class="list-group   text-center">
-                    <li class="list-group-item bg-danger-gradient text-white"> Task </li>
-
-                    <li class="list-group-item"><strong>Nothing to view<br></strong>
-                        <a href="add-task" class="btn btn-outline-danger mt-3">Add a new task</a>
-
-                    </li>
 
 
-                </ul>
-            </div>
 
-        </div>
-        @endempty
-
-        {{ $pendingTasks->onEachSide(5)->links() }}
 
     </div>
+    @endforeach
+    <div class="d-flex flex-wrap justify-content-between">
+        <nav class="pagination">
+            {{ $pendingTasks->links() }}
+        </nav>
+    </div>
 
-
-    <div class="col-xl-5 col-md-12 col-lg-6">
+    <div class="col-xl-12 col-md-12 col-lg-6">
         <div class="card border ">
 
             @foreach($completedTasks as $task)
@@ -252,51 +237,43 @@
             </div>
             @endforeach
             @empty($completedTasks)
-d
+            d
             @endempty
         </div>
         {{ $completedTasks->links() }}
 
 
     </div>
-    <div class="col-xl-4">
-        <div class="card card-dark">
-
-            <div class="card-body  ">
-                <div class="chartjs-wrapper-demo">
-                    <canvas id="chartBar4"></canvas>
-                </div>
-                </ul>
-            </div>
+</div>
 
 
-        </div>
-    </div>
-    <!-- row closed -->
 
-    @endsection
+</div>
+<!-- row closed -->
 
-    @section('scripts')
-    <script src="{{asset('assets/js/index.js')}}"></script>
-    <!--Internal Counters -->
-    <script src="{{asset('assets/plugins/counters/waypoints.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/counters/counterup.min.js')}}"></script>
+@endsection
 
-    <!--Internal Time Counter -->
-    <script src="{{asset('assets/plugins/counters/jquery.missofis-countdown.js')}}"></script>
-    <script src="{{asset('assets/plugins/counters/counter.js')}}"></script>
+@section('scripts')
+<script src="{{asset('assets/js/index.js')}}"></script>
+<!--Internal Counters -->
+<script src="{{asset('assets/plugins/counters/waypoints.min.js')}}"></script>
+<script src="{{asset('assets/plugins/counters/counterup.min.js')}}"></script>
 
-    <!--Internal  Chart.bundle js -->
-    <script src="{{asset('assets/plugins/chart.js/Chart.bundle.min.js')}}"></script>
+<!--Internal Time Counter -->
+<script src="{{asset('assets/plugins/counters/jquery.missofis-countdown.js')}}"></script>
+<script src="{{asset('assets/plugins/counters/counter.js')}}"></script>
 
-    <!-- Internal Chartjs js -->
-    <script src="{{asset('assets/js/chart.chartjs.js')}}"></script>
-    <script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
+<!--Internal  Chart.bundle js -->
+<script src="{{asset('assets/plugins/chart.js/Chart.bundle.min.js')}}"></script>
+
+<!-- Internal Chartjs js -->
+<script src="{{asset('assets/js/chart.chartjs.js')}}"></script>
+<script src="{{asset('assets/plugins/select2/js/select2.min.js')}}"></script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
+<script>
     var ctx = document.getElementById('chartBar4').getContext('2d');
     var myChart = new Chart(ctx, {
     type: 'bar',
@@ -334,9 +311,9 @@ d
         }
     }
 });
-    </script>
-    <script>
-        $(document).ready(function() {
+</script>
+<script>
+    $(document).ready(function() {
             @if(session('success'))
                 Swal.fire({
                     icon: 'success',
@@ -345,6 +322,6 @@ d
                 });
             @endif
         });
-    </script>
+</script>
 
-    @endsection
+@endsection
