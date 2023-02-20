@@ -298,4 +298,6 @@ Route::get('/engineer/{id}/edit', [EngineersController::class, 'edit'])->name('e
 Route::post('/engineer/update/{id}', [EngineersController::class, 'update'])->name('engineer.update');
 Route::get('/logout2', [EngineersController::class, 'logout'])->name('engineer.logout');
 Route::get('/update/user/{id}', [UserController::class, 'update'])->name('user.update');
+Route::get('engineers-list/update/{id}', [EngineersController::class, 'toggleEngineer'])->name('engineerList.toggle');
+Route::get('/users-list', [UserController::class, 'usersList'])->name('dashboard.usersList');
 require __DIR__ . '/auth.php';

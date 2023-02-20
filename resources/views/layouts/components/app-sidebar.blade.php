@@ -78,6 +78,7 @@
 							class="angle fe fe-chevron-down"></i></a>
 					<ul class="slide-menu">
 						<li class="side-menu__label1"><a href="javascript:void(0);">Charts</a></li>
+						<li><a class="slide-item" href="{{route('dashboard.usersList')}}">جدول الموظفين </a></li>
 						<li><a class="slide-item" href="{{route('dashboard.engineersList')}}">جدول المهندسين </a></li>
 					</ul>
 				</li>

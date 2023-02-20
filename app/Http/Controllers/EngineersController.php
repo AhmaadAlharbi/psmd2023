@@ -102,4 +102,24 @@ class EngineersController extends Controller
         Auth::logout();
         return redirect('/');
     }
+    public function toggleEngineer($id)
+    {
+        $user = User::findOrFail($id);
+        $engineer = $user->engineer;
+
+        if ($engineer && $engineer->exists()) {
+            // Set department_id to null instead of deleting the record
+            $engineer->update(['department_id' => null]);
+
+            return redirect()->back()->with('success', 'تم إخفاء المهندس');
+        } else {
+            Engineer::create([
+                'user_id' => $user->id,
+                'department_id' => Auth::user()->department_id,
+                // other engineer fields here
+            ]);
+
+            return redirect()->back()->with('success', 'تم إضافة المهندس');
+        }
+    }
 }

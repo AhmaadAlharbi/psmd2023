@@ -52,7 +52,7 @@
 
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">جدول المهندسين</h3>
+                <h3 class="card-title">جدول الموظفين</h3>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -62,8 +62,7 @@
                             <tr>
                                 <th class="wd-lg-8p"><span>#</span></th>
                                 <th class="wd-lg-20p"><span>الاسم</span></th>
-                                <th class="wd-lg-20p"><span>المنطقة</span></th>
-                                <th class="wd-lg-20p"><span>الفترة</span></th>
+                                <th class="wd-lg-20p"><span>القسم</span></th>
                                 <th class="wd-lg-20p"><span>Status</span></th>
                                 <th class="wd-lg-20p">Action</th>
                             </tr>
@@ -72,21 +71,18 @@
                             @php
                             $i=0
                             @endphp
-                            @foreach($engineers as $engineer)
+                            @foreach($users as $user)
                             <tr>
                                 <td>
                                     {{++$i}}
                                 </td>
                                 <td> <a
-                                        href="{{route('dashboard.engineerProfile',['eng_id'=>$engineer->user_id])}}">{{$engineer->user->name}}</a>
+                                        href="{{route('dashboard.engineerProfile',['eng_id'=>$user->id])}}">{{$user->name}}</a>
                                 </td>
                                 <td>
-                                    {{$engineer->area == 1 ? ' المنطقة الشمالية' : 'المنطقة الجنوبية'}}
+                                    {{$user->department->name}}
                                 </td>
-                                <td>
-                                    {{$engineer->shift == 0 ? ' صباحاً ' : 'مساءً'}}
 
-                                </td>
                                 <td class="text-center">
                                     <span class="label text-success d-flex ">
                                         <div class="dot-label bg-success mx-3"></div><span class="mt-1">active</span>
@@ -95,21 +91,21 @@
 
                                 <td>
 
-                                    <a href="{{route('engineer.edit',['id'=>$engineer->id])}} "
+                                    <a href="{{route('engineer.edit',['id'=>$user->id])}} "
                                         class="btn btn-sm btn-info btn-b" data-bs-toggle="tooltip" title=""
                                         data-bs-original-title="edit">
                                         <i class="las la-pen"></i>
                                     </a>
-                                    @if($engineer->user->role->title == 'Admin')
+                                    @if($user->role->title == 'Admin')
 
-                                    <a href="{{route('user.update',['id'=>$engineer->user->id])}} "
+                                    <a href="{{route('user.update',['id'=>$user->id])}} "
                                         class="btn btn-sm btn-warning " data-bs-toggle="tooltip" title=""
                                         data-bs-original-title="delete admin">
                                         <i class="fa fa-user-times"></i>
-
                                     </a>
+
                                     @else
-                                    <a href="{{route('user.update',['id'=>$engineer->user->id])}} "
+                                    <a href="{{route('user.update',['id'=>$user->id])}} "
                                         class="btn btn-sm btn-outline-warning " data-bs-toggle="tooltip" title=""
                                         data-bs-original-title="set admin">
                                         <i class="fa fa-user-plus"></i>
@@ -117,10 +113,24 @@
                                     </a>
 
                                     @endif
+                                    @if($user->engineer)
+                                    <a href="{{route('engineerList.toggle',['id'=>$user->id])}} "
+                                        class="btn btn-sm btn-success " data-bs-toggle="tooltip" title=""
+                                        data-bs-original-title="unset engineer">
+                                        <i class="fa fa-user-times"></i>
 
-                                    <a href="{{route('engineerList.toggle',['id'=>$engineer->user->id])}}"
-                                        class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title=""
-                                        data-bs-original-title="delete">
+                                    </a>
+                                    @else
+                                    <a href="{{route('engineerList.toggle',['id'=>$user->id])}} "
+                                        class="btn btn-sm btn-outline-success " data-bs-toggle="tooltip" title=""
+                                        data-bs-original-title="set engineer">
+                                        <i class="fa fa-user-plus"></i>
+
+                                    </a>
+                                    @endif
+
+                                    <a href="javascript:void(0);" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
+                                        title="" data-bs-original-title="delete">
                                         <i class="las la-trash"></i>
 
                                     </a>

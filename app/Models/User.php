@@ -59,7 +59,7 @@ class User extends Authenticatable
 
     public function engineer()
     {
-        return $this->belongsTo(Engineer::class, 'eng_id');
+        return $this->hasOne(Engineer::class);
     }
     public function department()
     {
