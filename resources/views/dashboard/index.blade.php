@@ -193,7 +193,7 @@
 
                 <div class="card-body  ">
                     <ul class="list-group   text-center">
-                        <li class="list-group-item bg-success text-white">Task # {{$task->main_task->id}} </li>
+                        <li class="list-group-item bg-success py-3 text-white">Task # {{$task->main_task->id}} </li>
 
                         <li class="list-group-item " style="font-size:18px; font-wieght:bold;">
                             Station :
@@ -227,8 +227,8 @@
                         class="btn btn-info  button-icon "><i class="si si-notebook px-2" data-bs-toggle="tooltip"
                             title="" data-bs-original-title="si-notebook" aria-label="si-notebook"></i>Report</a> --}}
                     <a href="{{route('dashboard.reportPage',['id'=>$task->main_task->id])}}"
-                        class="btn btn-success btn-lg btn-block"><i class="si si-notebook px-2" data-bs-toggle="tooltip"
-                            title="" data-bs-original-title="si-notebook"
+                        class="btn btn-secondary btn-lg btn-block"><i class="si si-notebook px-2"
+                            data-bs-toggle="tooltip" title="" data-bs-original-title="si-notebook"
                             aria-label="si-notebook"></i>Report</a></button>
                     {{-- <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary">Engineer
                         report</a> --}}

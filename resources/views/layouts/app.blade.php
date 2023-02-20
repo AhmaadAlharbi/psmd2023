@@ -39,7 +39,12 @@
 
             @include('layouts.components.app-header1')
 
+            @if(Auth::user()->role->title == 'Admin')
             @include('layouts.components.app-sidebar')
+            @else
+            @include('layouts.components.app-sidebar-user')
+
+            @endif
 
         </div>
 
