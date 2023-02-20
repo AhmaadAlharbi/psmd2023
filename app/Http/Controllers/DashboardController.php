@@ -33,24 +33,84 @@ class DashBoardController extends Controller
         $completedTasksCount = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->count();
         $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->latest()->paginate(2, ['*'], 'page2');
         $mutualTasks = MainTask::where('previous_department_id', Auth::user()->department_id)->count();
-        $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        $taskCounts = [];
-        $pendingTaskCounts = [];
-        $completedTaskCounts = [];
-        foreach ($months as $month) {
-            $taskCounts[] = MainTask::where('department_id', Auth::user()->department_id)
-                ->whereMonth('created_at', date('m', strtotime($month)))
-                ->count();
-            $pendingTaskCounts[] = MainTask::where('department_id', Auth::user()->department_id)
-                ->whereMonth('created_at', date('m', strtotime($month)))
-                ->where('status', 'pending')
-                ->count();
-            $completedTaskCounts[] = MainTask::where('department_id', Auth::user()->department_id)
-                ->whereMonth('created_at', date('m', strtotime($month)))
-                ->where('status', 'completed')
-                ->count();
+
+        return view('dashboard.index', compact('sectionTasksCount', 'mutualTasks', 'pendingTasksCount', 'pendingTasks', 'completedTasks', 'engineersCount', 'completedTasksCount'));
+    }
+
+    // return MainTask::with('station')->whereHas('station', function ($query) {
+    //     $query->where('control', 'TOWN CONTROL CENTER');
+    // })->get();
+    // return  $control = MainTask::find(1)->station->control;
+    // return  $station = Station::find(1)->main_task;
+    // return Role::find(2)->user;
+    // return Auth::user()->role->title;
+    public function indexControl($control)
+    {
+        // Switch statement to set the control name based on the input
+        switch ($control) {
+            case 'JAHRA CONTROL CENTER':
+                $controlName = 'JAHRA CONTROL CENTER';
+                break;
+            case 'SHUAIBA CONTROL CENTER':
+                $controlName = 'SHUAIBA CONTROL CENTER';
+                break;
+            case 'NATIONAL CONTROL CENTER':
+                $controlName = 'NATIONAL CONTROL CENTER';
+                break;
+            case 'TOWN CONTROL CENTER':
+                $controlName = 'TOWN CONTROL CENTER';
+                break;
+            case 'JABRIYA CONTROL CENTER':
+                $controlName = 'JABRIYA CONTROL CENTER';
+                break;
+            default:
+                // If the input is not valid, return a 404 error
+                abort(404);
+                break;
         }
-        return view('dashboard.index', compact('sectionTasksCount', 'mutualTasks', 'pendingTasksCount', 'taskCounts', 'pendingTaskCounts', 'pendingTasks', 'completedTaskCounts', 'completedTasks', 'engineersCount', 'completedTasksCount'));
+
+        // Count the number of engineers in the current user's department
+        $engineersCount = Engineer::where('department_id', Auth::user()->department_id)->count();
+
+        // Count the number of section tasks in the current user's department
+        $sectionTasksCount = MainTask::where('department_id', Auth::user()->department_id)->count();
+
+        // Count the number of pending tasks in the current user's department and control
+        $pendingTasksCount = MainTask::where('department_id', Auth::user()->department_id)
+            ->where('status', 'pending')
+            ->whereHas('station', function ($query) use ($control) {
+                $query->where('control', $control);
+            })->count();
+
+        // Get a list of pending tasks in the current user's department and control
+        $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)
+            ->where('status', 'pending')
+            ->whereHas('station', function ($query) use ($controlName) {
+                $query->where('control', $controlName);
+            })
+            ->latest()
+            ->paginate(4, ['*'], 'page2');
+
+        // Count the number of completed tasks in the current user's department and control
+        $completedTasksCount = SectionTask::where('department_id', Auth::user()->department_id)
+            ->where('status', 'completed')
+            ->whereHas('main_task.station', function ($query) use ($controlName) {
+                $query->where('control', $controlName);
+            })->count();
+
+        // Get a list of completed tasks in the current user's department and control
+        $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)
+            ->where('status', 'completed')
+            ->whereHas('main_task.station', function ($query) use ($controlName) {
+                $query->where('control', $controlName);
+            })
+            ->latest()
+            ->paginate(2, ['*'], 'page2');
+
+        // Count the number of mutual tasks (i.e. tasks that were transferred from another department)
+        $mutualTasks = MainTask::where('previous_department_id', Auth::user()->department_id)->count();
+
+        return view('dashboard.index', compact('sectionTasksCount', 'mutualTasks', 'pendingTasksCount', 'pendingTasks', 'completedTasks', 'engineersCount', 'completedTasksCount'));
     }
     public function userIndex()
     {
@@ -89,10 +149,10 @@ class DashBoardController extends Controller
             'status' => 'completed',
             'engineer-notes' => $request->notes,
             'user_id' => Auth::user()->id,
-            'previous_task_id' => null,
+            'previous_department_id' => null,
             'transfer_date_time' => null,
         ]);
-        return redirect("/home");
+        return redirect("/dashboard/user");
     }
     public function reportPage($id)
     {
