@@ -122,6 +122,8 @@
                     المنجزة</a>
                 <a class="nav-link {{ Route::is('dashboard.showTasks') && request()->status == 'completed' ? 'active' : '' }}"
                     href="{{route('dashboard.showTasks',['status'=>'completed'])}}">المهمات المنجزة</a>
+                <a class="nav-link {{ Route::is('dashboard.showTasks') && request()->status == 'mutual-tasks' ? 'active' : '' }}"
+                    href="{{route('dashboard.showTasks',['status'=>'mutual-tasks'])}}">المهمات المشتركة</a>
             </nav>
         </div>
     </div>
@@ -146,11 +148,13 @@
 
                     <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->problem}}
                     </li>
+                    @isset($task->eng_id)
                     <a class="" href="{{route('dashboard.engineerProfile',['eng_id'=>$task->eng_id])}}">
                         <li class="list-group-item bg-light text-dark"><strong>Engineer <br></strong>
                             {{$task->engineer->name}}
                         </li>
                     </a>
+                    @endisset
                 </ul>
             </div>
             <div class="card-footer">

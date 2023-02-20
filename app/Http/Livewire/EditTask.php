@@ -67,7 +67,7 @@ class EditTask extends Component
         $this->stationDetails = Station::where('id',  $this->task->station_id)->first();
         $this->selectedVoltage = $this->task->voltage_level;
         $this->work_type = $this->task->work_type;
-        $this->main_alarm = $this->task->main_alarm->name;
+        $this->main_alarm = $this->task->main_alarm->id;
         $this->selectedEngineer = $this->task->engineer->id;
         $this->area = Engineer::where('user_id', $this->task->eng_id)->value('area');
         $this->engineers = Engineer::where('department_id', 2)->where('area', $this->area)->get();
@@ -279,19 +279,27 @@ class EditTask extends Component
             $equip_number = $this->selectedTransformer;
         }
 
+        //check department
+        if ($this->selectedDepartment !== Auth::user()->department_id) {
+            $previous_department_id = Auth::user()->department_id;
+            $this->selectedEngineer = null;
+        } else {
+            $previous_department_id = null;
+        }
+
         $this->task->update([
             'station_id' =>  $this->station_id,
             'voltage_level' => $this->selectedVoltage,
             'equip_number' => $equip_number,
-            'date' => $this->date,
             'problem' => $this->problem,
             'work_type' => $this->work_type,
             'notes' => $this->notes,
             'status' => 'pending',
-            'department_id' => Auth::user()->department_id,
+            'department_id' => $this->selectedDepartment,
             'main_alarm_id' => $this->main_alarm,
             'user_id' => Auth::user()->id,
             'eng_id' => $this->selectedEngineer,
+            'previous_department_id' => $previous_department_id,
         ]);
         $main_task_id = $this->task->id;
         $section_task = SectionTask::create([
