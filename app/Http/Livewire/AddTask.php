@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Notification;
+
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Station;
@@ -17,6 +19,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\TaskReport;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -304,6 +307,11 @@ class AddTask extends Component
             $attachments->user_id = Auth::user()->id;
             $attachments->save();
         }
+        $user = User::where('email', $this->engineerEmail)->first();
+
+        Notification::send($user, new TaskReport($main_task, $this->photos));
+
+
         session()->flash('success', 'تم الاضافة بنجاح');
 
         return redirect("/dashboard/admin");
