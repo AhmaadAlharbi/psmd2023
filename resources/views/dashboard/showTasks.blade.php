@@ -158,13 +158,37 @@
                 </ul>
             </div>
             <div class="card-footer">
-                <button class="btn {{$task->status =='pending'  ? 'btn-danger' : 'btn-success'}}">More
-                    information</button>
+                {{-- <button class="btn {{$task->status =='pending'  ? 'btn-danger' : 'btn-success'}}">More
+                    information</button> --}}
+                @if(Auth::user()->role->title == 'Admin')
+                <div class="row">
+
+                    @if($task->status !== 'completed')
+                    <div class="col">
+                        <a class="btn btn-dark" href="{{route('dashboard.editTask', ['id' => $task->id])}}">تعديل</a>
+                    </div>
+                    <div class="col">
+
+                        <form method="post" action="{{route('task.destroy', ['id' => $task->id])}}"
+                            id="delete-form-{{ $task->id }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" onclick="deleteRecord({{ $task->id }})"
+                                class="btn btn-outline-danger">حذف المهمة</button>
+
+                        </form>
+                    </div>
+                    @endif
+
+                </div>
+                @endif
                 @if($task->status === 'completed')
-                <a href="{{route('dashboard.reportPage',['id'=>$task->id])}}" type="button"
-                    class="btn btn-outline-success  button-icon "><i class="si si-notebook px-2"
-                        data-bs-toggle="tooltip" title="" data-bs-original-title="si-notebook"
-                        aria-label="si-notebook"></i>Report</a>
+                <div class="col">
+                    <a href="{{route('dashboard.reportPage',['id'=>$task->id])}}" type="button"
+                        class="btn btn-outline-success  button-icon "><i class="si si-notebook px-2"
+                            data-bs-toggle="tooltip" title="" data-bs-original-title="si-notebook"
+                            aria-label="si-notebook"></i>Report</a>
+                </div>
                 @endif
 
             </div>
@@ -181,7 +205,39 @@
 @endsection
 
 @section('scripts')
+<!-- Internal Select2 js-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    $(document).ready(function() {
+                @if(session('success'))
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: '{{ session('success') }}'
+                    });
+                @endif
+            });
+</script>
+//delete tasks
+<script>
+    function deleteRecord(id) {
+          Swal.fire({
+            title: 'هل أنت متأكد من خيار الحذف؟',
+            text: 'يرجى تحديد خيارك بالأسفل',
+            icon: 'تحذير',
+            showCancelButton: true,
+            confirmButtonText: 'نعم ، احذف المهمة',
+            cancelButtonText: 'إلغاء',
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              document.getElementById('delete-form-' + id).submit();
+            }
+          });
+        }
+</script>
 
 
 @endsection

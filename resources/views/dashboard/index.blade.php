@@ -150,7 +150,7 @@
     @foreach($pendingTasks as $task)
 
     <div class="col-12 col-sm-12 col-lg-6 col-xl-3  overflow-x-auto">
-        <div class="card card-danger">
+        <div class="card card-danger h-100">
             <div class="card-body">
                 <ul class="list-group text-center">
                     <li class="list-group-item bg-danger-gradient text-white">Task #{{$task->id}}</li>
@@ -173,6 +173,14 @@
                             class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{route('dashboard.editTask', ['id' => $task->id])}}">تعديل</a>
+                        <form method="post" action="{{route('task.destroy', ['id' => $task->id])}}"
+                            id="delete-form-{{ $task->id }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" onclick="deleteRecord({{ $task->id }})"
+                                class="btn btn-light">Delete</button>
+
+                        </form>
                         <a class="dropdown-item btn btn-outline-secondary"
                             href="/engineer-task-page/{{$task->id}}">Engineer report</a>
                     </div>
@@ -235,9 +243,16 @@
                         class="btn btn-info  button-icon "><i class="si si-notebook px-2" data-bs-toggle="tooltip"
                             title="" data-bs-original-title="si-notebook" aria-label="si-notebook"></i>Report</a> --}}
                     <a href="{{route('dashboard.reportPage',['id'=>$task->main_task->id])}}"
-                        class="btn btn-secondary btn-lg btn-block"><i class="si si-notebook px-2"
-                            data-bs-toggle="tooltip" title="" data-bs-original-title="si-notebook"
-                            aria-label="si-notebook"></i>Report</a></button>
+                        class="btn btn-secondary"><i class="si si-notebook px-2" data-bs-toggle="tooltip" title=""
+                            data-bs-original-title="si-notebook" aria-label="si-notebook"></i>Report</a></button>
+                    {{-- <form method="post" action="{{route('sectionTasks.destroy', ['id' => $task->id])}}"
+                        id="delete-form-{{ $task->id }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" onclick="deleteRecord({{ $task->id }})"
+                            class="btn btn-danger">Delete</button>
+
+                    </form> --}}
                     {{-- <a href="/engineer-task-page/{{$task->id}}" class="btn btn-outline-secondary">Engineer
                         report</a> --}}
 
@@ -286,6 +301,25 @@
                 });
             @endif
         });
+</script>
+//delete tasks
+<script>
+    function deleteRecord(id) {
+      Swal.fire({
+        title: 'هل أنت متأكد من خيار الحذف؟',
+        text: 'يرجى تحديد خيارك بالأسفل',
+        icon: 'تحذير',
+        showCancelButton: true,
+        confirmButtonText: 'نعم ، احذف المهمة',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('delete-form-' + id).submit();
+        }
+      });
+    }
 </script>
 
 @endsection

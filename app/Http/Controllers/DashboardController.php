@@ -295,4 +295,26 @@ class DashBoardController extends Controller
         $tasks = $query->paginate(6);
         return view('dashboard.archive', compact('tasks', 'stations', 'engineers'));
     }
+    public function destroy($id)
+    {
+        $task = MainTask::findOrFail($id);
+        if ($task) {
+            $task->delete();
+            return redirect()->back()->with('success', 'تم الحذق بنجاح');
+        }
+        return redirect()->back()->with('error', 'Record not found.');
+    }
+    public function destroySectionTasks($id)
+    {
+        $task = SectionTask::findOrFail($id);
+        $mainTask =  $task->main_task;
+        $mainTask->update([
+            'status' => 'pending'
+        ]);
+        if ($task) {
+            $task->delete();
+            return redirect()->back()->with('success', 'تم الحذق بنجاح');
+        }
+        return redirect()->back()->with('error', 'Record not found.');
+    }
 }

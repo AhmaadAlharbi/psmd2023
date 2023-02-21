@@ -30,6 +30,8 @@ class CreateMainTasksTable extends Migration
             $table->unsignedBigInteger('department_id')->nullable();
             $table->unsignedBigInteger('main_alarm_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
             $table->foreign('station_id')
                 ->references('id')
                 ->on('stations');
