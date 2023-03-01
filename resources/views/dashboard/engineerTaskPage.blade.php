@@ -44,7 +44,6 @@
     </div>
 </div>
 <!-- breadcrumb -->
-
 <!-- row -->
 <div class="test row row-sm " id="print">
     <div class="col-md-12 col-xl-12 ">
@@ -70,16 +69,16 @@
                             <p class="text-center">Primary substation maintenance department</p>
 
                             <h2 class="text-center "> Trouble shooting Report</h2>
-                            <h5 class="text-center m-1"><ins>Ref.No: {{ $tasks->main_task->refNum }}</ins></h5>
+                            <h5 class="text-center m-1"><ins>Ref.No: {{ $tasks->refNum }}</ins></h5>
 
                         </div>
 
                         {{-- --}}
                         <div class="mt-3">
                             <h3 class=" text-center  py-4 px-3 bg-secondary text-light">
-                                {{ $tasks->main_task->station->fullName }}<br>{{ $tasks->main_task->station->control }}
+                                {{ $tasks->station->fullName }}<br>{{ $tasks->station->control }}
                                 -
-                                {{ $tasks->main_task->voltage_level }}
+                                {{ $tasks->voltage_level }}
                             </h3>
 
                         </div>
@@ -89,12 +88,12 @@
 
                                     <h1
                                         class="d-none d-sm-flex justify-content-center align-items-center text-center mt-2 display-4 p-5 h-100 bg-dark text-white">
-                                        {{ $tasks->main_task->station->SSNAME }}
+                                        {{ $tasks->station->SSNAME }}
                                     </h1>
                                     <h1 style="font-size:44px;"
                                         class="d-block 
                              justify-content-center align-items-center text-center mt-2  p-5 h-100 bg-dark text-white d-sm-none">
-                                        {{ $tasks->main_task->station->SSNAME }}
+                                        {{ $tasks->station->SSNAME }}
                                     </h1>
                                 </div>
 
@@ -113,8 +112,8 @@
 
                                         <tbody>
                                             <tr>
-                                                <td>{{ $tasks->main_task->station->COMPANY_MAKE }}</td>
-                                                <td>{{ $tasks->main_task->station->Contract_No }}</td>
+                                                <td>{{ $tasks->station->COMPANY_MAKE }}</td>
+                                                <td>{{ $tasks->station->Contract_No }}</td>
 
                                             </tr>
                                         </tbody>
@@ -126,17 +125,17 @@
                                         </tr>
                                         <tbody>
                                             <tr>
-                                                <td>{{ $tasks->main_task->station->COMMISIONING_DATE }}</td>
+                                                <td>{{ $tasks->station->COMMISIONING_DATE }}</td>
                                                 @php
                                                 $todayDate = date('Y-m-d');
                                                 @endphp
                                                 @if (isset($tasks->station->pm) && $todayDate < $tasks->station->pm)
                                                     <td class="bgsuccess- text-white">
-                                                        {{ $tasks->main_task->station->pm }}
+                                                        {{ $tasks->station->pm }}
                                                     </td>
                                                     @else
                                                     <td class="bg-danger text-white">
-                                                        {{ $tasks->main_task->station->pm }}
+                                                        {{ $tasks->station->pm }}
                                                     </td>
                                                     @endif
 
@@ -159,7 +158,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{{ $tasks->main_task->station->COMPANY_MAKE }}</td>
+                                                <td>{{ $tasks->station->COMPANY_MAKE }}</td>
 
                                             </tr>
                                         </tbody>
@@ -169,7 +168,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{{ $tasks->main_task->station->Contract_No }}</td>
+                                                <td>{{ $tasks->station->Contract_No }}</td>
 
                                             </tr>
                                         </tbody>
@@ -179,7 +178,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{{ $tasks->main_task->station->COMMISIONING_DATE }}</td>
+                                                <td>{{ $tasks->station->COMMISIONING_DATE }}</td>
 
                                             </tr>
                                         </tbody>
@@ -194,11 +193,11 @@
                                                 @endphp
                                                 @if (isset($tasks->station->pm) && $todayDate < $tasks->station->pm)
                                                     <td class="bg-success text-white">
-                                                        {{ $tasks->main_task->station->pm }}
+                                                        {{ $tasks->station->pm }}
                                                     </td>
                                                     @else
                                                     <td class="bg-danger text-white">
-                                                        {{ $tasks->main_task->station->pm }}
+                                                        {{ $tasks->station->pm }}
                                                     </td>
                                                     @endif
 
@@ -211,9 +210,9 @@
                             <div
                                 class="d-block p-3 mb-2 mt-3 bg-white text-dark   d-flex flex-column align-items-start justify-content-start ">
                                 <h2>Main alarm</h2>
-                                <h4>{{ $tasks->main_task->main_alarm->name }}</h4>
+                                <h4>{{ $tasks->main_alarm->name }}</h4>
                                 <h2>Unit</h2>
-                                <h4>{{ $tasks->main_task->equip_number }}
+                                <h4>{{ $tasks->equip_number }}
                                 </h4>
                             </div>
 
@@ -228,13 +227,13 @@
                                 <h2 class="px-2 d-flex flex-column align-items-start justify-content-start">Nature of
                                     Fault</h2>
                                 <h4 class="px-2 d-flex flex-column align-items-start justify-content-start ">{{
-                                    $tasks->main_task->problem }}</h4>
+                                    $tasks->problem }}</h4>
                             </div>
                             <button type="button" class="btn d-flex align-items-end justify-content-end btn-lg btn-dark"
                                 data-toggle="modal" data-target="#exampleModal">
                                 Can not complete the task
                             </button>
-                            <form action="{{route('dashboard.submitEngineerReport',['id'=>$tasks->main_task->id])}}"
+                            <form action="{{route('dashboard.submitEngineerReport',['id'=>$tasks->id])}}"
                                 enctype="multipart/form-data" method="post" autocomplete="off">
                                 @csrf
                                 <div class="d-flex flex-column align-items-start justify-content-start my-2  text-dark">

@@ -127,10 +127,13 @@ class DashBoardController extends Controller
     }
     public function engineerTaskPage($id)
     {
-        $tasks = SectionTask::where('main_tasks_id', $id)->first();
+        $tasks = MainTask::where('id', $id)->first();
         $files = TaskAttachment::where('main_tasks_id', $id)->get();
         if (!$tasks) {
             abort(404);
+        }
+        if ($tasks->eng_id !== Auth::user()->id) {
+            return view('dashboard.unauthorized');
         }
         return view('dashboard.engineerTaskPage', compact('tasks', 'files'));
     }
