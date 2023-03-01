@@ -174,6 +174,7 @@
                     <option value="Installation">Installation</option>
                     <option value="other">other</option>
                 </select>
+
                 <label for="problem" class="control-label mt-4"> Nature of Fault</label>
                 <textarea list="problems" wire:model="problem" class="form-control " rows="3" name="problem"
                     id="problem"></textarea>
@@ -182,57 +183,14 @@
                 @error('photos.*') <span class="error">{{ $message }}</span> @enderror
 
                 <div id="attachment">
-                    {{-- <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                            data-height="70" />
-                    </div><br>
-                    <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/pn g"
-                            data-height="70" />
-                    </div><br>
-                    <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                            data-height="70" />
-                    </div><br> --}}
                     <input class="form-control form-control-lg" id="formFileLg" type="file" wire:model="photos"
                         multiple>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary" data-toggle="modal"
+                        <button type="submit" class="btn btn-danger  mt-3" data-toggle="modal"
                             data-target="#exampleModal">ارسال
                             البيانات</button>
                     </div>
                 </div>
-
-
-
-                <!-- <div class="col-sm-12 col-md-12">
-                    <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png" data-height="70" />
-                </div><br> -->
-                <br>
-                {{-- <div class="text-center mb-3">
-                    <button id="showAttachment" class="btn btn-outline-info">اضغط لإضافة المزيد من
-                        المرفقات</button>
-                    <button id="hideAttachment" class="btn d-none btn-outline-info">اضغط لإخفاء المزيد من
-                        المرفقات</button>
-                </div>
-                <div id="attachmentFile" class="d-none">
-                    <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                            data-height="70" />
-                    </div><br>
-                    <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                            data-height="70" />
-                    </div><br>
-                    <div class="col-sm-12 col-md-12">
-                        <input type="file" name="pic[]" class="dropify" accept=".pdf,.jpg, .png, image/jpeg, image/png"
-                            data-height="70" />
-                    </div><br>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModals">ارسال
-                        البيانات</button>
-                </div> --}}
             </div>
         </div>
     </form>

@@ -38,7 +38,7 @@
                 <div>
                     <div class="row m-5">
                         <div class="col-lg-6">
-                            <img src="{{URL::asset('assets/img/server.svg')}}" alt="">
+                            <img src="{{URL::asset('assets/img/update-task.jpg')}}" alt="">
 
                         </div>
 
