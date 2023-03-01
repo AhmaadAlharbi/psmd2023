@@ -156,14 +156,18 @@
                     <li class="list-group-item bg-danger-gradient text-white">Task #{{$task->id}}</li>
                     <li class="list-group-item">{{$task->created_at}}</li>
                     <li class="list-group-item"><strong>Station</strong><br>{{$task->station->SSNAME}}</li>
-                    <li class="list-group-item"><strong>Main Alarm</strong><br>{{$task->main_alarm->name}}</li>
+                    <li class="list-group-item"><strong>Main
+                            Alarm</strong><br>@isset($task->main_alarm->name){{$task->main_alarm->name}}@endisset</li>
                     <li class="list-group-item"><strong>Equip</strong><br>{{$task->equip_number}}</li>
                     <li class="list-group-item"><strong>Nature of fault</strong><br>{{$task->problem}}</li>
+                    @isset($task->engineer->name)
+
                     <a href="{{route('dashboard.engineerProfile', ['eng_id' => $task->eng_id])}}">
                         <li class="list-group-item text-dark bg-light">
-                            <strong>Engineer</strong><br>{{$task->engineer->name}}
+                            <strong>Engineer</strong><br>@isset($task->engineer->name){{$task->engineer->name}}@endisset
                         </li>
                     </a>
+                    @endisset
                 </ul>
             </div>
             <div class="card-footer">
@@ -181,8 +185,10 @@
                                 class="btn btn-light">Delete</button>
 
                         </form>
+                        @isset($task->engineer->name)
                         <a class="dropdown-item btn btn-outline-secondary"
                             href="/engineer-task-page/{{$task->id}}">Engineer report</a>
+                        @endisset
                     </div>
                 </div>
             </div>
@@ -219,9 +225,6 @@
                                 \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{
                                 \Carbon\Carbon::parse($task->created_at)->format('H:i') }}</span>
                         </li>
-                        <!-- <li class="list-group-item"><strong>Date <br></strong>{{ \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{ \Carbon\Carbon::parse($task->created_at)->format('H:i') }}
-                        </li> -->
-                        <!-- <li class="list-group-item bg-light"><strong>Main Alarm <br></strong>{{$task->main_task->main_alarm->name}}</li> -->
                         <li class="list-group-item " style="font-size:16px;"><strong>Nature of fault<br></strong>
                             {{$task->main_task->problem}}
                         </li>

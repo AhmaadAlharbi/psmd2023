@@ -67,10 +67,10 @@ class EditTask extends Component
         $this->stationDetails = Station::where('id',  $this->task->station_id)->first();
         $this->selectedVoltage = $this->task->voltage_level;
         $this->work_type = $this->task->work_type;
-        $this->main_alarm = $this->task->main_alarm->id;
-        $this->selectedEngineer = $this->task->engineer->id;
-        $this->area = Engineer::where('user_id', $this->task->eng_id)->value('area');
-        $this->engineers = Engineer::where('department_id', 2)->where('area', $this->area)->get();
+        $this->main_alarm = optional($this->task->main_alarm)->id;
+        $this->selectedEngineer = optional($this->task->engineer)->id;
+        $this->area = optional($this->task->engineer)->area ? $this->task->engineer->area : $this->setArea();
+        $this->engineers = Engineer::where('department_id', Auth::user()->department_id)->where('area', $this->area)->get();
         $this->problem = $this->task->problem;
         $this->notes = $this->task->notes;
         $this->voltage = Equip::where('station_id', $this->task->station->id)->distinct()->pluck('voltage_level');

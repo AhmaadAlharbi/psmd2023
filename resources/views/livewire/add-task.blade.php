@@ -11,10 +11,10 @@
 
         <div class="text-center ">
             <label for=" ssname">المهمة تتبع قسم</label>
-           
+
             <select name="department" wire:model="selectedDepartment" class="form-control">
                 <option selected value="{{Auth::user()->department_id}}">{{Auth::user()->department->name}}</option>
-                @foreach($departments  as $department)
+                @foreach($departments as $department)
                 <option value="{{$department->id}}">{{$department->name}}</option>
                 @endforeach
             </select>
@@ -36,11 +36,11 @@
                     @endforeach
             </datalist>
 
-            @error('selectedStation') <span class="error">{{ $message }}</span> @enderror
-
+            @error('selectedStation') <span class="error text-danger">{{ $message }}</span> @enderror
+            {{--
             <div class="invalid-feedback ">
                 <p class="h6">Please select the station from the list or contact admins to add a new station</p>
-            </div>
+            </div> --}}
             @isset($stationDetails)
             <div class="card bg-gray-100 border
         ">
@@ -97,19 +97,20 @@
                     <select wire:model="main_alarm" wire:change="getEquip" name="mainAlarm" id="main_alarm"
                         class="form-control">
                         <!--placeholder-->
-                        <option value="-">-</option>
+                        <option>-</option>
                         @foreach($main_alarms as $main_alarm)
                         <option value="{{$main_alarm->id}}">{{$main_alarm->name}}</option>
                         @endforeach
                         <option value="other">other</option>
                     </select>
-    
+
                     @if (!empty($voltage))
                     <label class="my-2">Voltage</label>
-                    <select wire:model="selectedVoltage" wire:change="getEquip" class="form-control mb-3" name="voltage_level" id="">
+                    <select wire:model="selectedVoltage" wire:change="getEquip" class="form-control mb-3"
+                        name="voltage_level" id="">
                         <option value="-1">Please select Voltage</option>
                         @foreach($voltage as $v)
-                            <option value="{{$v}}">{{$v}}</option>
+                        <option value="{{$v}}">{{$v}}</option>
                         @endforeach
                     </select>
                     <div class="col-12">
@@ -117,22 +118,25 @@
                         <select wire:model="selectedEquip" class="form-control mb-3" name="equip_number">
                             <option value="-1">Please select Equip</option>
                             @foreach($equip as $equipN)
-                                <option value="{{$equipN->equip_number}} - {{$equipN->equip_name}}" wire:change="$set('selectedEquip', '{{ $equipN->equip_name }}')">{{ $equipN->equip_number }} - {{ $equipN->equip_name }}</option>
+                            <option value="{{$equipN->equip_number}} - {{$equipN->equip_name}}"
+                                wire:change="$set('selectedEquip', '{{ $equipN->equip_name }}')">{{
+                                $equipN->equip_number }} - {{ $equipN->equip_name }}</option>
                             @endforeach
                         </select>
                     </div>
-                @elseif (!empty($transformers))
+                    @elseif (!empty($transformers))
                     <label class="my-2">Transformer</label>
                     <select wire:model="selectedTransformer" class="form-control mb-3" id="">
                         <option value="-1">Please select Transformer</option>
                         @foreach($transformers as $transformer)
-                            <option value="{{$transformer}}" wire:click="$set('selectedTransformer', '{{ $transformer }}')">{{ $transformer }}</option>
+                        <option value="{{$transformer}}" wire:click="$set('selectedTransformer', '{{ $transformer }}')">
+                            {{ $transformer }}</option>
                         @endforeach
                     </select>
-                @endif
-          
+                    @endif
 
-              
+
+
                 </div>
                 @endisset
 

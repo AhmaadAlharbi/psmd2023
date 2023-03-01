@@ -312,8 +312,10 @@
                                 <h4>{{ $section_task->main_task->equip_number }}
                                 </h4>
                                 <h2><ins>Main Alarm</ins></h2>
-                                <h4>{{$section_task->main_task->main_alarm->name}}
-                                </h4>
+                                @isset($section_task->main_alarm->name) <h4>
+                                    {{$section_task->main_task->main_alarm->name}}
+                                </h4>@endisset
+
                             </div>
                             <div class=" border border-dark  mb-4   ">
                                 <h3

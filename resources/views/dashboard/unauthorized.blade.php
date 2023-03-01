@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('content')
-<div class="container">
-    <div class="row bg-white py-5">
+<div class="container-fluid bg-white py-5">
+    <div class="row ">
         <div class="col-md-12 text-center mt-5">
             <img src="{{asset('assets/img/lock.jpg')}}" style="width:50%;" alt="logo">
-            <p class="lead">لايمكنك المتابعة لأنك لا تمتلك الصلاحية لهذه الصفحة</p>
+            <p class="lead">لايمكنك المتابعة لأنك لا تمتلك صلاحية الدخول للصفحة</p>
 
             <p class="lead">You are not authorized to access this page.</p>
             @if(Auth::user()->role->title === 'Admin')

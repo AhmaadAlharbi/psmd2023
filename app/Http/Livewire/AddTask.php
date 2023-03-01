@@ -249,8 +249,13 @@ class AddTask extends Component
         $this->engineerEmail = User::where('id', $this->selectedEngineer)->pluck('email')->first();
     }
 
+    protected $rules = [
+        'selectedStation' => 'required',
+    ];
     public function submit(Request $request)
     {
+        $this->validate();
+
         $this->date =  Carbon::now();
         $refNum = $this->date->format("Y/m") . '-' . rand(1, 10000);
         if (!empty($this->selectedEquip)) {
@@ -260,11 +265,21 @@ class AddTask extends Component
         } elseif (!empty($this->selectedTransformer)) {
             // If selectedTransformer is not empty, set $equip_number to the selected value
             $equip_number = $this->selectedTransformer;
+        } else {
+            $equip_number = null;
         }
         if ($this->selectedDepartment !== Auth::user()->department_id) {
             $previous_department_id = Auth::user()->department_id;
         } else {
             $previous_department_id = null;
+        }
+        //cehck main alarm if it is empty or not before saving to db
+        if ($this->main_alarm === '') {
+            $this->main_alarm = null;
+        }
+        //check if engineer select is empty to set it null
+        if ($this->selectedEngineer === '') {
+            $this->selectedEngineer = null;
         }
         $main_task = MainTask::create([
             'refNum' => $refNum,
@@ -307,11 +322,10 @@ class AddTask extends Component
             $attachments->user_id = Auth::user()->id;
             $attachments->save();
         }
-        $user = User::where('email', $this->engineerEmail)->first();
-
-        Notification::send($user, new TaskReport($main_task, $this->photos));
-
-
+        if ($this->selectedEngineer !== null) {
+            $user = User::where('email', $this->engineerEmail)->first();
+            Notification::send($user, new TaskReport($main_task, $this->photos));
+        }
         session()->flash('success', 'تم الاضافة بنجاح');
 
         return redirect("/dashboard/admin");

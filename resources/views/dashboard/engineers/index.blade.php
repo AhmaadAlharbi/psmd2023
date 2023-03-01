@@ -13,11 +13,11 @@
         <div class="d-flex">
             <h4 class="content-title mb-0 my-auto">ادارة صيانة محطات التحويل الرئيسية</h4>
 
-            <span class="text-muted mt-1 tx-13 ms-2 mb-0">/ 
+            <span class="text-muted mt-1 tx-13 ms-2 mb-0">/
 
                 قسم {{Auth::user()->department->name}}
             </span>
-   
+
         </div>
     </div>
 
@@ -96,7 +96,7 @@
     <div class="col-12 col-sm-12 col-lg-6 col-xl-4">
         @foreach($pendingTasks as $task)
         <div class="card card-danger">
-            <h5 class="card-title p-4">التقارير  الغير منجزة</h5>
+            <h5 class="card-title p-4">التقارير الغير منجزة</h5>
 
             <div class="card-body  ">
                 <ul class="list-group   text-center">
@@ -104,7 +104,8 @@
                     <li class="list-group-item ">{{$task->created_at}}</li>
                     <li class="list-group-item "> <strong>Station<br> </strong> {{$task->station->SSNAME}}
                     </li>
-                    <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_alarm->name}}</li>
+                    <li class="list-group-item"><strong>Main Alarm
+                            <br></strong>@isset($task->main_alarm->name){{$task->main_alarm->name}}@endisset</li>
                     <li class="list-group-item"><strong>Equip <br></strong>{{$task->equip_number}}</li>
 
                     <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->problem}}
@@ -173,9 +174,7 @@
                                 \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{
                                 \Carbon\Carbon::parse($task->created_at)->format('H:i') }}</span>
                         </li>
-                        <!-- <li class="list-group-item"><strong>Date <br></strong>{{ \Carbon\Carbon::parse($task->created_at)->format('Y-m-d') }} | {{ \Carbon\Carbon::parse($task->created_at)->format('H:i') }}
-                        </li> -->
-                        <!-- <li class="list-group-item bg-light"><strong>Main Alarm <br></strong>{{$task->main_task->main_alarm->name}}</li> -->
+
                         <li class="list-group-item " style="font-size:16px;"><strong>Nature of fault<br></strong>
                             {{$task->main_task->problem}}
                         </li>
@@ -207,7 +206,7 @@
             </div>
             @endforeach
             @empty($completedTasks)
-d
+            d
             @endempty
         </div>
         {{ $completedTasks->links() }}
