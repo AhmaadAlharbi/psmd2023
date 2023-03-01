@@ -2,12 +2,15 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Notification;
+
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Station;
 use App\Models\Equip;
 use App\Models\MainAlarm;
 use App\Models\MainTask;
+use App\Models\TaskAttachment;
 use App\Models\SectionTask;
 use App\Models\Engineer;
 use App\Models\Department;
@@ -16,6 +19,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Notifications\TaskReport;
 
 class EditTask extends Component
 {
@@ -69,7 +74,9 @@ class EditTask extends Component
         $this->work_type = $this->task->work_type;
         $this->main_alarm = optional($this->task->main_alarm)->id;
         $this->selectedEngineer = optional($this->task->engineer)->id;
-        $this->area = optional($this->task->engineer)->area ? $this->task->engineer->area : $this->setArea();
+        // $this->area = optional($this->task->engineer)->area ? $this->task->engineer->area : $this->setArea();
+        $this->setArea();
+        $this->getEmail();
         $this->engineers = Engineer::where('department_id', Auth::user()->department_id)->where('area', $this->area)->get();
         $this->problem = $this->task->problem;
         $this->notes = $this->task->notes;
@@ -286,7 +293,14 @@ class EditTask extends Component
         } else {
             $previous_department_id = null;
         }
-
+        //cehck main alarm if it is empty or not before saving to db
+        if ($this->main_alarm === '') {
+            $this->main_alarm = null;
+        }
+        //check if engineer select is empty to set it null
+        if ($this->selectedEngineer === '') {
+            $this->selectedEngineer = null;
+        }
         $this->task->update([
             'station_id' =>  $this->station_id,
             'voltage_level' => $this->selectedVoltage,
@@ -314,7 +328,22 @@ class EditTask extends Component
             'previous_department_id' => null,
             'transfer_date_time' => null,
         ]);
-
+        foreach ($this->photos as $photo) {
+            // $photo->store('photos');
+            $name = $photo->getClientOriginalName();
+            // $photo->storeAs('public', $name);
+            $photo->storeAs('attachments/' . $main_task_id, $name, 'public');
+            $attachments = new TaskAttachment();
+            $attachments->main_tasks_id = $main_task_id;
+            $attachments->department_id = Auth::user()->department_id;
+            $attachments->file = $name;
+            $attachments->user_id = Auth::user()->id;
+            $attachments->save();
+        }
+        if ($this->selectedEngineer !== null) {
+            $user = User::where('email', $this->engineerEmail)->first();
+            Notification::send($user, new TaskReport($this->task, $this->photos));
+        }
         session()->flash('success', 'تم التعديل بنجاح');
 
         return redirect("/dashboard/admin");
