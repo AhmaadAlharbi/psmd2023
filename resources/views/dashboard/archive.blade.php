@@ -144,7 +144,8 @@
                         </strong>
                         <span style="font-size:22px; font-wieght:bold;">{{$task->main_task->station->SSNAME}}</span>
                     </li>
-                    <li class="list-group-item"><strong>Main Alarm <br></strong>{{$task->main_task->main_alarm->name}}
+                    <li class="list-group-item"><strong>Main Alarm
+                            <br></strong>@isset($task->main_alarm->name){{$task->main_alarm->name}}@endisset
                     </li>
                     <li class="list-group-item"><strong>Equip <br></strong>{{$task->main_task->equip_number}}</li>
                     <li class="list-group-item"><strong>Nature of fault<br></strong>{{$task->main_task->problem}}

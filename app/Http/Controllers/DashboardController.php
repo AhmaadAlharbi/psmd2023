@@ -141,19 +141,21 @@ class DashBoardController extends Controller
     {
         $main_task = MainTask::findOrFail($id);
         $section_task = SectionTask::where('main_tasks_id', $id)->first();
+        $date =  Carbon::now();
         $main_task->update([
             'status' => 'completed',
         ]);
         SectionTask::create([
             'main_tasks_id' => $id,
             'department_id' => Auth::user()->department_id,
-            'eng_id' => $section_task->eng_id,
+            'eng_id' => $main_task->eng_id,
             'action_take' => $request->action_take,
             'status' => 'completed',
             'engineer-notes' => $request->notes,
             'user_id' => Auth::user()->id,
             'previous_department_id' => null,
             'transfer_date_time' => null,
+            'date' => $date
         ]);
         return redirect("/dashboard/user");
     }

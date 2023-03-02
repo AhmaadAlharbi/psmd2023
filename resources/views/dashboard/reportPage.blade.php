@@ -363,7 +363,7 @@
                     <hr class=" mg-b-40">
 
                     {{-- attachments table --}}
-                    <div class=" d-flex flex-column align-items-start justify-content-start">
+                    <div class=" d-flex flex-column align-items-start justify-content-start d-print-none">
                         <table class="table table-striped mg-b-0 text-md-nowrap">
                             <thead>
                                 <tr>

@@ -173,8 +173,7 @@
             <div class="card-footer">
                 <div class="dropdown">
                     <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">العمليات <i
-                            class="icon ion-ios-arrow-down tx-11 mg-l-3"></i></button>
+                        aria-haspopup="true" aria-expanded="false">العمليات </button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{route('dashboard.editTask', ['id' => $task->id])}}">تعديل</a>
                         <form method="post" action="{{route('task.destroy', ['id' => $task->id])}}"
@@ -182,7 +181,10 @@
                             @csrf
                             @method('DELETE')
                             <button type="button" onclick="deleteRecord({{ $task->id }})"
-                                class="btn btn-light">Delete</button>
+                                class="btn btn-outline-danger">Delete
+                                <i class="fas fa-trash " style="color:red"></i>
+
+                            </button>
 
                         </form>
                         @isset($task->engineer->name)
@@ -200,7 +202,7 @@
 
     </div>
     @endforeach
-    <div class="d-flex flex-wrap justify-content-between">
+    <div class="d-flex flex-wrap justify-content-center mt-5">
         <nav class="pagination">
             {{ $pendingTasks->links() }}
         </nav>
