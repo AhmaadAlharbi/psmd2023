@@ -11,8 +11,8 @@
 
     <div class="my-auto">
         <div class="d-flex">
-            <h4 class="content-title mb-0 my-auto">Pages</h4><span class="text-muted mt-1 tx-13 ms-2 mb-0">/
-                Empty</span>
+            <h4 class="content-title mb-0 my-auto">لوحة التحكم</h4><span class="text-muted mt-1 tx-13 ms-2 mb-0">/
+                {{Auth::user()->department->name}}</span>
 
         </div>
 
@@ -207,18 +207,13 @@
             {{ $pendingTasks->links() }}
         </nav>
     </div>
-
     <div class="col-xl-12 col-md-12 col-lg-6">
         <div class="card border ">
-
             @foreach($completedTasks as $task)
-
             <div class="card card-info">
-
                 <div class="card-body  ">
                     <ul class="list-group   text-center">
                         <li class="list-group-item bg-success py-3 text-white">Task # {{$task->main_task->id}} </li>
-
                         <li class="list-group-item " style="font-size:18px; font-wieght:bold;">
                             Station :
                             {{$task->main_task->station->SSNAME}}<br>

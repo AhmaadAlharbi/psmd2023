@@ -291,7 +291,11 @@ class EditTask extends Component
             $previous_department_id = Auth::user()->department_id;
             $this->selectedEngineer = null;
         } else {
-            $previous_department_id = null;
+            if ($this->task->previous_department_id) {
+                $previous_department_id = $this->task->previous_department_id;
+            } else {
+                $previous_department_id = null;
+            }
         }
         //cehck main alarm if it is empty or not before saving to db
         if ($this->main_alarm === '') {

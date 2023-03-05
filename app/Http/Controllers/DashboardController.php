@@ -26,13 +26,43 @@ class DashBoardController extends Controller
         // return  $station = Station::find(1)->main_task;
         // return Role::find(2)->user;
         // return Auth::user()->role->title;
-        $engineersCount = Engineer::where('department_id', Auth::user()->department_id)->count();
-        $sectionTasksCount = MainTask::where('department_id', Auth::user()->department_id)->count();
-        $pendingTasksCount = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->count();
-        $pendingTasks = MainTask::where('department_id', Auth::user()->department_id)->where('status', 'pending')->latest()->paginate(4, ['*'], 'page2');
-        $completedTasksCount = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->count();
-        $completedTasks = SectionTask::where('department_id', Auth::user()->department_id)->where('status', 'completed')->latest()->paginate(2, ['*'], 'page2');
-        $mutualTasks = MainTask::where('previous_department_id', Auth::user()->department_id)->count();
+        // Get the department ID of the authenticated user
+        $departmentId = Auth::user()->department_id;
+
+        // Get the number of engineers in the user's department
+        $engineersCount = Engineer::when(Auth::user()->department_id !== 1, function ($query) {
+            return $query->where('department_id', Auth::user()->department_id);
+        })
+            ->count();
+        // Get the number of section tasks in the user's department
+        $sectionTasksCount = MainTask::where('department_id', $departmentId)->count();
+
+        // Get the number of pending main tasks in the user's department, including those that were previously in the user's department
+        $pendingTasksCount = MainTask::where(function ($query) use ($departmentId) {
+            $query->where('department_id', $departmentId)
+                ->orWhere('previous_department_id', $departmentId);
+        })->where('status', 'pending')->count();
+
+        // Get the latest pending main tasks in the user's department, including those that were previously in the user's department
+        $pendingTasks = MainTask::where(function ($query) use ($departmentId) {
+            $query->where('department_id', $departmentId)
+                ->orWhere('previous_department_id', $departmentId);
+        })->where('status', 'pending')->latest()->paginate(4, ['*'], 'page2');
+
+        // Get the number of completed section tasks in the user's department, including those that were previously in the user's department
+        $completedTasksCount = SectionTask::where(function ($query) use ($departmentId) {
+            $query->where('department_id', $departmentId)
+                ->orWhere('previous_department_id', $departmentId);
+        })->where('status', 'completed')->count();
+
+        // Get the latest completed section tasks in the user's department, including those that were previously in the user's department
+        $completedTasks = SectionTask::where(function ($query) use ($departmentId) {
+            $query->where('department_id', $departmentId)
+                ->orWhere('previous_department_id', $departmentId);
+        })->where('status', 'completed')->latest()->paginate(2, ['*'], 'page2');
+
+        // Get the number of main tasks that were previously in the user's department and are now in another department
+        $mutualTasks = MainTask::where('previous_department_id', $departmentId)->count();
 
         return view('dashboard.index', compact('sectionTasksCount', 'mutualTasks', 'pendingTasksCount', 'pendingTasks', 'completedTasks', 'engineersCount', 'completedTasksCount'));
     }
@@ -178,7 +208,6 @@ class DashBoardController extends Controller
         $engineers = Engineer::where('department_id', Auth::user()->department_id)->get();
         $currentMonth = Carbon::now()->month;
         $isAdmin = Auth()->user()->role->title == 'Admin';
-
         $tasks = $isAdmin ? $this->getAdminTasks($status, $currentMonth) : $this->getEngineerTasks($status);
 
         return view('dashboard.showTasks', compact('tasks', 'stations', 'engineers'));
@@ -189,11 +218,13 @@ class DashBoardController extends Controller
         switch ($status) {
             case 'pending':
                 return MainTask::where('department_id', Auth::user()->department_id)
+                    ->orwhere('previous_department_id', Auth::user()->department_id)
                     ->where('status', 'pending')
                     ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
 
             case 'completed':
                 return MainTask::where('department_id', Auth::user()->department_id)
+                    ->orwhere('previous_department_id', Auth::user()->department_id)
                     ->where('status', 'completed')
                     ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
 

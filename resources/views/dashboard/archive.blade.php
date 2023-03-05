@@ -10,8 +10,8 @@
 <div class="breadcrumb-header justify-content-between">
     <div class="my-auto">
         <div class="d-flex">
-            <h4 class="content-title mb-0 my-auto">Pages</h4><span class="text-muted mt-1 tx-13 ms-2 mb-0">/
-                Empty</span>
+            <h4 class="content-title mb-0 my-auto">ارشيف التقارير</h4><span class="text-muted mt-1 tx-13 ms-2 mb-0">/
+                {{Auth::user()->department->name}}</span>
         </div>
     </div>
     <div class="d-flex my-xl-auto right-content">
@@ -131,7 +131,7 @@
     </div>
     @foreach($tasks as $task)
     <div class="col-12 col-sm-12 col-lg-6 col-xl-4">
-        <div class="card {{$task->status =='pending'  ? 'card-danger' : 'card-success'}}">
+        <div class="card {{$task->status =='pending'  ? 'card-danger' : 'card-success'}} h-100">
 
             <div class="card-body  ">
                 <ul class="list-group   text-center">

@@ -15,7 +15,13 @@ class EngineersController extends Controller
 {
     public function engineersList()
     {
-        $engineers = Engineer::where('department_id', Auth::user()->department_id)->get();
+        // Retrieve engineers based on the authenticated user's department
+        // If the authenticated user's department is 1, retrieve all engineers
+        // Otherwise, retrieve only the engineers who belong to the authenticated user's department
+        $engineers = Engineer::when(Auth::user()->department_id !== 1, function ($query) {
+            return $query->where('department_id', Auth::user()->department_id);
+        })->get();
+
         return view('dashboard.engineers.engineersList', compact('engineers'));
     }
     public function engineerProfile($id)

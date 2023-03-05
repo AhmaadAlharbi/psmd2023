@@ -10,8 +10,8 @@
 <div class="breadcrumb-header justify-content-between">
     <div class="my-auto">
         <div class="d-flex">
-            <h4 class="content-title mb-0 my-auto">Pages</h4><span class="text-muted mt-1 tx-13 ms-2 mb-0">/
-                Empty</span>
+            <h4 class="content-title mb-0 my-auto">اضافة المهمة</h4><span class="text-muted mt-1 tx-13 ms-2 mb-0">/
+                {{Auth::user()->department->name}}</span>
         </div>
     </div>
     <div class="d-flex my-xl-auto right-content">
@@ -49,7 +49,26 @@
                 </div>
 
 
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h5 class="modal-title" id="exampleModalLabel">جاري إرسال الإيميل</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h5 class="text-center mt-2 text-warning">Loading...Please wait</h5>
+                                <div class="loader">
 
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
 
             </div>
 
@@ -71,6 +90,9 @@
 <!-- Internal Dtree Treeview js -->
 <script src="{{asset('assets/plugins/dtree/dtree.js')}}"></script>
 <script src="{{asset('assets/plugins/dtree/dtree1.js')}}"></script>
+<!-- Sweet-alert js  -->
+<!--Internal  Sweet-Alert js-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 @endsection

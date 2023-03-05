@@ -186,9 +186,35 @@
                     <input class="form-control form-control-lg" id="formFileLg" type="file" wire:model="photos"
                         multiple>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-danger  mt-3" data-toggle="modal"
-                            data-target="#exampleModal">ارسال
+                        <button type="submit" class="btn btn-primary" id="but4">ارسال
                             البيانات</button>
+                        <script>
+                            const btnid = document.getElementById('but4');
+                                btnid.addEventListener('click', () => {
+                                    let timerInterval
+                                    Swal.fire({
+                                        title: 'جاري ارسال البيانات',
+                                        html: 'يرجى الانتظار وعدم اغلاق الصفحة',
+                                        timer: 60000,
+                                        timerProgressBar: true,
+                                        didOpen: () => {
+                                            Swal.showLoading()
+                                            const b = Swal.getHtmlContainer().querySelector('b')
+                                            timerInterval = setInterval(() => {
+                                                b.textContent = Swal.getTimerLeft()
+                                            }, 100)
+                                        },
+                                        willClose: () => {
+                                            clearInterval(timerInterval)
+                                        }
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                    })
+                                })
+                        </script>
                     </div>
                 </div>
             </div>
