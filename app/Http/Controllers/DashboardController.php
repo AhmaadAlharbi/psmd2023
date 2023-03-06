@@ -220,10 +220,11 @@ class DashBoardController extends Controller
                 return MainTask::where('department_id', Auth::user()->department_id)
                     ->orwhere('previous_department_id', Auth::user()->department_id)
                     ->where('status', 'pending')
-                    ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
+                    ->latest()->paginate(6);
 
             case 'completed':
                 return MainTask::where('department_id', Auth::user()->department_id)
+                    ->where('status', 'completed')
                     ->orwhere('previous_department_id', Auth::user()->department_id)
                     ->where('status', 'completed')
                     ->whereMonth('created_at', $currentMonth)->latest()->paginate(6);
@@ -331,15 +332,34 @@ class DashBoardController extends Controller
         $tasks = $query->paginate(6);
         return view('dashboard.archive', compact('tasks', 'stations', 'engineers'));
     }
+    /**
+     * Delete a task with the given ID. If the task belongs to a different
+     * department, update the task's department ID to the previous department
+     * ID instead of deleting it. Otherwise, delete the task. If the task is not
+     * found, redirect back with an error message.
+     *
+     * @param  int  $id The ID of the task to delete
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy($id)
     {
         $task = MainTask::findOrFail($id);
+
         if ($task) {
-            $task->delete();
-            return redirect()->back()->with('success', 'تم الحذق بنجاح');
+            if ($task->previous_department_id && $task->previous_department_id !== Auth::user()->department_id) {
+                $task->department_id = $task->previous_department_id;
+                $task->save();
+                return redirect()->back()->with('success', 'تم تغيير قسم المهمة بنجاح');
+            }
+            if ($task->department_id === Auth::user()->department_id) {
+                $task->delete();
+                return redirect()->back()->with('success', 'تم الحذف بنجاح');
+            }
         }
-        return redirect()->back()->with('error', 'Record not found.');
+
+        return redirect()->back()->with('error', 'لم يتم العثور على السجل.');
     }
+
     public function destroySectionTasks($id)
     {
         $task = SectionTask::findOrFail($id);
@@ -349,7 +369,7 @@ class DashBoardController extends Controller
         ]);
         if ($task) {
             $task->delete();
-            return redirect()->back()->with('success', 'تم الحذق بنجاح');
+            return redirect()->back()->with('success', 'تم الحذف بنجاح');
         }
         return redirect()->back()->with('error', 'Record not found.');
     }

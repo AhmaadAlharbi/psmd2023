@@ -104,7 +104,6 @@
                                         </div>
                                     </form>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -169,7 +168,6 @@
                         <a class="btn btn-dark" href="{{route('dashboard.editTask', ['id' => $task->id])}}">تعديل</a>
                     </div>
                     <div class="col">
-
                         <form method="post" action="{{route('task.destroy', ['id' => $task->id])}}"
                             id="delete-form-{{ $task->id }}">
                             @csrf
